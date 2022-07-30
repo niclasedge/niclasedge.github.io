@@ -1,12 +1,12 @@
 ---
 title: Linux Environments / Umgebungsvariablen verstehen
-categories: [docker, docker]
+categories: [linux, docker]
 tags: [linux, docker]
 mermaid: true
 toc: true
-published: true
 ---
 
+# Linux
 ## überschift
 
 ```python
@@ -55,3 +55,12 @@ flowchart TD
 		class C,C1,C2 white2;
 
 ```
+
+# Umgebungsvariablen in Docker
+
+dsoijdsjd
+
+## unterthema
+
+# in Docker compose
+mehr text
