@@ -1,8 +1,10 @@
 ---
 title: Linux Environments / Umgebungsvariablen verstehen
-date: 2022-07-30 12:00:00 -500
+date: 2022-07-30 12:00:00 +0200
 categories: [docker, docker]
 tags: [linux, docker]
+mermaid: true
+toc: true
 ---
 
 ## überschift
