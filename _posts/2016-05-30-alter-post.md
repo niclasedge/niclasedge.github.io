@@ -1,6 +1,9 @@
 ---
-title: Nuer post
+title: Neuer post
 layout: default
+categories: [test]
+tags: [test]
+mermaid: true
 ---
 
 # warum?
