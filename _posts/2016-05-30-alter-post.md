@@ -1,8 +1,8 @@
 ---
 title: Neuer post
 layout: default
-categories: [test]
-tags: [test]
+categories: test
+tags: test
 mermaid: true
 ---
 
