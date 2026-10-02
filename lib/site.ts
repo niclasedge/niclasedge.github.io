@@ -1,9 +1,11 @@
 /** Zentrale Seiten-Konfiguration (ersetzt die alte _config.yml). */
 export const site = {
   title: "Niclas Edge Docs",
+  /** Schriftzug in der Kopfleiste */
+  brand: "niclasedge.github.io",
   tagline: "Automate the Edge Blog",
   description:
-    "Notizen, Anleitungen und kleine Werkzeuge rund um Linux, Docker und Automatisierung.",
+    "Was ich schreibe, baue und benutze: Notizen rund um Automatisierung, eigene Tools und Apps und die Quellen, denen ich folge.",
   url: "https://niclasedge.github.io",
   lang: "de",
   author: {

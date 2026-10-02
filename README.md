@@ -35,18 +35,22 @@ deno task check       # fmt --check, lint, Typprüfung (wie in CI)
 
 ```
 content/posts/        Blogposts als Markdown (YYYY-MM-DD-slug.md)
+content/tools.json    Eigene und externe Tools (Startseite, About, Sitemap)
+content/feeds.json    Quellen, denen ich folge (neuester Eintrag beim Build)
 content/about.md      Text der About-Seite
 routes/               Seiten (Fresh-Dateirouting)
   posts/, tags/       Postliste, Post, Tag-Übersicht, Tag-Seite
-  lab/                Lab-Übersicht und je eine Seite pro Werkzeug
+  lab/                Lab mit Sidebar; [slug].tsx rendert content/lab/*
   archives.tsx        Alt-URL /archives/   → /posts   (Meta-Refresh)
   categories/         Alt-URL /categories/ → /tags    (Meta-Refresh)
   feed.xml.ts         Atom-Feed
   sitemap.xml.ts      Sitemap
   _404.tsx            404-Seite (Status 404 → _site/404.html)
-islands/              Interaktive Komponenten (JSON Formatter, Regex Tester, Mermaid)
-components/           Gemeinsame Komponenten
-lib/                  Posts lesen, Markdown rendern, Seiten-Konfiguration
+islands/              Interaktive Komponenten (Startseite, JSON Formatter, Regex Tester, Mermaid)
+content/lab/          Lab-Seiten als HTML-Fragment oder Markdown
+components/           Gemeinsame Komponenten (Zeitstrahl, Icons, Seitentitel …)
+lib/                  Posts, Tools und Feeds lesen, Markdown, Bereiche, Konfiguration
+assets/styles.css     Design-Tokens und Komponenten-CSS (Tailwind 4)
 static/               Wird 1:1 kopiert (iOS-App-Seiten, sw.js, robots.txt, Favicon)
 scripts/export.ts     Statischer Export
 scripts/legacy-urls.txt  Alle URLs der alten Jekyll-Seite
@@ -64,6 +68,7 @@ Seitentitel, Beschreibung und Links stehen in `lib/site.ts`.
    ---
    title: Mein Titel
    tags: [linux, docker]
+   area: infra
    description: Optionaler Teaser für Liste, Feed und Meta-Tags.
    ---
 
@@ -72,14 +77,15 @@ Seitentitel, Beschreibung und Links stehen in `lib/site.ts`.
 
    Optionale Felder:
 
-   | Feld                               | Bedeutung                                                |
-   | ---------------------------------- | -------------------------------------------------------- |
-   | `description`                      | Teaser; sonst die ersten Sätze des Textes                |
-   | `date`                             | Überschreibt das Datum aus dem Dateinamen                |
-   | `slug`                             | Überschreibt den Slug aus dem Dateinamen                 |
-   | `toc: false`                       | Inhaltsverzeichnis ausblenden (sonst ab 3 Überschriften) |
-   | `published: false` / `draft: true` | Post wird nicht veröffentlicht                           |
-   | `categories`                       | Alt-Feld aus Jekyll; wird wie `tags` behandelt           |
+   | Feld                               | Bedeutung                                                      |
+   | ---------------------------------- | -------------------------------------------------------------- |
+   | `area`                             | Bereich: `ai`, `automation`, `infra`, `dev` (Standard), `apps` |
+   | `description`                      | Teaser; sonst die ersten Sätze des Textes                      |
+   | `date`                             | Überschreibt das Datum aus dem Dateinamen                      |
+   | `slug`                             | Überschreibt den Slug aus dem Dateinamen                       |
+   | `toc: false`                       | Inhaltsverzeichnis ausblenden (sonst ab 3 Überschriften)       |
+   | `published: false` / `draft: true` | Post wird nicht veröffentlicht                                 |
+   | `categories`                       | Alt-Feld aus Jekyll; wird wie `tags` behandelt                 |
 
 3. Codeblöcke mit Sprache (`` ```python ``) werden per highlight.js eingefärbt.
    `` ```mermaid ``-Blöcke werden im Browser zu Diagrammen – Mermaid wird dafür
@@ -89,16 +95,157 @@ Seitentitel, Beschreibung und Links stehen in `lib/site.ts`.
 Tags bekommen automatisch eine Seite unter `/tags/<tag>/` und erscheinen in
 Sitemap und Feed.
 
-## Lab-Werkzeug hinzufügen
+## Design
 
-Lab-Werkzeuge sind Fresh-Islands und laufen komplett im Browser.
+Grundlage ist die Design-Referenz „hiro3“ (Things-Stil): ruhige graue Flächen,
+ein Blau als Akzent, Zeitstrahlen mit farbigen Punkten je Bereich.
+
+- **Tokens** stehen oben in `assets/styles.css` (`--bg`, `--side`, `--panel`,
+  `--text`, `--muted`, `--line`, `--link`, Bereichsfarben …). Dunkel ist
+  Standard, hell bei `prefers-color-scheme: light`; `<html data-theme="light">`
+  bzw. `"dark"` erzwingt ein Schema.
+- Tailwind kennt die Tokens als Farben: `bg-side`, `bg-panel`, `text-fg`,
+  `text-muted`, `border-line`, `text-link`, `text-danger` … – keine
+  `dark:`-Varianten nötig.
+- Die Klassen der Referenz (`.top`, `.intro`, `.seg`, `.area`, `.tl`, `.item`,
+  `.post`, `.tool`, `.feed` …) liegen unverändert benannt in
+  `@layer components`, damit sich Änderungen an der Referenz direkt übernehmen
+  lassen.
+- **Bereiche** (Filter + Punktfarbe): `lib/areas.ts`, Icons in
+  `components/Icons.tsx`.
+
+## Startseite: Tools und Quellen
+
+Die Startseite (`islands/Directory.tsx`) zeigt Blog, eigene und externe Tools
+als Zeitstrahl sowie die Quellen. Suche, Zeitraum („Aktueller Workflow“ /
+„Vergangen“) und Bereich filtern alles gleichzeitig; Zeitraum und Bereich stehen
+in der URL (`/?view=past&area=dev`). Ohne JavaScript bleibt die serverseitig
+gerenderte Ansicht stehen.
+
+### Tool eintragen – `content/tools.json`
+
+```json
+{
+  "id": "deno",
+  "group": "ext",
+  "area": "dev",
+  "status": "current",
+  "name": "Deno",
+  "desc": "Runtime für TypeScript …",
+  "cat": "Runtime",
+  "since": "2026",
+  "web": "https://deno.com/",
+  "repo": "https://github.com/denoland/deno"
+}
+```
+
+| Feld         | Bedeutung                                                        |
+| ------------ | ---------------------------------------------------------------- |
+| `group`      | `own` (eigene Tools) oder `ext` (externe Tools)                  |
+| `status`     | `current` oder `past`                                            |
+| `since`      | Startjahr; `until` = Endjahr (nur bei `past`)                    |
+| `replacedBy` | bei `past`: id des Nachfolgers (springt auf der Seite dorthin) … |
+| `reason`     | … oder Begründung „Nicht mehr nötig: …“ (genau eins von beiden)  |
+| `release`    | optional `{ "ver": "v1.2.0", "date": "2026-09-14" }`             |
+| `web`/`repo` | optionale Links „Website“/„Repo“                                 |
+| `links`      | weitere Links `[{ "label": "Datenschutz", "href": "/…" }]`       |
+
+Je Spalte erscheinen höchstens 10 Tools, darunter „Alle N anzeigen“. Im
+aktuellen Workflow stehen zuerst die aktiven Tools; sind es weniger als 10, wird
+mit vergangenen aufgefüllt (unter „Früher“). Grenze: `TOOLS_VISIBLE` in
+`islands/Directory.tsx`.
+
+Ein Tool belegt auf der Startseite zwei Zeilen (Name, Kategorie und Links;
+darunter die einzeilige Beschreibung) – `desc` deshalb kurz halten (rund 45
+Zeichen), der volle Text steht im Tooltip. Jahr und Bereich zeigen Jahresmarke
+und Punktfarbe.
+
+Eigene Apps (`"group": "own", "area": "apps"`) erscheinen zusätzlich auf der
+About-Seite; ihre internen `links` landen in der Sitemap. Fehlerhafte Einträge
+(doppelte id, unbekannter Bereich, `replacedBy` ins Leere …) brechen den Export
+mit einer Meldung ab.
+
+### Quelle eintragen – `content/feeds.json`
+
+```json
+{
+  "kind": "video",
+  "area": "dev",
+  "name": "Deno",
+  "handle": "YouTube",
+  "url": "https://www.youtube.com/@deno_land",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCqC2G2M-rg4fzg1esKFLFIw"
+}
+```
+
+`kind` ist `video`, `release`, `user`, `blog` oder `site` (Website ohne Feed, z.
+B. ein Dashboard). Quellen ohne `feed` stehen immer sichtbar unter „Zum
+Nachschlagen“; `note` ist dann der Text unter dem Namen. Feed-URLs:
+
+- YouTube: `https://www.youtube.com/feeds/videos.xml?channel_id=<ID>` (die ID
+  steht im Seitenquelltext des Kanals als `"externalId"`)
+- GitHub-Releases: `https://github.com/<owner>/<repo>/releases.atom`
+- GitHub-Account: `https://github.com/<user>.atom`
+- Blog: RSS/Atom des Blogs; ohne `feed` wird nur die Quelle verlinkt (Beispiel:
+  Artificial Analysis, Anthropic News)
+
+Beim Export lädt `lib/feeds.ts` von jedem Feed den neuesten Eintrag (10 s
+Timeout). Ein Feed, der nicht antwortet, erzeugt nur eine Warnung im Log – die
+Quelle erscheint dann ohne neuesten Beitrag. `FEEDS=off deno task export`
+überspringt das Laden (offline). Damit die Angaben aktuell bleiben, baut die
+Action zusätzlich täglich. Was seit „Alle als gelesen markieren“ neu ist, merkt
+sich der Browser im `localStorage`.
+
+## Lab
+
+`/lab` zeigt links die Übersicht aller Einträge mit Beschreibung, rechts den
+gewählten Eintrag, nativ gerendert (kein iframe). Jeder Eintrag hat eine eigene
+URL `/lab/<slug>`; mobil zeigt `/lab` nur die Liste und eine Lab-Seite nur ihren
+Inhalt. Abgrenzung: **Lab** = kleine Werkzeuge und HTML-Seiten im Browser,
+**Eigene Tools** auf der Startseite = Repos, Skills, Websites und Apps.
+
+Drei Arten (`lib/lab.ts`):
+
+| Art           | Quelle                                    | Beispiel       |
+| ------------- | ----------------------------------------- | -------------- |
+| `interactive` | Island + Route `routes/lab/<slug>.tsx`    | JSON Formatter |
+| `page`        | `content/lab/<slug>.html` oder `.md`      | Design-Tokens  |
+| `external`    | Link auf eine andere Seite (eigenes Repo) | Tools-Sammlung |
+
+### HTML-Seite hinzufügen (ohne Code)
+
+`content/lab/<slug>.html` anlegen – wird automatisch gefunden:
+
+```html
+---
+title: Mein Spickzettel
+short: Kurztext für die Startseite
+description: Beschreibung für Sidebar und Seitentitel.
+order: 10 # optional, Sortierung innerhalb der Seiten
+---
+<style>
+.mein-zettel td {
+  padding: .25rem .5rem;
+}
+</style>
+<table class="mein-zettel">…</table>
+```
+
+Das HTML wird unverändert in den rechten Bereich eingesetzt: nur ein Fragment
+(kein `<html>`/`<body>`), eigene CSS-Regeln über eine eigene Klasse eingrenzen
+(sie gelten sonst für die ganze Seite), Farben über die Tokens (`var(--text)` …)
+– dann passt die Seite automatisch zu hell und dunkel. `.md` statt `.html` wird
+als Markdown gerendert.
+
+### Interaktives Werkzeug hinzufügen
 
 1. Island anlegen, z. B. `islands/Base64Tool.tsx` (Preact-Komponente, Zustand
    mit `@preact/signals`).
-2. Seite anlegen: `routes/lab/base64.tsx` – siehe
-   `routes/lab/json-formatter.tsx` als Vorlage.
-3. Eintrag in `lib/lab.ts` ergänzen (`slug` = Dateiname der Route). Damit
-   erscheint die Karte auf der Startseite, unter `/lab` und in der Sitemap.
+2. Seite anlegen: `routes/lab/base64.tsx` mit `<LabShell current="base64">` –
+   siehe `routes/lab/json-formatter.tsx` als Vorlage.
+3. Eintrag in `interactiveLabs` in `lib/lab.ts` ergänzen (`slug` = Dateiname der
+   Route). Damit erscheint es in der Lab-Sidebar, im Schnellzugriff unter dem
+   Blog und in der Sitemap.
 
 Größere Einzelseiten-Werkzeuge gehören eher ins Repo
 [niclasedge/tools](https://github.com/niclasedge/tools) – das ist eine eigene
@@ -141,6 +288,9 @@ Wer eine Seite umbenennt, lässt unter der alten Route eine Weiterleitung
   `export` – nur bauen und prüfen, kein Deploy.
 - **Push auf `main`:** zusätzlich Deploy von `_site/` auf den Branch `gh-pages`
   via `peaceiris/actions-gh-pages@v4`. GitHub Pages liefert `gh-pages` aus.
+- **Täglich (04:17 UTC):** gleicher Ablauf wie ein Push auf `main`, damit die
+  Quellen aktuell bleiben. GitHub pausiert geplante Workflows, wenn im Repo 60
+  Tage nichts passiert – dann unter _Actions_ wieder aktivieren.
 
 Neue Abhängigkeiten in `deno.json` eintragen und `deno install` ausführen, damit
 `deno.lock` aktualisiert wird – CI installiert mit `--frozen`.

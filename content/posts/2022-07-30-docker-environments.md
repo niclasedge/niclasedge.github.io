@@ -2,6 +2,7 @@
 title: Linux Environments / Umgebungsvariablen verstehen
 categories: [linux, docker]
 tags: [linux, docker]
+area: infra
 mermaid: true
 toc: true
 ---

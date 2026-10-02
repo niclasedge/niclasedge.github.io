@@ -1,0 +1,42 @@
+---
+title: Design-Tokens
+short: Farben und Flächen dieser Seite
+description: Alle Farb-Tokens der Seite im aktuellen Farbschema – reines HTML und CSS, ohne JavaScript.
+---
+<style>
+  .dt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: .75rem; margin: 0 0 2rem; padding: 0; list-style: none; }
+  .dt-grid li { display: flex; align-items: center; gap: .65rem; padding: .5rem; border: 1px solid var(--line); border-radius: 8px; background: var(--side); }
+  .dt-sw { width: 2.25rem; height: 2.25rem; flex: none; border-radius: 6px; border: 1px solid var(--line2); }
+  .dt-grid code { font-family: var(--font-mono); font-size: .85rem; color: var(--text); }
+  .dt-grid small { display: block; font-size: .78rem; color: var(--muted); }
+  .dt-h { margin: 0 0 .6rem; font-size: .98rem; font-weight: 700; color: var(--link); }
+</style>
+
+<h2 class="dt-h">Flächen und Text</h2>
+<ul class="dt-grid">
+  <li><span class="dt-sw" style="background:var(--bg)"></span><span><code>--bg</code><small>Seitenhintergrund</small></span></li>
+  <li><span class="dt-sw" style="background:var(--side)"></span><span><code>--side</code><small>Kopfleiste, Sidebar, Hover</small></span></li>
+  <li><span class="dt-sw" style="background:var(--panel)"></span><span><code>--panel</code><small>Suchfeld, Filter, Karten</small></span></li>
+  <li><span class="dt-sw" style="background:var(--hover)"></span><span><code>--hover</code><small>Aktiver Schalter</small></span></li>
+  <li><span class="dt-sw" style="background:var(--text)"></span><span><code>--text</code><small>Fließtext</small></span></li>
+  <li><span class="dt-sw" style="background:var(--muted)"></span><span><code>--muted</code><small>Nebentext</small></span></li>
+  <li><span class="dt-sw" style="background:var(--line)"></span><span><code>--line</code><small>Linien, Zeitstrahl</small></span></li>
+  <li><span class="dt-sw" style="background:var(--line2)"></span><span><code>--line2</code><small>Rahmen, Jahresmarken</small></span></li>
+</ul>
+
+<h2 class="dt-h">Akzent und Status</h2>
+<ul class="dt-grid">
+  <li><span class="dt-sw" style="background:var(--accent)"></span><span><code>--accent</code><small>Akzentfläche</small></span></li>
+  <li><span class="dt-sw" style="background:var(--link)"></span><span><code>--link</code><small>Links, Überschriften</small></span></li>
+  <li><span class="dt-sw" style="background:var(--ok)"></span><span><code>--ok</code><small>Frisches Release, Apps</small></span></li>
+  <li><span class="dt-sw" style="background:var(--danger)"></span><span><code>--danger</code><small>Fehlermeldungen</small></span></li>
+  <li><span class="dt-sw" style="background:var(--yellow)"></span><span><code>--yellow</code><small>Stern, Treffer</small></span></li>
+</ul>
+
+<h2 class="dt-h">Bereiche</h2>
+<ul class="dt-grid">
+  <li><span class="dt-sw" style="background:var(--purple)"></span><span><code>--purple</code><small>AI</small></span></li>
+  <li><span class="dt-sw" style="background:var(--teal)"></span><span><code>--teal</code><small>Automation</small></span></li>
+  <li><span class="dt-sw" style="background:var(--beige)"></span><span><code>--beige</code><small>Infra</small></span></li>
+  <li><span class="dt-sw" style="background:var(--blue)"></span><span><code>--blue</code><small>Dev</small></span></li>
+</ul>

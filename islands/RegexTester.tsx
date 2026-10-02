@@ -87,8 +87,8 @@ export default function RegexTester() {
         <label class="mb-1 block text-sm font-medium" for="regex-pattern">
           Ausdruck
         </label>
-        <div class="flex items-center rounded-lg border border-stone-300 font-mono text-sm dark:border-stone-700">
-          <span class="pl-3 text-stone-400">/</span>
+        <div class="field flex items-center font-mono text-sm">
+          <span class="pl-3 text-muted">/</span>
           <input
             id="regex-pattern"
             class="w-full bg-transparent px-1 py-2 outline-none"
@@ -97,7 +97,7 @@ export default function RegexTester() {
             onInput={(e) =>
               pattern.value = (e.currentTarget as HTMLInputElement).value}
           />
-          <span class="pr-3 text-stone-400">/{flags.value}</span>
+          <span class="pr-3 text-muted">/{flags.value}</span>
         </div>
         <div class="mt-2 flex flex-wrap gap-4 text-sm">
           {FLAGS.map(({ flag, label }) => (
@@ -109,7 +109,7 @@ export default function RegexTester() {
                   toggleFlag(flag)}
               />
               <code>{flag}</code>
-              <span class="text-stone-500">{label}</span>
+              <span class="text-muted">{label}</span>
             </label>
           ))}
         </div>
@@ -118,7 +118,7 @@ export default function RegexTester() {
       <label class="block">
         <span class="mb-1 block text-sm font-medium">Testtext</span>
         <textarea
-          class="h-40 w-full rounded-lg border border-stone-300 bg-transparent p-3 font-mono text-sm dark:border-stone-700"
+          class="field h-40 p-3 font-mono text-sm"
           spellcheck={false}
           value={text.value}
           onInput={(e) =>
@@ -130,7 +130,7 @@ export default function RegexTester() {
         ? (
           <p
             role="alert"
-            class="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200"
+            class="rounded-lg border border-danger/40 bg-danger/10 p-3 text-sm text-danger"
           >
             {result.value.error}
           </p>
@@ -142,13 +142,13 @@ export default function RegexTester() {
                 {result.value.matches.length}{" "}
                 {result.value.matches.length === 1 ? "Treffer" : "Treffer"}
               </p>
-              <pre class="whitespace-pre-wrap break-words rounded-lg bg-stone-100 p-3 font-mono text-sm dark:bg-stone-900">
+              <pre class="whitespace-pre-wrap break-words rounded-lg border border-line bg-side p-3 font-mono text-sm">
                 {segments.value.map((s, i) =>
                   s.hit
                     ? (
                       <mark
                         key={i}
-                        class="rounded bg-amber-200 px-0.5 text-stone-900 dark:bg-amber-500/40 dark:text-amber-50"
+                        class="rounded bg-yellow/35 px-0.5 text-fg"
                       >
                         {s.text}
                       </mark>
@@ -160,7 +160,7 @@ export default function RegexTester() {
             {result.value.matches.length > 0 && (
               <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
-                  <thead class="border-b border-stone-200 text-stone-500 dark:border-stone-800">
+                  <thead class="border-b border-line2 text-muted">
                     <tr>
                       <th class="py-2 pr-4 font-medium">#</th>
                       <th class="py-2 pr-4 font-medium">Index</th>
@@ -172,9 +172,9 @@ export default function RegexTester() {
                     {result.value.matches.map((m, i) => (
                       <tr
                         key={i}
-                        class="border-b border-stone-100 dark:border-stone-900"
+                        class="border-b border-line"
                       >
-                        <td class="py-1.5 pr-4 text-stone-500">{i + 1}</td>
+                        <td class="py-1.5 pr-4 text-muted">{i + 1}</td>
                         <td class="py-1.5 pr-4">{m.index}</td>
                         <td class="py-1.5 pr-4">{JSON.stringify(m.text)}</td>
                         <td class="py-1.5">

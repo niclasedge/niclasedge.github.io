@@ -1,7 +1,7 @@
 import { page } from "fresh";
 import { define } from "../utils.ts";
 import { Seo } from "../components/Seo.tsx";
-import { PageTitle } from "../components/PageTitle.tsx";
+import { Page, PageTitle } from "../components/PageTitle.tsx";
 
 // Ohne eigenen Handler antwortet Fresh hier mit Status 200.
 export const handler = define.handlers({
@@ -12,21 +12,21 @@ export const handler = define.handlers({
 
 export default define.page(function NotFound() {
   return (
-    <>
+    <Page>
       <Seo title="Seite nicht gefunden" noindex />
       <PageTitle lead="Die angeforderte Seite gibt es (nicht mehr).">
         404 – Seite nicht gefunden
       </PageTitle>
       <p>
         Zur{" "}
-        <a class="text-teal-700 underline dark:text-teal-300" href="/">
+        <a href="/">
           Startseite
         </a>{" "}
         oder zur{" "}
-        <a class="text-teal-700 underline dark:text-teal-300" href="/posts">
+        <a href="/posts">
           Übersicht aller Posts
         </a>.
       </p>
-    </>
+    </Page>
   );
 });
