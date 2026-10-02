@@ -1,29 +1,46 @@
-name: 'Automatic build'
+name: Build & Deploy
+
 on:
   push:
-    branches:
-      - main
-    paths-ignore:
-      - .gitignore
-      - README.md
-      - LICENSE
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  continuous-delivery:
-
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # for posts's lastmod
+      - uses: actions/checkout@v4
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: denoland/setup-deno@v2
         with:
-          ruby-version: 2.7
-          bundler-cache: true
+          deno-version: v2.x
 
-      - name: Deploy
-        run: bash tools/deploy.sh
+      - name: Install
+        run: deno install --frozen
+
+      - name: Check (fmt, lint, types)
+        run: deno task check
+
+      - name: Build
+        run: deno task build
+
+      - name: Export (inkl. Link- und Alt-URL-Prüfung)
+        run: deno task export
+
+      # PRs werden nur gebaut und geprüft – deployt wird nur main.
+      - name: Deploy to gh-pages
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./_site
+          commit_message: ${{ github.event.head_commit.message }}

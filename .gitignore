@@ -1,20 +1,17 @@
-# hidden files
-.*
-!.git*
-!.editorconfig
-!.nojekyll
-!.travis.yml
-!.husky
-!.commitlintrc.json
-!.versionrc.json
+# Fresh/Vite build output
+_fresh/
+# Statischer Export (wird nach gh-pages deployt)
+_site/
 
-# bundler cache
-_site
-vendor
+# Dependencies
+node_modules/
+vendor/
 
-# rubygem
-*.gem
+# Lokale Env-Dateien
+.env
+.env.*
 
-# npm dependencies
-node_modules
-package-lock.json
+# Editor/OS
+.DS_Store
+.vscode/
+.idea/
