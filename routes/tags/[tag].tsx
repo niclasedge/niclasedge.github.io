@@ -2,39 +2,37 @@ import { HttpError, page } from "fresh";
 import { define } from "../../utils.ts";
 import { getTag } from "../../lib/posts.ts";
 import { Seo } from "../../components/Seo.tsx";
-import { PageTitle } from "../../components/PageTitle.tsx";
-import { PostList } from "../../components/PostList.tsx";
+import { Page, PageTitle } from "../../components/PageTitle.tsx";
+import { PostTimeline, toSummary } from "../../components/Timeline.tsx";
 
 export const handler = define.handlers({
   GET(ctx) {
     const tag = getTag(ctx.params.tag);
     if (!tag) throw new HttpError(404);
-    return page({ tag });
+    return page({
+      name: tag.name,
+      slug: tag.slug,
+      posts: tag.posts.map(toSummary),
+    });
   },
 });
 
 export default define.page<typeof handler>(function TagPage({ data }) {
-  const { tag } = data;
-  const count = tag.posts.length;
+  const count = data.posts.length;
   return (
-    <>
+    <Page>
       <Seo
-        title={`#${tag.name}`}
-        description={`Posts zum Thema ${tag.name}.`}
-        path={`/tags/${tag.slug}`}
+        title={`#${data.name}`}
+        description={`Posts zum Thema ${data.name}.`}
+        path={`/tags/${data.slug}`}
       />
       <PageTitle lead={`${count} ${count === 1 ? "Post" : "Posts"}`}>
-        #{tag.name}
+        #{data.name}
       </PageTitle>
-      <PostList posts={tag.posts} />
-      <p class="mt-8">
-        <a
-          href="/tags"
-          class="text-sm text-teal-700 hover:underline dark:text-teal-300"
-        >
-          ← Alle Tags
-        </a>
+      <PostTimeline posts={data.posts} />
+      <p class="mt-8 text-sm">
+        <a href="/tags">← Alle Tags</a>
       </p>
-    </>
+    </Page>
   );
 });

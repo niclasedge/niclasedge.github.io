@@ -1,13 +1,18 @@
 import { define } from "../utils.ts";
 import { getPosts, getTags } from "../lib/posts.ts";
-import { iosApps } from "../lib/apps.ts";
-import { labTools } from "../lib/lab.ts";
+import { getTools } from "../lib/directory.ts";
+import { getLabItems } from "../lib/lab_pages.ts";
 import { absoluteUrl } from "../lib/site.ts";
 
 // Sitemap unter /sitemap.xml. Weiterleitungen (archives, categories) fehlen bewusst.
 export const handler = define.handlers({
   GET() {
     const posts = getPosts();
+    // Support- und Datenschutzseiten der Apps (liegen in static/)
+    const appPages = getTools()
+      .filter((t) => t.group === "own" && t.area === "apps")
+      .flatMap((t) => (t.links ?? []).map((l) => l.href))
+      .filter((href) => href.startsWith("/"));
     const entries: { path: string; lastmod?: string }[] = [
       { path: "/" },
       { path: "/posts" },
@@ -18,12 +23,10 @@ export const handler = define.handlers({
       { path: "/tags" },
       ...getTags(posts).map((t) => ({ path: `/tags/${t.slug}` })),
       { path: "/lab" },
-      ...labTools.map((t) => ({ path: `/lab/${t.slug}` })),
+      ...getLabItems().filter((l) => l.kind !== "external")
+        .map((l) => ({ path: l.href })),
       { path: "/about" },
-      ...iosApps.flatMap((a) => [
-        { path: `/${a.slug}` },
-        { path: `/${a.slug}/privacy.html` },
-      ]),
+      ...appPages.map((href) => ({ path: href.replace(/\/$/, "") })),
     ];
     const urls = entries.map(({ path, lastmod }) =>
       `  <url><loc>${absoluteUrl(path)}</loc>${

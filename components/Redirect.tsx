@@ -14,8 +14,8 @@ export function Redirect({ to }: { to: string }) {
         <link rel="canonical" href={absoluteUrl(to)} />
         <meta name="robots" content="noindex" />
       </Head>
-      <p class="text-stone-600 dark:text-stone-400">
-        Diese Seite ist umgezogen: <a class="underline" href={to}>{to}</a>
+      <p class="wrap page text-muted">
+        Diese Seite ist umgezogen: <a href={to}>{to}</a>
       </p>
     </>
   );

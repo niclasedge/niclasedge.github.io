@@ -4,7 +4,10 @@ leichter machen.
 
 ## Was es hier gibt
 
-- **[Posts](/posts)** – Notizen und Anleitungen, nach [Tags](/tags) sortiert.
+- **[Blog](/posts)** – Notizen und Anleitungen, nach [Tags](/tags) sortiert.
+- **[Eigene Tools](/#eigene)** – meine Websites, Web-Tools und iOS-Apps.
+- **[Externe Tools](/#externe)** – womit ich arbeite und was davor kam.
+- **[Quellen](/#quellen)** – Kanäle, Repos und Blogs, denen ich folge.
 - **[Lab](/lab)** – kleine interaktive Helfer direkt im Browser.
 - **[Tools](/tools/)** – eine wachsende Sammlung einzelner HTML-Werkzeuge.
 

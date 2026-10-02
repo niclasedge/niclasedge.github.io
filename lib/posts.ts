@@ -2,6 +2,7 @@ import { extract } from "@std/front-matter/yaml";
 import { join } from "@std/path";
 import { renderMarkdown, type TocEntry } from "./markdown.ts";
 import { jekyllSlug, tagSlug } from "./slug.ts";
+import { type AreaKey, AREAS, isArea } from "./areas.ts";
 
 /**
  * Posts liegen als Markdown unter content/posts/YYYY-MM-DD-<slug>.md
@@ -18,6 +19,8 @@ export interface Post {
   /** YYYY-MM-DD */
   day: string;
   tags: string[];
+  /** Bereich für Filter und Zeitstrahl, siehe lib/areas.ts (Standard: dev). */
+  area: AreaKey;
   description: string;
   html: string;
   toc: TocEntry[];
@@ -37,6 +40,7 @@ interface FrontMatter {
   slug?: string;
   tags?: string[] | string;
   categories?: string[] | string;
+  area?: string;
   description?: string;
   toc?: boolean;
   mermaid?: boolean;
@@ -80,12 +84,22 @@ function readPost(fileName: string): Post | null {
     ),
   ];
 
+  const area = attrs.area ?? "dev";
+  if (!isArea(area)) {
+    throw new Error(
+      `${fileName}: unbekannter Bereich "${area}" (erlaubt: ${
+        Object.keys(AREAS).join(", ")
+      })`,
+    );
+  }
+
   return {
     slug: jekyllSlug(attrs.slug ?? rawSlug),
     title: attrs.title ?? rawSlug,
     date,
     day: `${y}-${mo}-${d}`,
     tags,
+    area,
     description: attrs.description ?? excerpt(rendered.html),
     html: rendered.html,
     toc: rendered.toc.filter((e) => e.depth <= 3),

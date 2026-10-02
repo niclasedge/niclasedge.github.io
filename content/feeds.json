@@ -1,0 +1,106 @@
+[
+  {
+    "kind": "video",
+    "area": "dev",
+    "name": "Fireship",
+    "handle": "YouTube",
+    "url": "https://www.youtube.com/@Fireship",
+    "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCsBjURrPoezykLs9EqgamOA"
+  },
+  {
+    "kind": "video",
+    "area": "dev",
+    "name": "Deno",
+    "handle": "YouTube",
+    "url": "https://www.youtube.com/@deno_land",
+    "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCqC2G2M-rg4fzg1esKFLFIw"
+  },
+  {
+    "kind": "video",
+    "area": "dev",
+    "name": "Theo – t3.gg",
+    "handle": "YouTube",
+    "url": "https://www.youtube.com/@t3dotgg",
+    "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCbRP3c757lWg9M-U7TyEkXA"
+  },
+  {
+    "kind": "release",
+    "area": "dev",
+    "name": "denoland/deno",
+    "handle": "GitHub Releases",
+    "url": "https://github.com/denoland/deno/releases",
+    "feed": "https://github.com/denoland/deno/releases.atom"
+  },
+  {
+    "kind": "release",
+    "area": "dev",
+    "name": "denoland/fresh",
+    "handle": "GitHub Releases",
+    "url": "https://github.com/denoland/fresh/releases",
+    "feed": "https://github.com/denoland/fresh/releases.atom"
+  },
+  {
+    "kind": "release",
+    "area": "ai",
+    "name": "anthropics/claude-code",
+    "handle": "GitHub Releases",
+    "url": "https://github.com/anthropics/claude-code/releases",
+    "feed": "https://github.com/anthropics/claude-code/releases.atom"
+  },
+  {
+    "kind": "user",
+    "area": "ai",
+    "name": "simonw",
+    "handle": "GitHub",
+    "url": "https://github.com/simonw",
+    "feed": "https://github.com/simonw.atom"
+  },
+  {
+    "kind": "blog",
+    "area": "ai",
+    "name": "Simon Willison’s Weblog",
+    "handle": "Blog",
+    "url": "https://simonwillison.net/",
+    "feed": "https://simonwillison.net/atom/everything/"
+  },
+  {
+    "kind": "blog",
+    "area": "ai",
+    "name": "Anthropic News",
+    "handle": "Blog",
+    "url": "https://www.anthropic.com/news",
+    "note": "Ankündigungen zu Claude und Anthropic"
+  },
+  {
+    "kind": "blog",
+    "area": "dev",
+    "name": "Deno Blog",
+    "handle": "Blog",
+    "url": "https://deno.com/blog",
+    "feed": "https://deno.com/feed"
+  },
+  {
+    "kind": "blog",
+    "area": "automation",
+    "name": "GitHub Changelog",
+    "handle": "Blog",
+    "url": "https://github.blog/changelog/",
+    "feed": "https://github.blog/changelog/feed/"
+  },
+  {
+    "kind": "blog",
+    "area": "infra",
+    "name": "Cloudflare Blog",
+    "handle": "Blog",
+    "url": "https://blog.cloudflare.com/",
+    "feed": "https://blog.cloudflare.com/rss/"
+  },
+  {
+    "kind": "site",
+    "area": "ai",
+    "name": "Artificial Analysis",
+    "handle": "Website",
+    "url": "https://artificialanalysis.ai/",
+    "note": "Benchmarks, Preise und Tempo aktueller KI-Modelle – inkl. Open Source"
+  }
+]

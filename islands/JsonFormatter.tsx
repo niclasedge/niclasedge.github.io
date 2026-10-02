@@ -63,34 +63,29 @@ export default function JsonFormatter() {
     setTimeout(() => (copied.value = false), 1500);
   };
 
-  const button = (active: boolean) =>
-    `rounded-lg px-3 py-1.5 text-sm font-medium ${
-      active
-        ? "bg-teal-700 text-white"
-        : "bg-stone-100 text-stone-700 hover:bg-stone-200 dark:bg-stone-800 dark:text-stone-200 dark:hover:bg-stone-700"
-    }`;
-
   return (
     <div class="space-y-4">
       <div class="flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          class={button(mode.value === "format")}
-          onClick={() => (mode.value = "format")}
-        >
-          Formatieren
-        </button>
-        <button
-          type="button"
-          class={button(mode.value === "minify")}
-          onClick={() => (mode.value = "minify")}
-        >
-          Minifizieren
-        </button>
+        <div class="seg" role="group" aria-label="Ausgabe">
+          <button
+            type="button"
+            aria-pressed={mode.value === "format"}
+            onClick={() => (mode.value = "format")}
+          >
+            Formatieren
+          </button>
+          <button
+            type="button"
+            aria-pressed={mode.value === "minify"}
+            onClick={() => (mode.value = "minify")}
+          >
+            Minifizieren
+          </button>
+        </div>
         <label class="flex items-center gap-2 text-sm">
           Einrückung
           <select
-            class="rounded-md border border-stone-300 bg-transparent px-2 py-1 dark:border-stone-700"
+            class="field w-auto px-2 py-1"
             value={indent.value}
             disabled={mode.value === "minify"}
             onChange={(e) =>
@@ -117,7 +112,7 @@ export default function JsonFormatter() {
         <label class="block">
           <span class="mb-1 block text-sm font-medium">Eingabe</span>
           <textarea
-            class="h-80 w-full rounded-lg border border-stone-300 bg-transparent p-3 font-mono text-sm dark:border-stone-700"
+            class="field h-80 p-3 font-mono text-sm"
             spellcheck={false}
             value={input.value}
             onInput={(e) =>
@@ -129,7 +124,7 @@ export default function JsonFormatter() {
             <span class="text-sm font-medium">Ergebnis</span>
             <button
               type="button"
-              class="text-xs text-teal-700 hover:underline disabled:opacity-40 dark:text-teal-300"
+              class="text-xs font-semibold text-link hover:underline disabled:opacity-40"
               disabled={!result.value.output}
               onClick={copy}
             >
@@ -138,14 +133,14 @@ export default function JsonFormatter() {
           </div>
           {result.value.ok
             ? (
-              <pre class="h-80 overflow-auto rounded-lg bg-stone-100 p-3 font-mono text-sm dark:bg-stone-900">
+              <pre class="h-80 overflow-auto rounded-lg border border-line bg-side p-3 font-mono text-sm">
                 {result.value.output}
               </pre>
             )
             : (
               <p
                 role="alert"
-                class="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200"
+                class="rounded-lg border border-danger/40 bg-danger/10 p-3 text-sm text-danger"
               >
                 Ungültiges JSON: {result.value.error}
               </p>

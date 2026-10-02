@@ -1,0 +1,267 @@
+[
+  {
+    "id": "site",
+    "group": "own",
+    "area": "dev",
+    "status": "current",
+    "name": "niclasedge.github.io",
+    "desc": "Blog, Tool-Verzeichnis und Quellen mit Fresh.",
+    "cat": "Website",
+    "since": "2026",
+    "web": "/",
+    "repo": "https://github.com/niclasedge/niclasedge.github.io"
+  },
+  {
+    "id": "tools",
+    "group": "own",
+    "area": "dev",
+    "status": "current",
+    "name": "Tools-Sammlung",
+    "desc": "Sammlung einzelner HTML-Werkzeuge.",
+    "cat": "Web-Tools",
+    "since": "2026",
+    "web": "/tools/",
+    "repo": "https://github.com/niclasedge/tools"
+  },
+  {
+    "id": "git-planner",
+    "group": "own",
+    "area": "apps",
+    "status": "current",
+    "name": "Git Planner",
+    "desc": "iOS-Client für GitHub Issues, offline-fähig.",
+    "cat": "iOS-App",
+    "since": "2026",
+    "links": [
+      {
+        "label": "Support",
+        "href": "/git-planner-ios/"
+      },
+      {
+        "label": "Datenschutz",
+        "href": "/git-planner-ios/privacy.html"
+      }
+    ]
+  },
+  {
+    "id": "bujo-notes",
+    "group": "own",
+    "area": "apps",
+    "status": "current",
+    "name": "Bujo Notes",
+    "desc": "Bullet Journal mit analogem Look für iOS.",
+    "cat": "iOS-App",
+    "since": "2026",
+    "links": [
+      {
+        "label": "Support",
+        "href": "/bujo-notes-ios/"
+      },
+      {
+        "label": "Datenschutz",
+        "href": "/bujo-notes-ios/privacy.html"
+      }
+    ]
+  },
+  {
+    "id": "bucket-list",
+    "group": "own",
+    "area": "apps",
+    "status": "current",
+    "name": "Bucket List",
+    "desc": "Ausflugsziele entdecken, merken, abhaken.",
+    "cat": "iOS-App",
+    "since": "2026",
+    "links": [
+      {
+        "label": "Support",
+        "href": "/ausflugs-radar-ios/"
+      },
+      {
+        "label": "Datenschutz",
+        "href": "/ausflugs-radar-ios/privacy.html"
+      }
+    ]
+  },
+  {
+    "id": "scharademix",
+    "group": "own",
+    "area": "apps",
+    "status": "current",
+    "name": "ScharadeMix",
+    "desc": "Partyspiel: Forbidden Words, Charades, Zeichnen.",
+    "cat": "iOS-App",
+    "since": "2026",
+    "links": [
+      {
+        "label": "Support",
+        "href": "/roundrobin-ios/"
+      },
+      {
+        "label": "Datenschutz",
+        "href": "/roundrobin-ios/privacy.html"
+      }
+    ]
+  },
+  {
+    "id": "inspired-by",
+    "group": "own",
+    "area": "apps",
+    "status": "current",
+    "name": "Inspired By",
+    "desc": "Inspiration und Farbanalyse auf dem iPhone.",
+    "cat": "iOS-App",
+    "since": "2026",
+    "links": [
+      {
+        "label": "Support",
+        "href": "/inspire-ios/"
+      },
+      {
+        "label": "Datenschutz",
+        "href": "/inspire-ios/privacy.html"
+      }
+    ]
+  },
+  {
+    "id": "site-jekyll",
+    "group": "own",
+    "area": "dev",
+    "status": "past",
+    "name": "niclasedge.github.io (Jekyll)",
+    "desc": "Erste Version der Seite mit dem Chirpy-Theme.",
+    "cat": "Website",
+    "since": "2022",
+    "until": "2026",
+    "replacedBy": "site",
+    "repo": "https://github.com/niclasedge/niclasedge.github.io"
+  },
+  {
+    "id": "claude-code",
+    "group": "ext",
+    "area": "ai",
+    "status": "current",
+    "name": "Claude Code",
+    "desc": "Coding-Agent im Terminal und in der Cloud.",
+    "cat": "Agent",
+    "since": "2026",
+    "web": "https://code.claude.com/docs",
+    "repo": "https://github.com/anthropics/claude-code"
+  },
+  {
+    "id": "deno",
+    "group": "ext",
+    "area": "dev",
+    "status": "current",
+    "name": "Deno",
+    "desc": "TypeScript-Runtime mit fmt, lint und check.",
+    "cat": "Runtime",
+    "since": "2026",
+    "web": "https://deno.com/",
+    "repo": "https://github.com/denoland/deno"
+  },
+  {
+    "id": "fresh",
+    "group": "ext",
+    "area": "dev",
+    "status": "current",
+    "name": "Fresh",
+    "desc": "Web-Framework mit Islands, kaum Client-JS.",
+    "cat": "Framework",
+    "since": "2026",
+    "web": "https://fresh.deno.dev/",
+    "repo": "https://github.com/denoland/fresh"
+  },
+  {
+    "id": "tailwind",
+    "group": "ext",
+    "area": "dev",
+    "status": "current",
+    "name": "Tailwind CSS",
+    "desc": "Utility-CSS, gespeist aus Design-Tokens.",
+    "cat": "CSS",
+    "since": "2026",
+    "web": "https://tailwindcss.com/",
+    "repo": "https://github.com/tailwindlabs/tailwindcss"
+  },
+  {
+    "id": "xcode",
+    "group": "ext",
+    "area": "apps",
+    "status": "current",
+    "name": "Xcode",
+    "desc": "IDE für die nativen iOS-Apps.",
+    "cat": "IDE",
+    "since": "2026",
+    "web": "https://developer.apple.com/xcode/"
+  },
+  {
+    "id": "app-store-connect",
+    "group": "ext",
+    "area": "apps",
+    "status": "current",
+    "name": "App Store Connect",
+    "desc": "Veröffentlichung und Verwaltung der Apps.",
+    "cat": "Vertrieb",
+    "since": "2026",
+    "web": "https://appstoreconnect.apple.com/"
+  },
+  {
+    "id": "gh-actions",
+    "group": "ext",
+    "area": "automation",
+    "status": "current",
+    "name": "GitHub Actions",
+    "desc": "Prüft, baut und deployt diese Seite.",
+    "cat": "CI",
+    "since": "2022",
+    "web": "https://github.com/features/actions"
+  },
+  {
+    "id": "gh-pages",
+    "group": "ext",
+    "area": "infra",
+    "status": "current",
+    "name": "GitHub Pages",
+    "desc": "Hosting für den statischen Export.",
+    "cat": "Hosting",
+    "since": "2022",
+    "web": "https://pages.github.com/"
+  },
+  {
+    "id": "docker",
+    "group": "ext",
+    "area": "infra",
+    "status": "current",
+    "name": "Docker",
+    "desc": "Container für lokale Umgebungen.",
+    "cat": "Container",
+    "since": "2022",
+    "web": "https://www.docker.com/"
+  },
+  {
+    "id": "mermaid",
+    "group": "ext",
+    "area": "dev",
+    "status": "current",
+    "name": "Mermaid",
+    "desc": "Diagramme als Text im Markdown.",
+    "cat": "Diagramme",
+    "since": "2022",
+    "web": "https://mermaid.js.org/",
+    "repo": "https://github.com/mermaid-js/mermaid"
+  },
+  {
+    "id": "jekyll",
+    "group": "ext",
+    "area": "dev",
+    "status": "past",
+    "name": "Jekyll + Chirpy",
+    "desc": "Static-Site-Generator in Ruby, Chirpy-Theme.",
+    "cat": "Framework",
+    "since": "2022",
+    "until": "2026",
+    "replacedBy": "fresh",
+    "web": "https://jekyllrb.com/"
+  }
+]

@@ -1,20 +1,23 @@
 import { page } from "fresh";
 import { define } from "../utils.ts";
 import { renderMarkdown } from "../lib/markdown.ts";
-import { iosApps } from "../lib/apps.ts";
+import { getTools } from "../lib/directory.ts";
 import { Seo } from "../components/Seo.tsx";
-import { PageTitle } from "../components/PageTitle.tsx";
+import { Page, PageTitle } from "../components/PageTitle.tsx";
 
 export const handler = define.handlers({
   GET() {
     const { html } = renderMarkdown(Deno.readTextFileSync("content/about.md"));
-    return page({ html });
+    const apps = getTools().filter((t) =>
+      t.group === "own" && t.area === "apps" && t.status === "current"
+    );
+    return page({ html, apps });
   },
 });
 
 export default define.page<typeof handler>(function About({ data }) {
   return (
-    <>
+    <Page>
       <Seo
         title="About"
         description="Über diese Seite und ihren Autor."
@@ -22,38 +25,27 @@ export default define.page<typeof handler>(function About({ data }) {
       />
       <PageTitle>About</PageTitle>
       <div
-        class="prose prose-stone max-w-none dark:prose-invert prose-a:text-teal-700 dark:prose-a:text-teal-300"
+        class="prose max-w-none"
         // HTML stammt aus der eigenen Datei content/about.md.
         // deno-lint-ignore react-no-danger
         dangerouslySetInnerHTML={{ __html: data.html }}
       />
       <section class="mt-10">
-        <h2 class="mb-4 text-xl font-semibold">iOS-Apps</h2>
+        <h2 class="head mb-4">iOS-Apps</h2>
         <ul class="grid gap-3 sm:grid-cols-2">
-          {iosApps.map((app) => (
-            <li
-              key={app.slug}
-              class="rounded-xl border border-stone-200 p-4 dark:border-stone-800"
-            >
-              <a
-                href={`/${app.slug}/`}
-                class="font-semibold hover:text-teal-700 dark:hover:text-teal-300"
-              >
-                {app.name}
-              </a>
-              <p class="mt-1 text-sm text-stone-600 dark:text-stone-400">
-                {app.description}
-              </p>
-              <a
-                href={`/${app.slug}/privacy.html`}
-                class="mt-2 inline-block text-xs text-stone-500 hover:underline"
-              >
-                Datenschutz
-              </a>
+          {data.apps.map((app) => (
+            <li key={app.id} class="card">
+              <span class="block font-semibold">{app.name}</span>
+              <span class="mt-1 block text-sm text-muted">{app.desc}</span>
+              <span class="mt-2 flex gap-4 text-sm">
+                {(app.links ?? []).map((l) => (
+                  <a key={l.href} href={l.href}>{l.label}</a>
+                ))}
+              </span>
             </li>
           ))}
         </ul>
       </section>
-    </>
+    </Page>
   );
 });
