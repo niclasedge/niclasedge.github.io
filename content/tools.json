@@ -24,6 +24,26 @@
     "repo": "https://github.com/niclasedge/tools"
   },
   {
+    "id": "sdlc-leitstand",
+    "group": "own",
+    "area": "automation",
+    "status": "current",
+    "name": "SDLC-Leitstand",
+    "desc": "Plugin als Leitstand für den SDLC.",
+    "cat": "Plugin",
+    "since": "2026"
+  },
+  {
+    "id": "prozessschmiede",
+    "group": "own",
+    "area": "ai",
+    "status": "current",
+    "name": "Prozessschmiede",
+    "desc": "Skill rund um Prozessgestaltung.",
+    "cat": "Skill",
+    "since": "2026"
+  },
+  {
     "id": "git-planner",
     "group": "own",
     "area": "apps",
@@ -149,6 +169,54 @@
     "repo": "https://github.com/anthropics/claude-code"
   },
   {
+    "id": "pi",
+    "group": "ext",
+    "area": "ai",
+    "status": "current",
+    "name": "Pi",
+    "desc": "Coding-Agent im Terminal.",
+    "cat": "Agent",
+    "since": "2026",
+    "web": "https://shittycodingagent.ai/",
+    "repo": "https://github.com/earendil-works/pi"
+  },
+  {
+    "id": "herdr",
+    "group": "ext",
+    "area": "ai",
+    "status": "current",
+    "name": "herdr",
+    "desc": "AI-Multiplexer: Terminals für Coding-Agents.",
+    "cat": "Multiplexer",
+    "since": "2026",
+    "web": "https://herdr.dev/",
+    "repo": "https://github.com/herdrdev/herdr"
+  },
+  {
+    "id": "openspec",
+    "group": "ext",
+    "area": "ai",
+    "status": "current",
+    "name": "OpenSpec",
+    "desc": "Spec-getriebene Entwicklung mit AI.",
+    "cat": "Skill",
+    "since": "2026",
+    "web": "https://openspec.dev/",
+    "repo": "https://github.com/Fission-AI/OpenSpec"
+  },
+  {
+    "id": "omarchy",
+    "group": "ext",
+    "area": "infra",
+    "status": "current",
+    "name": "Omarchy",
+    "desc": "Agentisches Linux von DHH auf Arch-Basis.",
+    "cat": "Linux-Distro",
+    "since": "2026",
+    "web": "https://omarchy.org/",
+    "repo": "https://github.com/omacom/omarchy"
+  },
+  {
     "id": "deno",
     "group": "ext",
     "area": "dev",
@@ -183,6 +251,30 @@
     "since": "2026",
     "web": "https://tailwindcss.com/",
     "repo": "https://github.com/tailwindlabs/tailwindcss"
+  },
+  {
+    "id": "tauri",
+    "group": "ext",
+    "area": "apps",
+    "status": "current",
+    "name": "Tauri 2",
+    "desc": "Lokale Desktop-Apps mit Web-Frontend.",
+    "cat": "App-Framework",
+    "since": "2026",
+    "web": "https://tauri.app/",
+    "repo": "https://github.com/tauri-apps/tauri"
+  },
+  {
+    "id": "bubbletea",
+    "group": "ext",
+    "area": "dev",
+    "status": "current",
+    "name": "Bubble Tea",
+    "desc": "Go-Framework für schicke TUIs.",
+    "cat": "TUI-Framework",
+    "since": "2026",
+    "web": "https://charm.sh/",
+    "repo": "https://github.com/charmbracelet/bubbletea"
   },
   {
     "id": "xcode",

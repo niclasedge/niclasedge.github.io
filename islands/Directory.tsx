@@ -162,7 +162,7 @@ export default function Directory(
   const ext = toolList("ext");
   const sub = view === "current"
     ? {
-      own: "Repos, Websites und Apps, die ich pflege, nach Startjahr",
+      own: "Repos, Skills, Plugins und Apps, die ich pflege, nach Startjahr",
       ext: "Womit ich arbeite, nach Startjahr",
     }
     : {

@@ -22,7 +22,12 @@ export interface Link {
 export const TIMELINE_ICON_BY_CAT: Record<string, TimelineIcon> = {
   "iOS-App": "app",
   "Skill": "skill",
+  "Plugin": "skill",
   "Agent": "skill",
+  "Multiplexer": "terminal",
+  "Linux-Distro": "terminal",
+  "TUI-Framework": "terminal",
+  "App-Framework": "layers",
   "Website": "web",
   "Web-Tools": "lab",
   "Lab": "lab",
