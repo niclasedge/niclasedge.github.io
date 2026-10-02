@@ -1,5 +1,4 @@
 User-agent: *
-
-Disallow: /norobots/
+Allow: /
 
 Sitemap: https://niclasedge.github.io/sitemap.xml
