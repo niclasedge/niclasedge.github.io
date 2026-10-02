@@ -3,10 +3,177 @@
   <id>https://niclasedge.github.io/</id>
   <title>Niclas Edge Docs</title>
   <subtitle>Was ich schreibe, baue und benutze: Notizen rund um Automatisierung, eigene Tools und Apps und die Quellen, denen ich folge.</subtitle>
-  <updated>2026-10-02T00:00:00.000Z</updated>
+  <updated>2026-10-03T00:00:00.000Z</updated>
   <author><name>Niclas Edge</name><uri>https://niclasedge.github.io/</uri></author>
   <link rel="self" type="application/atom+xml" href="https://niclasedge.github.io/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://niclasedge.github.io/"/>
+  <entry>
+    <title>Von TickTick über beads zu GitHub-Issues mit OpenSpec</title>
+    <link href="https://niclasedge.github.io/posts/ticktick-zu-openspec/" rel="alternate" type="text/html"/>
+    <id>https://niclasedge.github.io/posts/ticktick-zu-openspec/</id>
+    <published>2026-10-03T00:00:00.000Z</published>
+    <updated>2026-10-03T00:00:00.000Z</updated>
+    <author><name>Niclas Edge</name></author>
+    <category term="openspec"/>
+    <category term="github"/>
+    <category term="beads"/>
+    <category term="workflow"/>
+    <summary>Drei Stationen meiner Aufgabenverwaltung – und warum die Aufgabe heute ein Issue ist, das als OpenSpec-Change durch maschinelle Gates läuft.</summary>
+    <content type="html">&lt;p&gt;Meine Aufgaben lagen in den letzten Monaten an drei Orten. Jeder Wechsel kam,
+weil ein Coding-Agent mehr von der Arbeit übernommen hat – und die Aufgabe
+dorthin musste, wo der Agent sie lesen und abschließen kann.&lt;/p&gt;
+&lt;h2 id=&quot;station-1-ticktick&quot;&gt;Station 1: TickTick&lt;/h2&gt;
+&lt;p&gt;Eine klassische To-do-App: schnell erfasst, auf allen Geräten da. Für einen
+Agenten aber eine Blackbox – Aufgaben und Code lebten getrennt, und jede
+erledigte Aufgabe musste ich von Hand abhaken.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Vorteile&lt;/th&gt;
+&lt;th&gt;Nachteile&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;Schnell erfasst, auf allen Geräten&lt;/td&gt;
+&lt;td&gt;Liegt außerhalb der Repos&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Erinnerungen, Kalender, Listen&lt;/td&gt;
+&lt;td&gt;Agent kann Aufgaben weder lesen noch schließen&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Keine Einrichtung je Projekt&lt;/td&gt;
+&lt;td&gt;Kein Bezug zu Branch, Commit oder PR&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&quot;station-2-beads&quot;&gt;Station 2: beads&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/steveyegge/beads&quot;&gt;beads&lt;/a&gt; (&lt;code&gt;bd&lt;/code&gt;) legt die Aufgaben neben den
+Code ins Repo. Der Agent legt Tasks an, verknüpft Blocker
+(&lt;code&gt;bd dep add &amp;lt;blockiert&amp;gt; &amp;lt;blocker&amp;gt;&lt;/code&gt;) und schließt sie selbst
+(&lt;code&gt;bd close &amp;lt;id&amp;gt;&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;In der Praxis kostete das mehr, als es brachte: ein eigenes Werkzeug mit eigener
+Datenbank, das in jedem Repo eingerichtet und gepflegt werden will, und
+regelmäßig Probleme, die nichts mit der eigentlichen Arbeit zu tun hatten.
+Dazu kommt die Sichtbarkeit: Ohne eigene Skripte sind die Aufgaben schwer
+einzusehen. Von außen kommt man nur über die GitHub-Content-API an die Dateien
+im Repo – möglich, aber mit Extra-Aufwand. Und bei mehreren Worktrees war nie
+ganz klar, welcher Stand gerade gilt.&lt;/p&gt;
+&lt;p&gt;Einen großen Mehrwert gegenüber Issues habe ich am Ende nicht gefunden.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Vorteile&lt;/th&gt;
+&lt;th&gt;Nachteile&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;Aufgaben liegen im Repo beim Code&lt;/td&gt;
+&lt;td&gt;Zusätzliches Tool je Repo, extra Overhead&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Agent legt an und schließt selbst&lt;/td&gt;
+&lt;td&gt;Häufige Probleme mit dem Werkzeug selbst&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Abhängigkeiten zwischen Tasks&lt;/td&gt;
+&lt;td&gt;Ohne eigene Skripte schwer einsehbar&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;Abruf von außen nur über die Content-API&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;Unklarer Stand bei mehreren Worktrees&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;Zweite Liste neben den GitHub-Issues&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&quot;station-3-github-issues-mit-openspec-change&quot;&gt;Station 3: GitHub-Issues mit OpenSpec-Change&lt;/h2&gt;
+&lt;p&gt;Heute gibt es genau einen Ideenspeicher: GitHub-Issues. Sie sind in jedem Repo
+schon da, brauchen keine Einrichtung, werden in GitHub sauber angezeigt und sind
+über die API von überall abrufbar. Jedes Werkzeug – vom Agenten über die
+&lt;code&gt;gh&lt;/code&gt;-CLI bis zur App auf dem Handy – kann sie lesen und schreiben. Und weil sie
+nicht im Branch liegen, sehen alle Worktrees denselben Stand.&lt;/p&gt;
+&lt;p&gt;Ein Issue mit dem Label &lt;code&gt;idee&lt;/code&gt; ist ein künftiges Vorhaben. Es wird erst zur
+Arbeit, wenn daraus ein
+&lt;a href=&quot;https://github.com/Fission-AI/OpenSpec&quot;&gt;OpenSpec&lt;/a&gt;-Change wird – mit eigenem
+Branch, eigenem Arbeitsbaum und einem Pull Request gegen &lt;code&gt;main&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&quot;mermaid not-prose&quot;&gt;flowchart TD
+  I[GitHub-Issue mit Label idee] --&amp;gt; N[just neu: Branch + vier Artefakte]
+  N --&amp;gt; G1[just gate1: Plan vollständig]
+  G1 --&amp;gt; R[Test schreiben – rot]
+  R --&amp;gt; G2[just gate2: roter Test belegt]
+  G2 --&amp;gt; F[implementieren – grün, just fertig]
+  F --&amp;gt; P[just pr → Merge → just archiv]&lt;/pre&gt;
+&lt;p&gt;Die Gates sind Befehle mit Exit-Code, keine Bestätigungen. Gate 1 hält, wenn im
+Plan Testdateien fehlen. Gate 2 hält, wenn der Test nicht rot ist. Ohne
+bestandenen Abschluss verweigert &lt;code&gt;just pr&lt;/code&gt; den Push. Jede Gate-Regel ist eine
+reine Funktion mit eigenem Test – ein Gate, das sich nicht prüfen lässt, wäre
+nur eine Behauptung.&lt;/p&gt;
+&lt;p&gt;Zwei Changes laufen nur parallel, wenn sich die Dateien, die sie laut
+&lt;code&gt;proposal.md&lt;/code&gt; anfassen, nicht überschneiden.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Vorteile&lt;/th&gt;
+&lt;th&gt;Nachteile&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;Nativ in jedem Repo, keine Einrichtung&lt;/td&gt;
+&lt;td&gt;Braucht GitHub (bzw. eine Forge) und Netz&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Sauber in GitHub sichtbar, per API abrufbar&lt;/td&gt;
+&lt;td&gt;Kein schnelles Erfassen privater To-dos&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ein Stand für alle Worktrees&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Issue → Change → PR → Merge hängt zusammen&lt;/td&gt;
+&lt;td&gt;OpenSpec-Artefakte kosten pro Change Aufwand&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Gates erzwingen Plan und roten Test&lt;/td&gt;
+&lt;td&gt;Gates prüfen nicht, ob der Test das Richtige prüft&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&quot;was-sich-geändert-hat&quot;&gt;Was sich geändert hat&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Station&lt;/th&gt;
+&lt;th&gt;Wo die Aufgabe lebt&lt;/th&gt;
+&lt;th&gt;Wer sie abschließt&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;TickTick&lt;/td&gt;
+&lt;td&gt;App&lt;/td&gt;
+&lt;td&gt;ich&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;beads&lt;/td&gt;
+&lt;td&gt;Repo, eigenes Tool&lt;/td&gt;
+&lt;td&gt;Agent (&lt;code&gt;bd close&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Issue + OpenSpec&lt;/td&gt;
+&lt;td&gt;GitHub + Branch&lt;/td&gt;
+&lt;td&gt;Agent, aber nur über die Gates&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&quot;fazit&quot;&gt;Fazit&lt;/h2&gt;
+&lt;p&gt;Das einfachere, überall vorhandene Werkzeug hat gewonnen. Issues können weniger
+als beads, aber sie sind schon da – und was ihnen fehlt, ergänzt der
+OpenSpec-Change samt Gates genau an der Stelle, an der Arbeit entsteht.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Von Jekyll zu Fresh 2 – statisch exportiert für GitHub Pages</title>
     <link href="https://niclasedge.github.io/posts/jekyll-zu-fresh/" rel="alternate" type="text/html"/>

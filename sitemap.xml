@@ -2,17 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://niclasedge.github.io/</loc></url>
   <url><loc>https://niclasedge.github.io/posts/</loc></url>
+  <url><loc>https://niclasedge.github.io/posts/ticktick-zu-openspec/</loc><lastmod>2026-10-03T00:00:00.000Z</lastmod></url>
   <url><loc>https://niclasedge.github.io/posts/jekyll-zu-fresh/</loc><lastmod>2026-10-02T00:00:00.000Z</lastmod></url>
   <url><loc>https://niclasedge.github.io/posts/tool-verzeichnis-als-json/</loc><lastmod>2026-10-02T00:00:00.000Z</lastmod></url>
   <url><loc>https://niclasedge.github.io/posts/docker-environments/</loc><lastmod>2022-07-30T00:00:00.000Z</lastmod></url>
   <url><loc>https://niclasedge.github.io/tags/</loc></url>
+  <url><loc>https://niclasedge.github.io/tags/beads/</loc></url>
   <url><loc>https://niclasedge.github.io/tags/deno/</loc></url>
   <url><loc>https://niclasedge.github.io/tags/docker/</loc></url>
   <url><loc>https://niclasedge.github.io/tags/feeds/</loc></url>
   <url><loc>https://niclasedge.github.io/tags/fresh/</loc></url>
+  <url><loc>https://niclasedge.github.io/tags/github/</loc></url>
   <url><loc>https://niclasedge.github.io/tags/github-pages/</loc></url>
   <url><loc>https://niclasedge.github.io/tags/json/</loc></url>
   <url><loc>https://niclasedge.github.io/tags/linux/</loc></url>
+  <url><loc>https://niclasedge.github.io/tags/openspec/</loc></url>
+  <url><loc>https://niclasedge.github.io/tags/workflow/</loc></url>
   <url><loc>https://niclasedge.github.io/lab/</loc></url>
   <url><loc>https://niclasedge.github.io/lab/json-formatter/</loc></url>
   <url><loc>https://niclasedge.github.io/lab/regex-tester/</loc></url>
