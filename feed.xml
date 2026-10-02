@@ -2,11 +2,139 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="de">
   <id>https://niclasedge.github.io/</id>
   <title>Niclas Edge Docs</title>
-  <subtitle>Notizen, Anleitungen und kleine Werkzeuge rund um Linux, Docker und Automatisierung.</subtitle>
-  <updated>2022-07-30T00:00:00.000Z</updated>
+  <subtitle>Was ich schreibe, baue und benutze: Notizen rund um Automatisierung, eigene Tools und Apps und die Quellen, denen ich folge.</subtitle>
+  <updated>2026-10-02T00:00:00.000Z</updated>
   <author><name>Niclas Edge</name><uri>https://niclasedge.github.io/</uri></author>
   <link rel="self" type="application/atom+xml" href="https://niclasedge.github.io/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://niclasedge.github.io/"/>
+  <entry>
+    <title>Von Jekyll zu Fresh 2 – statisch exportiert für GitHub Pages</title>
+    <link href="https://niclasedge.github.io/posts/jekyll-zu-fresh/" rel="alternate" type="text/html"/>
+    <id>https://niclasedge.github.io/posts/jekyll-zu-fresh/</id>
+    <published>2026-10-02T00:00:00.000Z</published>
+    <updated>2026-10-02T00:00:00.000Z</updated>
+    <author><name>Niclas Edge</name></author>
+    <category term="fresh"/>
+    <category term="deno"/>
+    <category term="github-pages"/>
+    <summary>Warum diese Seite jetzt mit Deno Fresh gebaut wird, wie der statische Export funktioniert und wie keine alte URL verloren geht.</summary>
+    <content type="html">&lt;p&gt;Diese Seite lief seit 2022 mit Jekyll und dem Chirpy-Theme. Seit Oktober 2026
+ist sie eine &lt;a href=&quot;https://fresh.deno.dev&quot;&gt;Fresh&lt;/a&gt;-App – ausgeliefert wird aber
+weiterhin reines HTML über GitHub Pages. Hier die wichtigsten Bausteine.&lt;/p&gt;
+&lt;h2 id=&quot;der-stack&quot;&gt;Der Stack&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Deno Fresh 2&lt;/strong&gt; mit Vite 7 und Preact 10&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tailwind CSS 4&lt;/strong&gt; plus &lt;code&gt;@tailwindcss/typography&lt;/code&gt; für die Posts&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Islands&lt;/strong&gt; nur dort, wo es wirklich interaktiv wird: Startseite, JSON
+Formatter, Regex Tester, Mermaid-Diagramme&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Formatieren, Linten und Typprüfung erledigt Deno selbst:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-sh&quot;&gt;deno task check   &lt;span class=&quot;hljs-comment&quot;&gt;# deno fmt --check &amp;amp;&amp;amp; deno lint &amp;amp;&amp;amp; deno check&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;statischer-export-statt-server&quot;&gt;Statischer Export statt Server&lt;/h2&gt;
+&lt;p&gt;GitHub Pages kann keinen Server ausführen. Deshalb startet
+&lt;code&gt;scripts/export.ts&lt;/code&gt; den gebauten Fresh-Server im selben Prozess, ruft ihn per
+&lt;code&gt;fetch()&lt;/code&gt; ab &lt;code&gt;/&lt;/code&gt; auf und folgt allen internen Links. Jede Antwort landet als
+Datei in &lt;code&gt;_site/&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&quot;mermaid not-prose&quot;&gt;flowchart LR
+  A[deno task build] --&amp;gt; B[_fresh/server.js]
+  B --&amp;gt; C[export.ts crawlt per fetch]
+  C --&amp;gt; D[_site/]
+  D --&amp;gt; E[gh-pages]&lt;/pre&gt;
+&lt;p&gt;Dabei prüft der Export gleich mit und bricht ab, wenn&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ein interner Link nicht mit 200 antwortet,&lt;/li&gt;
+&lt;li&gt;eine URL der alten Seite fehlt (Liste in &lt;code&gt;scripts/legacy-urls.txt&lt;/code&gt;),&lt;/li&gt;
+&lt;li&gt;eine Datei aus &lt;code&gt;static/&lt;/code&gt; nicht byte-identisch im Export liegt,&lt;/li&gt;
+&lt;li&gt;die 404-Seite nicht mit Status 404 antwortet.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;alte-urls-bleiben-erreichbar&quot;&gt;Alte URLs bleiben erreichbar&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Die Support- und Datenschutzseiten der iOS-Apps liegen unverändert in
+&lt;code&gt;static/&lt;/code&gt; – App Store Connect verlinkt genau diese Dateien.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/archives/&lt;/code&gt; und &lt;code&gt;/categories/…&lt;/code&gt; leiten per Meta-Refresh auf &lt;code&gt;/posts&lt;/code&gt; und
+&lt;code&gt;/tags/…&lt;/code&gt; weiter.&lt;/li&gt;
+&lt;li&gt;Chirpy hatte einen Service Worker registriert. Ein neues &lt;code&gt;/sw.js&lt;/code&gt; löscht
+dessen Caches und meldet ihn ab, damit niemand dauerhaft die alte Seite sieht.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;deploy&quot;&gt;Deploy&lt;/h2&gt;
+&lt;p&gt;Die GitHub Action führt &lt;code&gt;check&lt;/code&gt;, &lt;code&gt;build&lt;/code&gt; und &lt;code&gt;export&lt;/code&gt; aus und schiebt &lt;code&gt;_site/&lt;/code&gt;
+mit &lt;code&gt;peaceiris/actions-gh-pages&lt;/code&gt; in den Branch &lt;code&gt;gh-pages&lt;/code&gt;. Pull Requests werden
+nur gebaut und geprüft.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Tool-Verzeichnis und Quellen als JSON in Fresh</title>
+    <link href="https://niclasedge.github.io/posts/tool-verzeichnis-als-json/" rel="alternate" type="text/html"/>
+    <id>https://niclasedge.github.io/posts/tool-verzeichnis-als-json/</id>
+    <published>2026-10-02T00:00:00.000Z</published>
+    <updated>2026-10-02T00:00:00.000Z</updated>
+    <author><name>Niclas Edge</name></author>
+    <category term="fresh"/>
+    <category term="json"/>
+    <category term="feeds"/>
+    <summary>Woher die Startseite ihre Tools und Quellen bekommt – zwei JSON-Dateien, ein Feed-Abruf beim Build und ein täglicher Rebuild.</summary>
+    <content type="html">&lt;p&gt;Die Startseite zeigt neben dem Blog zwei Zeitstrahlen – eigene und externe
+Tools – und darunter die Quellen, denen ich folge. Ein CMS gibt es dafür nicht,
+nur zwei Dateien im Repo.&lt;/p&gt;
+&lt;h2 id=&quot;tools-contenttoolsjson&quot;&gt;Tools: &lt;code&gt;content/tools.json&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Jeder Eintrag beschreibt ein Tool mit Bereich, Kategorie und Zeitraum:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-json&quot;&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;jekyll&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;&amp;quot;group&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;ext&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;&amp;quot;area&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;dev&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;&amp;quot;status&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;past&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;Jekyll + Chirpy&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;&amp;quot;desc&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;Static-Site-Generator in Ruby mit dem Chirpy-Theme.&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;&amp;quot;cat&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;Framework&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;&amp;quot;since&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;2022&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;&amp;quot;until&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;2026&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;&amp;quot;replacedBy&amp;quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;fresh&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;hljs-punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;group&lt;/code&gt; trennt eigene (&lt;code&gt;own&lt;/code&gt;) von externen Tools (&lt;code&gt;ext&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;status&lt;/code&gt; steuert den Umschalter „Aktueller Workflow“ / „Vergangen“.&lt;/li&gt;
+&lt;li&gt;Ein vergangenes Tool hat entweder einen Nachfolger (&lt;code&gt;replacedBy&lt;/code&gt;) oder eine
+Begründung (&lt;code&gt;reason&lt;/code&gt;). Der Nachfolger ist auf der Seite direkt anspringbar.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Beim Export wird die Datei geprüft: doppelte IDs, unbekannte Bereiche oder ein
+&lt;code&gt;replacedBy&lt;/code&gt; ins Leere brechen den Build mit einer klaren Meldung ab.&lt;/p&gt;
+&lt;h2 id=&quot;quellen-contentfeedsjson&quot;&gt;Quellen: &lt;code&gt;content/feeds.json&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Für jede Quelle stehen Name, Link und – wenn vorhanden – ein RSS- oder
+Atom-Feed in der Datei:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Quelle&lt;/th&gt;
+&lt;th&gt;Feed&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;YouTube-Kanal&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;youtube.com/feeds/videos.xml?channel_id=&amp;lt;ID&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GitHub-Releases&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;github.com/&amp;lt;owner&amp;gt;/&amp;lt;repo&amp;gt;/releases.atom&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GitHub-Account&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;github.com/&amp;lt;user&amp;gt;.atom&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Blog&lt;/td&gt;
+&lt;td&gt;RSS/Atom des Blogs&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;Beim Build lädt die Seite von jedem Feed den neuesten Eintrag. Antwortet ein
+Feed nicht, bleibt die Quelle sichtbar, nur eben ohne neuesten Beitrag – der
+Build läuft weiter.&lt;/p&gt;
+&lt;h2 id=&quot;damit-die-quellen-aktuell-bleiben&quot;&gt;Damit die Quellen aktuell bleiben&lt;/h2&gt;
+&lt;p&gt;Weil die Seite statisch ist, zeigt sie den Stand des letzten Builds. Die GitHub
+Action baut deshalb zusätzlich einmal am Tag. Was seit dem letzten Klick auf
+„Alle als gelesen markieren“ neu ist, merkt sich der Browser im
+&lt;code&gt;localStorage&lt;/code&gt; – ganz ohne Server.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Linux Environments / Umgebungsvariablen verstehen</title>
     <link href="https://niclasedge.github.io/posts/docker-environments/" rel="alternate" type="text/html"/>
