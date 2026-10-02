@@ -150,6 +150,11 @@ gerenderte Ansicht stehen.
 | `web`/`repo` | optionale Links „Website“/„Repo“                                 |
 | `links`      | weitere Links `[{ "label": "Datenschutz", "href": "/…" }]`       |
 
+Je Spalte erscheinen höchstens 10 Tools, darunter „Alle N anzeigen“. Im
+aktuellen Workflow stehen zuerst die aktiven Tools; sind es weniger als 10, wird
+mit vergangenen aufgefüllt (unter „Früher“). Grenze: `TOOLS_VISIBLE` in
+`islands/Directory.tsx`.
+
 Ein Tool belegt auf der Startseite zwei Zeilen (Name, Kategorie und Links;
 darunter die einzeilige Beschreibung) – `desc` deshalb kurz halten (rund 45
 Zeichen), der volle Text steht im Tooltip. Jahr und Bereich zeigen Jahresmarke

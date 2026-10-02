@@ -726,18 +726,24 @@
     background: var(--link);
     flex: none;
   }
-  .feeds .more {
+  .more {
     margin-top: 0.35rem;
     font: inherit;
     font-size: 0.85rem;
-    color: var(--muted);
+    font-weight: 600;
+    color: var(--link);
     background: none;
     border: 0;
     padding: 0.3rem 0;
     cursor: pointer;
   }
-  .feeds .more:hover {
-    color: var(--text);
+  .more:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .sub.earlier {
+    margin: 1.1rem 0 0.4rem;
+    font-weight: 700;
   }
   .feeds .ref-head {
     margin: 1.25rem 0 0;

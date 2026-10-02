@@ -31,6 +31,11 @@ interface Props {
 type AreaFilter = AreaKey | "all";
 
 const FEEDS_VISIBLE = 8;
+/**
+ * Höchstens so viele Tools je Spalte, dann „Alle anzeigen“. Gibt es weniger
+ * aktive, wird im aktuellen Workflow mit vergangenen aufgefüllt.
+ */
+const TOOLS_VISIBLE = 10;
 const LAST_READ_KEY = "feeds:lastRead";
 /** Beim ersten Besuch gilt alles aus den letzten 2 Tagen als neu. */
 const NEW_WINDOW_MS = 2 * DAY_MS;
@@ -55,6 +60,7 @@ export default function Directory(
     Date.parse(builtAt) - NEW_WINDOW_MS
   );
   const [expanded, setExpanded] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState({ own: false, ext: false });
   const [jump, setJump] = useState<{ id: string; n: number } | null>(null);
 
   // Nach der Hydration: echte Uhrzeit, URL-Parameter und "gelesen"-Stand.
@@ -107,6 +113,8 @@ export default function Directory(
     setView("current");
     setArea(a);
     syncUrl("current", a);
+    // Spalte aufklappen, falls der Nachfolger hinter „Alle anzeigen“ läge
+    setToolsOpen((open) => ({ ...open, [target.group]: true }));
     setJump({ id, n: (jump?.n ?? 0) + 1 });
   };
   useEffect(() => {
@@ -128,9 +136,9 @@ export default function Directory(
     a === "all" || x.area === a;
   const postMatch = (p: PostSummary) =>
     matches(q, p.title, p.description, p.tags.join(" "));
-  const toolMatch = (t: Tool) =>
-    t.status === view &&
+  const toolText = (t: Tool) =>
     matches(q, t.name, t.desc, t.cat, AREAS[t.area].label);
+  const toolMatch = (t: Tool) => t.status === view && toolText(t);
   const feedMatch = (f: Feed) =>
     matches(
       q,
@@ -152,14 +160,32 @@ export default function Directory(
     .sort((a, b) => b.day.localeCompare(a.day));
 
   const yearKey = (t: Tool) => t.status === "past" ? t.until! : t.since;
-  const toolList = (group: Tool["group"]) =>
-    tools.filter((t) => t.group === group && inArea(t) && toolMatch(t))
-      .sort((a, b) =>
-        yearKey(b).localeCompare(yearKey(a)) ||
-        (b.release?.date ?? "").localeCompare(a.release?.date ?? "")
-      );
-  const own = toolList("own");
-  const ext = toolList("ext");
+  const byYear = (a: Tool, b: Tool) =>
+    yearKey(b).localeCompare(yearKey(a)) ||
+    (b.release?.date ?? "").localeCompare(a.release?.date ?? "");
+  const toolColumn = (group: Tool["group"]) => {
+    const base = tools.filter((t) =>
+      t.group === group && inArea(t) && toolText(t)
+    );
+    const active = base.filter((t) => t.status === view).sort(byYear);
+    // Im aktuellen Workflow folgen die vergangenen Tools als Auffüllung.
+    const rest = view === "current"
+      ? base.filter((t) => t.status === "past").sort(byYear)
+      : [];
+    const all = [...active, ...rest];
+    const open = toolsOpen[group];
+    const shown = open ? all : all.slice(0, TOOLS_VISIBLE);
+    return {
+      group,
+      count: active.length,
+      total: all.length,
+      open,
+      main: shown.filter((t) => t.status === view),
+      earlier: shown.filter((t) => t.status !== view),
+    };
+  };
+  const own = toolColumn("own");
+  const ext = toolColumn("ext");
   const sub = view === "current"
     ? {
       own: "Repos, Skills, Plugins und Apps, die ich pflege, nach Startjahr",
@@ -189,7 +215,7 @@ export default function Directory(
     } catch { /* ignorieren */ }
   };
 
-  const tools_ = (list: Tool[]) => (
+  const timeline = (list: Tool[]) => (
     <Timeline
       items={list}
       id={(t) => t.id}
@@ -203,6 +229,29 @@ export default function Directory(
         />
       )}
     />
+  );
+  const column = (col: ReturnType<typeof toolColumn>) => (
+    <>
+      {(col.main.length > 0 || col.earlier.length === 0) &&
+        timeline(col.main)}
+      {col.earlier.length > 0 && (
+        <>
+          <p class="sub earlier">Früher</p>
+          {timeline(col.earlier)}
+        </>
+      )}
+      {col.total > TOOLS_VISIBLE && (
+        <button
+          type="button"
+          class="more"
+          aria-expanded={col.open}
+          onClick={() =>
+            setToolsOpen((open) => ({ ...open, [col.group]: !col.open }))}
+        >
+          {col.open ? "Weniger anzeigen" : `Alle ${col.total} anzeigen`}
+        </button>
+      )}
+    </>
   );
 
   return (
@@ -312,17 +361,17 @@ export default function Directory(
         </section>
         <section class="col" id="eigene" aria-labelledby="h-own">
           <h2 class="head" id="h-own">
-            Eigene Tools <span class="n">{own.length}</span>
+            Eigene Tools <span class="n">{own.count}</span>
           </h2>
           <p class="sub">{sub.own}</p>
-          {tools_(own)}
+          {column(own)}
         </section>
         <section class="col" id="externe" aria-labelledby="h-ext">
           <h2 class="head" id="h-ext">
-            Externe Tools <span class="n">{ext.length}</span>
+            Externe Tools <span class="n">{ext.count}</span>
           </h2>
           <p class="sub">{sub.ext}</p>
-          {tools_(ext)}
+          {column(ext)}
         </section>
       </div>
 
