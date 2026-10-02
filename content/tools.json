@@ -241,18 +241,6 @@
     "repo": "https://github.com/denoland/fresh"
   },
   {
-    "id": "tailwind",
-    "group": "ext",
-    "area": "dev",
-    "status": "current",
-    "name": "Tailwind CSS",
-    "desc": "Utility-CSS, gespeist aus Design-Tokens.",
-    "cat": "CSS",
-    "since": "2026",
-    "web": "https://tailwindcss.com/",
-    "repo": "https://github.com/tailwindlabs/tailwindcss"
-  },
-  {
     "id": "tauri",
     "group": "ext",
     "area": "apps",
@@ -277,28 +265,6 @@
     "repo": "https://github.com/charmbracelet/bubbletea"
   },
   {
-    "id": "xcode",
-    "group": "ext",
-    "area": "apps",
-    "status": "current",
-    "name": "Xcode",
-    "desc": "IDE für die nativen iOS-Apps.",
-    "cat": "IDE",
-    "since": "2026",
-    "web": "https://developer.apple.com/xcode/"
-  },
-  {
-    "id": "app-store-connect",
-    "group": "ext",
-    "area": "apps",
-    "status": "current",
-    "name": "App Store Connect",
-    "desc": "Veröffentlichung und Verwaltung der Apps.",
-    "cat": "Vertrieb",
-    "since": "2026",
-    "web": "https://appstoreconnect.apple.com/"
-  },
-  {
     "id": "gh-actions",
     "group": "ext",
     "area": "automation",
@@ -308,17 +274,6 @@
     "cat": "CI",
     "since": "2022",
     "web": "https://github.com/features/actions"
-  },
-  {
-    "id": "gh-pages",
-    "group": "ext",
-    "area": "infra",
-    "status": "current",
-    "name": "GitHub Pages",
-    "desc": "Hosting für den statischen Export.",
-    "cat": "Hosting",
-    "since": "2022",
-    "web": "https://pages.github.com/"
   },
   {
     "id": "docker",
