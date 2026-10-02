@@ -1,0 +1,97 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: light dark;
+  }
+}
+
+/* Mermaid-Quelltext ausblenden, bis das Island ihn gerendert hat. */
+pre.mermaid:not([data-processed]) {
+  visibility: hidden;
+  min-height: 4rem;
+}
+pre.mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: #fff;
+  color: #1c1917;
+}
+
+/* highlight.js – schlankes Theme, hell/dunkel über prefers-color-scheme */
+.hljs {
+  --hl-fg: #24292f;
+  --hl-comment: #6e7781;
+  --hl-keyword: #cf222e;
+  --hl-string: #0a3069;
+  --hl-number: #0550ae;
+  --hl-title: #8250df;
+  --hl-attr: #116329;
+  color: var(--hl-fg);
+}
+@media (prefers-color-scheme: dark) {
+  .hljs {
+    --hl-fg: #e6edf3;
+    --hl-comment: #8b949e;
+    --hl-keyword: #ff7b72;
+    --hl-string: #a5d6ff;
+    --hl-number: #79c0ff;
+    --hl-title: #d2a8ff;
+    --hl-attr: #7ee787;
+  }
+}
+.hljs-comment,
+.hljs-quote {
+  color: var(--hl-comment);
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-type,
+.hljs-meta .hljs-keyword {
+  color: var(--hl-keyword);
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-meta .hljs-string {
+  color: var(--hl-string);
+}
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-built_in {
+  color: var(--hl-number);
+}
+.hljs-title,
+.hljs-section,
+.hljs-function .hljs-title {
+  color: var(--hl-title);
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-name,
+.hljs-tag,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: var(--hl-attr);
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}

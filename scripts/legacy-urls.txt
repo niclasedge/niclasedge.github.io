@@ -1,0 +1,44 @@
+# Alle URLs der alten Jekyll/Chirpy-Seite (abgeleitet vom Branch gh-pages).
+# `deno task export` bricht ab, wenn eine davon nach dem Export fehlt.
+# Neue Seiten müssen hier nicht eingetragen werden – nur URLs, die es schon
+# öffentlich gab und die nicht kaputtgehen dürfen.
+#
+# Bewusst nicht übernommen (reine Theme-Dateien bzw. Chirpy-Weiterleitungen
+# auf 404.html): /app.js, /unregister.js, /redirects.json, /norobots/,
+# /assets/, /assets/css/*, /assets/js/*, /assets/img/favicons/*
+
+# Seiten
+/
+/about/
+/posts/
+/posts/docker-environments/
+/tags/
+/tags/docker/
+/tags/linux/
+/404.html
+
+# Weiterleitungen (Meta-Refresh)
+/archives/
+/categories/
+/categories/docker/
+/categories/linux/
+
+# Feed, Sitemap, Robots
+/feed.xml
+/sitemap.xml
+/robots.txt
+
+# Kill-Switch für Chirpys Service Worker
+/sw.js
+
+# iOS-App-Seiten (App Store Connect) – liegen byte-identisch in static/
+/ausflugs-radar-ios/
+/ausflugs-radar-ios/privacy.html
+/bujo-notes-ios/
+/bujo-notes-ios/privacy.html
+/git-planner-ios/
+/git-planner-ios/privacy.html
+/inspire-ios/
+/inspire-ios/privacy.html
+/roundrobin-ios/
+/roundrobin-ios/privacy.html
