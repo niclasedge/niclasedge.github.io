@@ -47,4 +47,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./_site
-          commit_message: ${{ github.event.head_commit.message || 'Täglicher Rebuild: Quellen aktualisiert' }}
+          commit_message: "${{ github.event.head_commit.message || 'Täglicher Rebuild – Quellen aktualisiert' }}"
