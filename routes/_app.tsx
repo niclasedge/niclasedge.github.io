@@ -1,6 +1,6 @@
 import { define } from "../utils.ts";
 import { site } from "../lib/site.ts";
-import { CodeIcon } from "../components/Icons.tsx";
+import { CodeIcon, SearchIcon } from "../components/Icons.tsx";
 
 const nav = [
   { href: "/posts", label: "Blog", match: ["/posts", "/tags"] },
@@ -68,6 +68,16 @@ export default define.page(function App({ Component, url }) {
                 </a>
               ))}
             </nav>
+            {current !== "/" && (
+              // Ohne JavaScript ein normales Formular; die Startseite liest ?q=.
+              <form class="top-search" action="/" method="get" role="search">
+                <label class="search">
+                  <SearchIcon />
+                  <span class="sr-only">Beiträge und Tools durchsuchen</span>
+                  <input type="search" name="q" placeholder="Suchen" />
+                </label>
+              </form>
+            )}
           </div>
         </header>
         <main id="inhalt" class="flex-1">

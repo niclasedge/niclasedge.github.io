@@ -42,7 +42,7 @@ content/apps.json     iOS-Apps (About-Seite, Sitemap)
 content/feeds.json    Quellen, denen ich folge (neuester Eintrag beim Build)
 content/about.md      Text der About-Seite
 routes/               Seiten (Fresh-Dateirouting)
-  posts/, tags/       Postliste, Post, Tag-Übersicht, Tag-Seite
+  posts/, tags/       Postliste, Post (TOC links, Sidebar rechts ab 80rem), Tags
   projekte/           Detailseite je eigenem Tool
   lab/                Lab mit Sidebar; [slug].tsx rendert content/lab/*
   archives.tsx        Alt-URL /archives/   → /posts   (Meta-Refresh)

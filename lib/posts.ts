@@ -3,6 +3,7 @@ import { join } from "@std/path";
 import { renderMarkdown, type TocEntry } from "./markdown.ts";
 import { jekyllSlug, tagSlug } from "./slug.ts";
 import { type AreaKey, AREAS, isArea } from "./areas.ts";
+import type { Tool } from "./directory.ts";
 
 /**
  * Posts liegen als Markdown unter content/posts/YYYY-MM-DD-<slug>.md
@@ -150,4 +151,32 @@ export function formatDate(date: Date): string {
     year: "numeric",
     timeZone: "Europe/Berlin",
   });
+}
+
+/**
+ * Weitere Artikel zu `post`: meiste gemeinsame Tags zuerst, sonst in der
+ * Reihenfolge von `posts` (getPosts: neueste zuerst).
+ */
+export function relatedPosts<T extends { slug: string; tags: string[] }>(
+  post: T,
+  posts: T[],
+  n = 3,
+): T[] {
+  const shared = (p: T) => p.tags.filter((t) => post.tags.includes(t)).length;
+  return posts
+    .filter((p) => p.slug !== post.slug)
+    .map((p) => ({ p, score: shared(p) }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, n)
+    .map(({ p }) => p);
+}
+
+/** Tools zum Bereich eines Artikels: aktuelle vor vergangenen, eigene zuerst. */
+export function relatedTools(area: AreaKey, tools: Tool[], n = 5): Tool[] {
+  const rank = (t: Tool) =>
+    (t.status === "current" ? 0 : 2) + (t.group === "own" ? 0 : 1);
+  return tools
+    .filter((t) => t.area === area)
+    .sort((a, b) => rank(a) - rank(b))
+    .slice(0, n);
 }
