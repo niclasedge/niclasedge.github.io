@@ -144,6 +144,67 @@
     ]
   },
   {
+    "id": "git-planner-go",
+    "group": "own",
+    "area": "dev",
+    "status": "current",
+    "name": "Git Planner (Go)",
+    "desc": "GitHub-Dashboard als eine Go-Binary: Issues, Actions, lokaler Cache.",
+    "cat": "Web-App",
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/git-planner-go"
+  },
+  {
+    "id": "tierfeed",
+    "group": "own",
+    "area": "apps",
+    "status": "current",
+    "name": "TierFeed",
+    "desc": "RSS-Reader für iOS mit Stufen, auf Basis von Miniflux.",
+    "cat": "iOS-App",
+    "since": "2026"
+  },
+  {
+    "id": "rss-reader",
+    "group": "own",
+    "area": "apps",
+    "status": "current",
+    "name": "RSS-Reader",
+    "desc": "Mobiler Lese-Client für Miniflux mit Notizen und Leseansicht.",
+    "cat": "Web-App",
+    "since": "2026"
+  },
+  {
+    "id": "process-atlas",
+    "group": "own",
+    "area": "dev",
+    "status": "current",
+    "name": "Process Atlas",
+    "desc": "BPMN-Diagramme im Browser mit Drill-down in Teilprozesse.",
+    "cat": "Web-App",
+    "since": "2026"
+  },
+  {
+    "id": "graphviz-preview",
+    "group": "own",
+    "area": "ai",
+    "status": "current",
+    "name": "Graphviz Preview",
+    "desc": "macOS-App: Agent schreibt .dot, die App rendert live.",
+    "cat": "Desktop-App",
+    "since": "2026"
+  },
+  {
+    "id": "runbook-runner",
+    "group": "own",
+    "area": "infra",
+    "status": "current",
+    "name": "Runbook Runner",
+    "desc": "macOS-App, die Ansible-Playbooks und Bash-Skripte startet.",
+    "cat": "Desktop-App",
+    "since": "2026"
+  },
+  {
     "id": "site-jekyll",
     "group": "own",
     "area": "dev",
@@ -155,6 +216,18 @@
     "until": "2026",
     "replacedBy": "site",
     "repo": "https://github.com/niclasedge/niclasedge.github.io"
+  },
+  {
+    "id": "cronjob-manager",
+    "group": "own",
+    "area": "automation",
+    "status": "past",
+    "name": "Cronjob-Manager",
+    "desc": "Eigene Verwaltung und Überwachung von Cronjobs.",
+    "cat": "Scheduler",
+    "since": "2025",
+    "until": "2026",
+    "replacedBy": "semaphore"
   },
   {
     "id": "claude-code",
@@ -299,6 +372,83 @@
     "repo": "https://github.com/mermaid-js/mermaid"
   },
   {
+    "id": "github-issues",
+    "group": "ext",
+    "area": "automation",
+    "status": "current",
+    "name": "GitHub Issues",
+    "desc": "Einziger Ideenspeicher – jedes Issue wird zum OpenSpec-Change.",
+    "cat": "Tasks",
+    "since": "2026",
+    "web": "https://github.com/features/issues"
+  },
+  {
+    "id": "semaphore",
+    "group": "ext",
+    "area": "automation",
+    "status": "current",
+    "name": "Semaphore UI",
+    "desc": "Web-Oberfläche für Ansible-Läufe und geplante Jobs.",
+    "cat": "Scheduler",
+    "since": "2025",
+    "repo": "https://github.com/semaphoreui/semaphore"
+  },
+  {
+    "id": "ansible",
+    "group": "ext",
+    "area": "infra",
+    "status": "current",
+    "name": "Ansible",
+    "desc": "Konfiguration und Deployment der Homelab-Hosts.",
+    "cat": "IaC",
+    "since": "2023",
+    "repo": "https://github.com/ansible/ansible"
+  },
+  {
+    "id": "miniflux",
+    "group": "ext",
+    "area": "infra",
+    "status": "current",
+    "name": "Miniflux",
+    "desc": "Selbst gehosteter RSS-Reader, Basis für eigene Clients.",
+    "cat": "RSS",
+    "since": "2026",
+    "repo": "https://github.com/miniflux/v2"
+  },
+  {
+    "id": "pocketbase",
+    "group": "ext",
+    "area": "dev",
+    "status": "current",
+    "name": "PocketBase",
+    "desc": "Backend in einer Datei: SQLite, Auth, Realtime.",
+    "cat": "Backend",
+    "since": "2024",
+    "repo": "https://github.com/pocketbase/pocketbase"
+  },
+  {
+    "id": "openviking",
+    "group": "ext",
+    "area": "ai",
+    "status": "current",
+    "name": "OpenViking",
+    "desc": "Kontextdatenbank als Gedächtnis für Coding-Agents.",
+    "cat": "Memory",
+    "since": "2026",
+    "repo": "https://github.com/volcengine/OpenViking"
+  },
+  {
+    "id": "rtk",
+    "group": "ext",
+    "area": "ai",
+    "status": "current",
+    "name": "RTK",
+    "desc": "CLI-Proxy, der Befehlsausgaben für Agents kürzt.",
+    "cat": "CLI",
+    "since": "2026",
+    "repo": "https://github.com/rtk-ai/rtk"
+  },
+  {
     "id": "jekyll",
     "group": "ext",
     "area": "dev",
@@ -310,5 +460,70 @@
     "until": "2026",
     "replacedBy": "fresh",
     "web": "https://jekyllrb.com/"
+  },
+  {
+    "id": "ticktick",
+    "group": "ext",
+    "area": "automation",
+    "status": "past",
+    "name": "TickTick",
+    "desc": "To-do-App, Aufgaben getrennt vom Code.",
+    "cat": "Tasks",
+    "since": "2025",
+    "until": "2026",
+    "replacedBy": "github-issues",
+    "web": "https://ticktick.com/"
+  },
+  {
+    "id": "beads",
+    "group": "ext",
+    "area": "automation",
+    "status": "past",
+    "name": "beads",
+    "desc": "Aufgaben als Datenbank im Repo, für Agents.",
+    "cat": "Tasks",
+    "since": "2026",
+    "until": "2026",
+    "replacedBy": "github-issues",
+    "repo": "https://github.com/gastownhall/beads"
+  },
+  {
+    "id": "prefect",
+    "group": "ext",
+    "area": "automation",
+    "status": "past",
+    "name": "Prefect",
+    "desc": "Workflow-Orchestrierung in Python.",
+    "cat": "Scheduler",
+    "since": "2025",
+    "until": "2025",
+    "replacedBy": "semaphore",
+    "repo": "https://github.com/PrefectHQ/prefect"
+  },
+  {
+    "id": "windmill",
+    "group": "ext",
+    "area": "automation",
+    "status": "past",
+    "name": "Windmill",
+    "desc": "Skripte und Workflows mit Web-UI.",
+    "cat": "Scheduler",
+    "since": "2025",
+    "until": "2026",
+    "replacedBy": "semaphore",
+    "repo": "https://github.com/windmill-labs/windmill"
+  },
+  {
+    "id": "electron",
+    "group": "ext",
+    "area": "apps",
+    "status": "past",
+    "name": "Electron",
+    "desc": "Desktop-Apps mit Chromium und Node.",
+    "cat": "App-Framework",
+    "since": "2024",
+    "until": "2024",
+    "replacedBy": "tauri",
+    "repo": "https://github.com/electron/electron"
   }
 ]

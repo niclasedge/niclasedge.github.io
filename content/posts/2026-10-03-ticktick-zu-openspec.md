@@ -23,7 +23,7 @@ erledigte Aufgabe musste ich von Hand abhaken.
 
 ## Station 2: beads
 
-[beads](https://github.com/steveyegge/beads) (`bd`) legt die Aufgaben neben den
+[beads](https://github.com/gastownhall/beads) (`bd`) legt die Aufgaben neben den
 Code ins Repo. Der Agent legt Tasks an, verknüpft Blocker
 (`bd dep add <blockiert> <blocker>`) und schließt sie selbst
 (`bd close <id>`).
