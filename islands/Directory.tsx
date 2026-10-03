@@ -70,6 +70,9 @@ export default function Directory(
     if (sp.get("view") === "past") setView("past");
     const a = sp.get("area");
     if (isArea(a)) setArea(a);
+    // Suche aus der Kopfleiste der Unterseiten (/?q=…)
+    const q = sp.get("q");
+    if (q) setQuery(q);
     let stored: number | null = null;
     try {
       const v = localStorage.getItem(LAST_READ_KEY);

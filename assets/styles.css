@@ -180,6 +180,15 @@
     color: var(--text);
     text-decoration: none;
   }
+  /* Suche in der Kopfleiste (nicht auf der Startseite) */
+  .top-search {
+    flex: 0 1 13rem;
+  }
+  .top-search .search {
+    max-width: none;
+    min-height: 2rem;
+    font-size: 0.9rem;
+  }
 
   /* Titel und Filter */
   .intro {
@@ -824,6 +833,96 @@
     margin: 0.35rem 0 0;
     color: var(--muted);
     max-width: 62ch;
+  }
+
+  /* Artikel: schmal TOC über, Sidebar unter dem Text; breit drei Spalten */
+  .post-layout {
+    max-width: 48rem;
+  }
+  .post-toc {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    background: var(--side);
+  }
+  .post-side {
+    display: grid;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .side-list {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    font-size: 0.9rem;
+  }
+  .side-list li {
+    display: flex;
+    flex-direction: column;
+    padding: 0.35rem 0;
+  }
+  .side-list time,
+  .side-list .meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  .side-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.75rem;
+    margin: 0.6rem 0 0;
+    font-size: 0.88rem;
+  }
+  .side-tags .n {
+    opacity: 0.6;
+    font-size: 0.8rem;
+  }
+  .side-tags .n::before {
+    content: none;
+  }
+  @media (min-width: 46rem) and (max-width: 79.99rem) {
+    .post-side {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 80rem) {
+    .post-layout {
+      max-width: none;
+      display: grid;
+      grid-template-columns: 13rem minmax(0, 46rem) 16rem;
+      grid-template-areas:
+        "toc head side"
+        "toc body side";
+      grid-template-rows: auto 1fr;
+      column-gap: 3.5rem;
+      justify-content: center;
+    }
+    .post-layout > .page-title {
+      grid-area: head;
+    }
+    .post-body {
+      grid-area: body;
+    }
+    .post-toc {
+      grid-area: toc;
+      position: sticky;
+      top: 1.5rem;
+      align-self: start;
+      max-height: calc(100vh - 3rem);
+      overflow: auto;
+      margin: 0;
+      padding: 0 0 0 0.9rem;
+      border: 0;
+      border-left: 1px solid var(--line);
+      border-radius: 0;
+      background: none;
+    }
+    .post-side {
+      grid-area: side;
+      align-self: start;
+      margin-top: 0;
+    }
   }
   .card {
     display: block;
