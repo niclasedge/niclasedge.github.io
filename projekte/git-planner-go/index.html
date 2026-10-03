@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><meta name="theme-color" content="#26272b" media="(prefers-color-scheme: dark)"/><meta name="theme-color" content="#f6f6f8" media="(prefers-color-scheme: light)"/><link rel="icon" href="/favicon.svg" type="image/svg+xml"/><link rel="alternate" type="application/atom+xml" title="Niclas Edge Docs" href="/feed.xml"/><link rel="stylesheet" href="/assets/client-entry-CUFekiEO.css?__frsh_c=f1631924dd1841dea8a1c9e8eed8dce96f4008be"/><title>Git Planner (Go) | Niclas Edge Docs</title><meta name="description" content="GitHub-Dashboard als Go-Binary mit ETag-Cache."/><meta property="og:title" content="Git Planner (Go)"/><meta property="og:description" content="GitHub-Dashboard als Go-Binary mit ETag-Cache."/><meta property="og:type" content="website"/><meta property="og:site_name" content="Niclas Edge Docs"/><meta property="og:url" content="https://niclasedge.github.io/projekte/git-planner-go/"/><link rel="canonical" href="https://niclasedge.github.io/projekte/git-planner-go/"/></head><body class="flex min-h-screen flex-col antialiased"><a href="#inhalt" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-10 focus:rounded-md focus:bg-panel focus:px-3 focus:py-1.5">Zum Inhalt springen</a><header class="top"><div class="wrap"><a class="brand" href="/" data-ancestor="true" aria-current="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"></path></svg>niclasedge.github.io</a><nav aria-label="Hauptnavigation"><a href="/posts" aria-current="false">Blog</a><a href="/#eigene" aria-current="false">Eigene Tools</a><a href="/#externe" aria-current="false">Externe Tools</a><a href="/#quellen" aria-current="false">Quellen</a><a href="/lab" aria-current="false">Lab</a><a href="/about" aria-current="false">About</a><a href="https://github.com/niclasedge" aria-current="false">GitHub</a></nav></div></header><main id="inhalt" class="flex-1"><div class="wrap page"><div class="max-w-3xl"><article><header class="page-title"><p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm"><span class="inline-flex items-center gap-1.5 font-semibold" style="color:var(--blue)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"></path></svg>Dev</span><span class="text-muted">Web-App · seit 2026</span></p><h1 class="mt-2">Git Planner (Go)</h1><p>GitHub-Dashboard als Go-Binary mit ETag-Cache.</p><p class="mt-2 flex flex-wrap gap-4 text-sm"><a href="https://github.com/niclasedge/git-planner-go">Repo</a></p></header><div class="prose max-w-none"><h2 id="was-es-macht">Was es macht</h2>
+<p>Ein GitHub-Dashboard aus einer einzigen Go-Binary: Issues über alle Repos, ein
+Planner mit Agenda, ein Actions-Tracker und weitere Seiten aus <code>config.yaml</code>.
+Der Kern ist, GitHub so selten wie möglich zu fragen. Ein Poll, der nichts Neues
+findet, kostet kein Rate-Limit. Git Planner gibt es auch als iOS-Client.</p>
+<h2 id="wie-es-funktioniert">Wie es funktioniert</h2>
+<p>Die Regel hinter dem Design: Beim Seitenaufruf wird nie gefetcht. Ein Request
+liest den letzten Stand aus dem Speicher, Refreshes laufen im Hintergrund.</p>
+<ul>
+<li>Jeder Request an GitHub ist bedingt (<code>If-None-Match</code>). Die ETags liegen in
+SQLite und überleben den Neustart; ein <code>304 Not Modified</code> zählt nicht gegen
+das Rate-Limit.</li>
+<li>Alle 5 Minuten fragt ein einziger inkrementeller Request nach Änderungen,
+einmal pro Stunde läuft ein voller Abgleich über alle Repos.</li>
+<li>Die Issue-Summen je Repo kommen über GraphQL, 20 Repos pro Anfrage.</li>
+<li>Die Oberfläche besteht aus Go-Templates und HTMX. Assets und Schriften liegen
+per <code>embed</code> in der Binary, ohne Build-Step fürs Frontend.</li>
+<li>Widgets für weitere Seiten: <code>monitor</code>, <code>semaphore</code>, <code>ollama</code>, <code>beads</code>,
+<code>bookmarks</code>, <code>iframe</code>, <code>html</code>.</li>
+</ul>
+<pre><code class="hljs language-bash">go build -o git-planner .
+./git-planner   <span class="hljs-comment"># http://127.0.0.1:8092</span>
+</code></pre><p>Gemessen über 224 Repos verbrauchten zwei warme Runden mit 1176 bedingten
+Requests exakt 0 vom Rate-Limit. Die Actions-Seite mit 48 Repo-Karten rendert in
+9 ms.</p>
+<p>Login gibt es keinen. Der Server hört nur auf Loopback und optional auf der
+Tailscale-Adresse – das Tailnet ist die Authentifizierung.</p>
+<h2 id="stand">Stand</h2>
+<p>Der erste Commit stammt vom 26. Juli 2026, der letzte vom 1. September 2026 –
+47 Commits. Die Testsuite umfasst 330 Testfunktionen, <code>go test ./...</code> läuft
+grün. Zuletzt kamen eine Ansicht für beads-Tasks und eine Zyklus-Planung aus
+<code>cycles.yml</code> dazu. Die Idee für <code>config.yaml</code> und Widgets stammt von
+<a href="https://github.com/glanceapp/glance">glance</a>; der Code ist eigenständig.</p>
+</div><footer class="mt-12 border-t border-line pt-6 text-sm"><a href="/#eigene" data-ancestor="true" aria-current="true">← Alle eigenen Tools</a></footer></article></div></div></main><footer class="site"><div class="wrap"><span>© 2026 Niclas Edge · <a href="/feed.xml">Feed</a> · <a href="/about">About</a></span><span>Gebaut mit Fresh</span></div></footer></body></html>
