@@ -1,17 +1,14 @@
 import { page } from "fresh";
 import { define } from "../utils.ts";
 import { renderMarkdown } from "../lib/markdown.ts";
-import { getTools } from "../lib/directory.ts";
+import { getApps } from "../lib/directory.ts";
 import { Seo } from "../components/Seo.tsx";
 import { Page, PageTitle } from "../components/PageTitle.tsx";
 
 export const handler = define.handlers({
   GET() {
     const { html } = renderMarkdown(Deno.readTextFileSync("content/about.md"));
-    const apps = getTools().filter((t) =>
-      t.group === "own" && t.area === "apps" && t.status === "current"
-    );
-    return page({ html, apps });
+    return page({ html, apps: getApps() });
   },
 });
 

@@ -1,6 +1,6 @@
 import { define } from "../utils.ts";
 import { getPosts, getTags } from "../lib/posts.ts";
-import { getTools } from "../lib/directory.ts";
+import { getApps, getTools } from "../lib/directory.ts";
 import { getLabItems } from "../lib/lab_pages.ts";
 import { absoluteUrl } from "../lib/site.ts";
 
@@ -9,9 +9,8 @@ export const handler = define.handlers({
   GET() {
     const posts = getPosts();
     // Support- und Datenschutzseiten der Apps (liegen in static/)
-    const appPages = getTools()
-      .filter((t) => t.group === "own" && t.area === "apps")
-      .flatMap((t) => (t.links ?? []).map((l) => l.href))
+    const appPages = getApps()
+      .flatMap((a) => (a.links ?? []).map((l) => l.href))
       .filter((href) => href.startsWith("/"));
     const entries: { path: string; lastmod?: string }[] = [
       { path: "/" },
@@ -25,6 +24,8 @@ export const handler = define.handlers({
       { path: "/lab" },
       ...getLabItems().filter((l) => l.kind !== "external")
         .map((l) => ({ path: l.href })),
+      ...getTools().filter((t) => t.group === "own")
+        .map((t) => ({ path: `/projekte/${t.id}` })),
       { path: "/about" },
       ...appPages.map((href) => ({ path: href.replace(/\/$/, "") })),
     ];

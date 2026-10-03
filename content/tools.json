@@ -19,7 +19,7 @@
     "name": "Tools-Sammlung",
     "desc": "Sammlung einzelner HTML-Werkzeuge.",
     "cat": "Web-Tools",
-    "since": "2026",
+    "since": "2025",
     "web": "/tools/",
     "repo": "https://github.com/niclasedge/tools"
   },
@@ -29,8 +29,8 @@
     "area": "automation",
     "status": "current",
     "name": "SDLC-Leitstand",
-    "desc": "Plugin als Leitstand für den SDLC.",
-    "cat": "Plugin",
+    "desc": "Verteilt OpenSpec-Changes parallel an Coding-Agenten.",
+    "cat": "Skill",
     "since": "2026"
   },
   {
@@ -39,109 +39,9 @@
     "area": "ai",
     "status": "current",
     "name": "Prozessschmiede",
-    "desc": "Skill rund um Prozessgestaltung.",
+    "desc": "Prozessgrafiken aus YAML: BPMN, Ist/Soll, Change-Belege.",
     "cat": "Skill",
     "since": "2026"
-  },
-  {
-    "id": "git-planner",
-    "group": "own",
-    "area": "apps",
-    "status": "current",
-    "name": "Git Planner",
-    "desc": "iOS-Client für GitHub Issues, offline-fähig.",
-    "cat": "iOS-App",
-    "since": "2026",
-    "links": [
-      {
-        "label": "Support",
-        "href": "/git-planner-ios/"
-      },
-      {
-        "label": "Datenschutz",
-        "href": "/git-planner-ios/privacy.html"
-      }
-    ]
-  },
-  {
-    "id": "bujo-notes",
-    "group": "own",
-    "area": "apps",
-    "status": "current",
-    "name": "Bujo Notes",
-    "desc": "Bullet Journal mit analogem Look für iOS.",
-    "cat": "iOS-App",
-    "since": "2026",
-    "links": [
-      {
-        "label": "Support",
-        "href": "/bujo-notes-ios/"
-      },
-      {
-        "label": "Datenschutz",
-        "href": "/bujo-notes-ios/privacy.html"
-      }
-    ]
-  },
-  {
-    "id": "bucket-list",
-    "group": "own",
-    "area": "apps",
-    "status": "current",
-    "name": "Bucket List",
-    "desc": "Ausflugsziele entdecken, merken, abhaken.",
-    "cat": "iOS-App",
-    "since": "2026",
-    "links": [
-      {
-        "label": "Support",
-        "href": "/ausflugs-radar-ios/"
-      },
-      {
-        "label": "Datenschutz",
-        "href": "/ausflugs-radar-ios/privacy.html"
-      }
-    ]
-  },
-  {
-    "id": "scharademix",
-    "group": "own",
-    "area": "apps",
-    "status": "current",
-    "name": "ScharadeMix",
-    "desc": "Partyspiel: Forbidden Words, Charades, Zeichnen.",
-    "cat": "iOS-App",
-    "since": "2026",
-    "links": [
-      {
-        "label": "Support",
-        "href": "/roundrobin-ios/"
-      },
-      {
-        "label": "Datenschutz",
-        "href": "/roundrobin-ios/privacy.html"
-      }
-    ]
-  },
-  {
-    "id": "inspired-by",
-    "group": "own",
-    "area": "apps",
-    "status": "current",
-    "name": "Inspired By",
-    "desc": "Inspiration und Farbanalyse auf dem iPhone.",
-    "cat": "iOS-App",
-    "since": "2026",
-    "links": [
-      {
-        "label": "Support",
-        "href": "/inspire-ios/"
-      },
-      {
-        "label": "Datenschutz",
-        "href": "/inspire-ios/privacy.html"
-      }
-    ]
   },
   {
     "id": "git-planner-go",
@@ -149,20 +49,10 @@
     "area": "dev",
     "status": "current",
     "name": "Git Planner (Go)",
-    "desc": "GitHub-Dashboard als eine Go-Binary: Issues, Actions, lokaler Cache.",
+    "desc": "GitHub-Dashboard als Go-Binary mit ETag-Cache.",
     "cat": "Web-App",
     "since": "2026",
     "repo": "https://github.com/niclasedge/git-planner-go"
-  },
-  {
-    "id": "tierfeed",
-    "group": "own",
-    "area": "apps",
-    "status": "current",
-    "name": "TierFeed",
-    "desc": "RSS-Reader für iOS mit Stufen, auf Basis von Miniflux.",
-    "cat": "iOS-App",
-    "since": "2026"
   },
   {
     "id": "rss-reader",
@@ -170,7 +60,7 @@
     "area": "apps",
     "status": "current",
     "name": "RSS-Reader",
-    "desc": "Mobiler Lese-Client für Miniflux mit Notizen und Leseansicht.",
+    "desc": "Mobiler Miniflux-Client mit Tiers und Raindrop-Notizen.",
     "cat": "Web-App",
     "since": "2026"
   },
@@ -202,6 +92,46 @@
     "name": "Runbook Runner",
     "desc": "macOS-App, die Ansible-Playbooks und Bash-Skripte startet.",
     "cat": "Desktop-App",
+    "since": "2026"
+  },
+  {
+    "id": "ops-lab",
+    "group": "own",
+    "area": "automation",
+    "status": "current",
+    "name": "ops-lab",
+    "desc": "Gates, Lagebild und Token-Messung für OpenSpec-Changes.",
+    "cat": "CLI",
+    "since": "2026"
+  },
+  {
+    "id": "go-knowledge-planner",
+    "group": "own",
+    "area": "dev",
+    "status": "current",
+    "name": "go-knowledge-planner",
+    "desc": "Arbeitsansicht für Issues, Changes, PRs und CI.",
+    "cat": "Web-App",
+    "since": "2026"
+  },
+  {
+    "id": "hook-redactor",
+    "group": "own",
+    "area": "ai",
+    "status": "current",
+    "name": "hook-redactor",
+    "desc": "Rust-Hook, der Secrets vor dem Agenten-Kontext schwärzt.",
+    "cat": "CLI",
+    "since": "2026"
+  },
+  {
+    "id": "folienschmiede",
+    "group": "own",
+    "area": "automation",
+    "status": "current",
+    "name": "Folienschmiede",
+    "desc": "PowerPoint-Decks aus Markdown, Daten und Python-Charts.",
+    "cat": "CLI",
     "since": "2026"
   },
   {

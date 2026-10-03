@@ -544,6 +544,9 @@
   .tool.past .name {
     color: var(--muted);
   }
+  .tool .name a {
+    color: inherit;
+  }
   .tool .cat {
     font-size: 0.8rem;
     color: var(--muted);
