@@ -15,3 +15,7 @@ vendor/
 .DS_Store
 .vscode/
 .idea/
+
+# Lokale Werkzeug-Artefakte (Session-Hook-Logs, altes backlog.md)
+logs/
+backlog/
