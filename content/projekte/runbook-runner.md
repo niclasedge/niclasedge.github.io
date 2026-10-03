@@ -31,4 +31,15 @@ swift run RunbookRunner
 Der Großteil entstand am 2026-07-17 und 2026-07-18; der letzte Commit ist vom
 2026-08-16, insgesamt 32 Commits. 88 XCTest-Fälle decken Discovery, Ausführung,
 Historie und Zeitpläne ab. Die App ist nicht sandboxed und damit ein lokales
-Werkzeug, kein App-Store-Produkt.
+Werkzeug, kein App-Store-Produkt. Seit Sommer 2026 wird es nicht mehr
+weiterentwickelt.
+
+## Warum abgelöst
+
+Runbook Runner war eine von drei Oberflächen rund um dieselben Playbooks:
+daneben gab es ein Dashboard für die Laufhistorie und eines für Logs. Eine
+Entscheidungsnotiz zur Konsolidierung hält fest, dass die Web-Oberfläche von
+Semaphore UI das Starten von Hand übernimmt. Sie läuft auf einem ständig
+erreichbaren Server statt nur auf dem Mac, ist von jedem Gerät aus bedienbar
+und hat eine API. Zeitpläne, Läufe und Verlauf liegen damit an einer Stelle.
+Die Playbooks selbst blieben unverändert.
