@@ -1,14 +1,19 @@
 import { type AreaKey, isArea } from "./areas.ts";
 import type { TimelineIcon } from "../components/Icons.tsx";
+import { checkProjects, projectIds } from "./projects.ts";
 
 /**
- * Tool-Verzeichnis und Quellen der Startseite. Die Daten liegen als JSON in
- * content/tools.json und content/feeds.json und werden wie die Posts zur
- * Laufzeit gelesen (nur in `deno task dev` und beim Export). Fehlerhafte
- * Einträge brechen den Export mit einer klaren Meldung ab.
+ * Tool-Verzeichnis und Quellen der Startseite, iOS-Apps der About-Seite. Die
+ * Daten liegen als JSON in content/tools.json, content/feeds.json und
+ * content/apps.json und werden wie die Posts zur Laufzeit gelesen (nur in
+ * `deno task dev` und beim Export). Fehlerhafte Einträge brechen den Export
+ * mit einer klaren Meldung ab.
  */
 export const TOOLS_FILE = "content/tools.json";
 export const FEEDS_FILE = "content/feeds.json";
+export const APPS_FILE = "content/apps.json";
+/** iOS-Apps stehen nicht im Tool-Verzeichnis, sondern in APPS_FILE. */
+const APP_CAT = "iOS-App";
 
 export type ToolGroup = "own" | "ext";
 export type ToolStatus = "current" | "past";
@@ -20,7 +25,6 @@ export interface Link {
 
 /** Icon auf dem Zeitstrahl je Kategorie; sonst "code". */
 export const TIMELINE_ICON_BY_CAT: Record<string, TimelineIcon> = {
-  "iOS-App": "app",
   "Skill": "skill",
   "Plugin": "skill",
   "Agent": "skill",
@@ -69,7 +73,7 @@ export interface Tool {
   status: ToolStatus;
   name: string;
   desc: string;
-  /** Kategorie, z. B. "CLI", "Editor", "iOS-App". */
+  /** Kategorie, z. B. "CLI", "Editor", "Web-App". */
   cat: string;
   /** Startjahr (YYYY). */
   since: string;
@@ -161,6 +165,9 @@ export function getTools(): Tool[] {
       fail(file, where, `unbekannter Bereich "${entry.area}"`);
     }
     if (!YEAR_RE.test(s("since"))) fail(file, where, `"since" muss YYYY sein`);
+    if (s("cat") === APP_CAT) {
+      fail(file, where, `iOS-Apps gehören nach ${APPS_FILE}`);
+    }
 
     const tool: Tool = {
       id: s("id"),
@@ -213,15 +220,7 @@ export function getTools(): Tool[] {
       tool.release = { ver, date };
     }
 
-    if (entry.links !== undefined) {
-      if (!Array.isArray(entry.links)) {
-        fail(file, where, `"links" muss ein Array sein`);
-      }
-      tool.links = entry.links.map((link: Record<string, unknown>) => ({
-        label: str(file, `${where} links`, link, "label")!,
-        href: str(file, `${where} links`, link, "href")!,
-      }));
-    }
+    tool.links = links(file, where, entry);
     return tool;
   });
 
@@ -240,7 +239,49 @@ export function getTools(): Tool[] {
       fail(file, tool.id, `Nachfolger "${next.id}" ist selbst nicht aktuell`);
     }
   }
+  checkProjects(
+    tools.filter((t) => t.group === "own").map((t) => t.id),
+    projectIds(),
+  );
   return tools;
+}
+
+function links(
+  file: string,
+  where: string,
+  entry: Record<string, unknown>,
+): Link[] | undefined {
+  if (entry.links === undefined) return undefined;
+  if (!Array.isArray(entry.links)) {
+    fail(file, where, `"links" muss ein Array sein`);
+  }
+  return entry.links.map((link: Record<string, unknown>) => ({
+    label: str(file, `${where} links`, link, "label")!,
+    href: str(file, `${where} links`, link, "href")!,
+  }));
+}
+
+/** iOS-App für die About-Seite; Support-Seiten liegen in static/. */
+export interface App {
+  id: string;
+  name: string;
+  desc: string;
+  links?: Link[];
+}
+
+/** Alle iOS-Apps aus content/apps.json, geprüft. */
+export function getApps(): App[] {
+  const file = APPS_FILE;
+  return readJsonArray(file).map((entry, i): App => {
+    const where = `Eintrag ${i + 1} (${entry.id ?? "ohne id"})`;
+    const s = (key: string) => str(file, where, entry, key)!;
+    return {
+      id: s("id"),
+      name: s("name"),
+      desc: s("desc"),
+      links: links(file, where, entry),
+    };
+  });
 }
 
 /** Alle Quellen aus content/feeds.json, geprüft. */

@@ -30,16 +30,20 @@ deno task check       # fmt --check, lint, Typprüfung (wie in CI)
 | `site`    | `build` + `export`                                              |
 | `preview` | Statischen Export lokal ansehen                                 |
 | `check`   | `deno fmt --check`, `deno lint`, `deno check`                   |
+| `test`    | `deno test` (u. a. Tools, Detailtexte, Apps)                    |
 
 ## Aufbau
 
 ```
 content/posts/        Blogposts als Markdown (YYYY-MM-DD-slug.md)
-content/tools.json    Eigene und externe Tools (Startseite, About, Sitemap)
+content/tools.json    Eigene und externe Tools (Startseite, Sitemap)
+content/projekte/     Detailtext je eigenem Tool (<id>.md → /projekte/<id>)
+content/apps.json     iOS-Apps (About-Seite, Sitemap)
 content/feeds.json    Quellen, denen ich folge (neuester Eintrag beim Build)
 content/about.md      Text der About-Seite
 routes/               Seiten (Fresh-Dateirouting)
   posts/, tags/       Postliste, Post, Tag-Übersicht, Tag-Seite
+  projekte/           Detailseite je eigenem Tool
   lab/                Lab mit Sidebar; [slug].tsx rendert content/lab/*
   archives.tsx        Alt-URL /archives/   → /posts   (Meta-Refresh)
   categories/         Alt-URL /categories/ → /tags    (Meta-Refresh)
@@ -160,10 +164,18 @@ darunter die einzeilige Beschreibung) – `desc` deshalb kurz halten (rund 45
 Zeichen), der volle Text steht im Tooltip. Jahr und Bereich zeigen Jahresmarke
 und Punktfarbe.
 
-Eigene Apps (`"group": "own", "area": "apps"`) erscheinen zusätzlich auf der
-About-Seite; ihre internen `links` landen in der Sitemap. Fehlerhafte Einträge
-(doppelte id, unbekannter Bereich, `replacedBy` ins Leere …) brechen den Export
-mit einer Meldung ab.
+Jedes eigene Tool (`"group": "own"`) braucht einen Detailtext
+`content/projekte/<id>.md`: reines Markdown ohne Front Matter, mit den
+Abschnitten „Was es macht“, „Wie es funktioniert“, „Stand“ und bei abgelösten
+Tools „Warum abgelöst“. Der Name im Verzeichnis verlinkt auf `/projekte/<id>`.
+
+iOS-Apps stehen nicht in `tools.json`, sondern in `content/apps.json` (`id`,
+`name`, `desc`, `links`). Sie erscheinen auf der About-Seite, ihre internen
+`links` landen in der Sitemap.
+
+Fehlerhafte Einträge (doppelte id, unbekannter Bereich, `replacedBy` ins Leere,
+iOS-App in `tools.json`, fehlender oder verwaister Detailtext …) brechen Test
+und Export mit einer Meldung ab.
 
 ### Quelle eintragen – `content/feeds.json`
 

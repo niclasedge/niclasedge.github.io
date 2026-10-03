@@ -193,7 +193,9 @@ export function ToolItem(
       <TimelineDot icon={tool.icon} />
       <div class="headrow">
         <span class="name" title={past ? tool.desc : undefined}>
-          {tool.name}
+          {tool.group === "own"
+            ? <a href={`/projekte/${tool.id}`}>{tool.name}</a>
+            : tool.name}
         </span>
         <span class="cat">
           {past ? `${tool.cat} · ${tool.since}–${tool.until}` : tool.cat}

@@ -1,0 +1,82 @@
+[
+  {
+    "id": "git-planner",
+    "name": "Git Planner",
+    "desc": "iOS-Client für GitHub Issues, offline-fähig.",
+    "links": [
+      {
+        "label": "Support",
+        "href": "/git-planner-ios/"
+      },
+      {
+        "label": "Datenschutz",
+        "href": "/git-planner-ios/privacy.html"
+      }
+    ]
+  },
+  {
+    "id": "bujo-notes",
+    "name": "Bujo Notes",
+    "desc": "Bullet Journal mit analogem Look für iOS.",
+    "links": [
+      {
+        "label": "Support",
+        "href": "/bujo-notes-ios/"
+      },
+      {
+        "label": "Datenschutz",
+        "href": "/bujo-notes-ios/privacy.html"
+      }
+    ]
+  },
+  {
+    "id": "bucket-list",
+    "name": "Bucket List",
+    "desc": "Ausflugsziele entdecken, merken, abhaken.",
+    "links": [
+      {
+        "label": "Support",
+        "href": "/ausflugs-radar-ios/"
+      },
+      {
+        "label": "Datenschutz",
+        "href": "/ausflugs-radar-ios/privacy.html"
+      }
+    ]
+  },
+  {
+    "id": "scharademix",
+    "name": "ScharadeMix",
+    "desc": "Partyspiel: Forbidden Words, Charades, Zeichnen.",
+    "links": [
+      {
+        "label": "Support",
+        "href": "/roundrobin-ios/"
+      },
+      {
+        "label": "Datenschutz",
+        "href": "/roundrobin-ios/privacy.html"
+      }
+    ]
+  },
+  {
+    "id": "inspired-by",
+    "name": "Inspired By",
+    "desc": "Inspiration und Farbanalyse auf dem iPhone.",
+    "links": [
+      {
+        "label": "Support",
+        "href": "/inspire-ios/"
+      },
+      {
+        "label": "Datenschutz",
+        "href": "/inspire-ios/privacy.html"
+      }
+    ]
+  },
+  {
+    "id": "tierfeed",
+    "name": "TierFeed",
+    "desc": "RSS-Reader für iOS mit Stufen, auf Basis von Miniflux."
+  }
+]
