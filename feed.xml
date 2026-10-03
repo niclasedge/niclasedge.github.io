@@ -47,7 +47,7 @@ erledigte Aufgabe musste ich von Hand abhaken.&lt;/p&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;&lt;/table&gt;
 &lt;h2 id=&quot;station-2-beads&quot;&gt;Station 2: beads&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/steveyegge/beads&quot;&gt;beads&lt;/a&gt; (&lt;code&gt;bd&lt;/code&gt;) legt die Aufgaben neben den
+&lt;p&gt;&lt;a href=&quot;https://github.com/gastownhall/beads&quot;&gt;beads&lt;/a&gt; (&lt;code&gt;bd&lt;/code&gt;) legt die Aufgaben neben den
 Code ins Repo. Der Agent legt Tasks an, verknüpft Blocker
 (&lt;code&gt;bd dep add &amp;lt;blockiert&amp;gt; &amp;lt;blocker&amp;gt;&lt;/code&gt;) und schließt sie selbst
 (&lt;code&gt;bd close &amp;lt;id&amp;gt;&lt;/code&gt;).&lt;/p&gt;
