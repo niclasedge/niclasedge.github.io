@@ -88,11 +88,13 @@
     "id": "runbook-runner",
     "group": "own",
     "area": "infra",
-    "status": "current",
+    "status": "past",
     "name": "Runbook Runner",
     "desc": "macOS-App, die Ansible-Playbooks und Bash-Skripte startet.",
     "cat": "Desktop-App",
-    "since": "2026"
+    "since": "2026",
+    "until": "2026",
+    "replacedBy": "semaphore"
   },
   {
     "id": "ops-lab",
