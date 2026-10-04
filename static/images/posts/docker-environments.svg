@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#2a2b30" stroke-width="1"/>
+    </pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#e0b07a"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="630" fill="#1e1f22"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#e0b07a"/>
+  <text x="60" y="70" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="22" fill="#a0a2aa">niclasedge.github.io · Infra</text>
+
+  <!-- Terminal des Hosts -->
+  <g transform="translate(130 120)">
+    <rect width="420" height="280" rx="16" fill="#26272b" stroke="#45464d" stroke-width="2"/>
+    <path d="M0 16a16 16 0 0 1 16-16H404a16 16 0 0 1 16 16V44H0Z" fill="#2a2b30"/>
+    <circle cx="28" cy="22" r="7" fill="#ff7b72"/><circle cx="52" cy="22" r="7" fill="#f5c842"/><circle cx="76" cy="22" r="7" fill="#52cc88"/>
+    <text x="210" y="28" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" fill="#a0a2aa">host</text>
+    <g font-family="Menlo, monospace" font-size="21">
+      <text x="26" y="96" fill="#52cc88">$ <tspan fill="#ececee">export</tspan> <tspan fill="#e0b07a">APP_ENV</tspan><tspan fill="#ececee">=prod</tspan></text>
+      <text x="26" y="140" fill="#52cc88">$ <tspan fill="#ececee">echo</tspan> <tspan fill="#e0b07a">$APP_ENV</tspan></text>
+      <text x="26" y="176" fill="#a0a2aa">prod</text>
+      <text x="26" y="224" fill="#52cc88">$ <tspan fill="#ececee">env | grep</tspan> <tspan fill="#e0b07a">PATH</tspan></text>
+    </g>
+  </g>
+
+  <path d="M565 260H665" stroke="#e0b07a" stroke-width="5" marker-end="url(#arr)"/>
+  <text x="615" y="240" text-anchor="middle" font-family="Menlo, monospace" font-size="18" fill="#a0a2aa">-e</text>
+
+  <!-- Container -->
+  <g transform="translate(690 110)">
+    <rect width="380" height="300" rx="16" fill="#26272b" stroke="#e0b07a" stroke-width="3"/>
+    <g fill="#2a2b30" stroke="#62a5ff" stroke-width="2.5">
+      <rect x="40" y="36" width="56" height="40" rx="4"/><rect x="104" y="36" width="56" height="40" rx="4"/><rect x="168" y="36" width="56" height="40" rx="4"/>
+      <rect x="72" y="-8" width="56" height="40" rx="4"/><rect x="136" y="-8" width="56" height="40" rx="4"/>
+    </g>
+    <text x="250" y="66" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="20" fill="#a0a2aa">container</text>
+    <g font-family="Menlo, monospace" font-size="20">
+      <text x="40" y="140" fill="#b79cff">ENV <tspan fill="#e0b07a">APP_ENV</tspan><tspan fill="#ececee">=prod</tspan></text>
+      <text x="40" y="180" fill="#b79cff">ENV <tspan fill="#e0b07a">DB_URL</tspan><tspan fill="#ececee">=…</tspan></text>
+      <rect x="28" y="208" width="324" height="60" rx="10" fill="#2a2b30"/>
+      <text x="44" y="236" fill="#a0a2aa" font-size="17">docker-compose.yml</text>
+      <text x="44" y="258" fill="#ececee" font-size="17">environment: <tspan fill="#e0b07a">.env</tspan></text>
+    </g>
+  </g>
+
+  <text x="60" y="540" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="44" font-weight="700" fill="#ececee">Linux Environments verstehen</text>
+  <text x="60" y="588" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="28" fill="#e0b07a">Umgebungsvariablen im Host, in Docker und Compose</text>
+</svg>

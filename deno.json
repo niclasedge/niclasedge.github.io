@@ -8,6 +8,7 @@
     "preview": "deno run -RN jsr:@std/http@^1/file-server _site --port 8000",
     "check": "deno fmt --check && deno lint && deno check",
     "test": "deno test -R",
+    "images": "deno run -RW --allow-run=rsvg-convert scripts/render-images.ts",
     "update": "deno run -A -r jsr:@fresh/update ."
   },
   "fmt": {

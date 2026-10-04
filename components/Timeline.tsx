@@ -15,11 +15,12 @@ export interface PostSummary {
   description: string;
   tags: string[];
   area: AreaKey;
+  image?: string;
 }
 
 export function toSummary(post: Post): PostSummary {
-  const { slug, title, day, description, tags, area } = post;
-  return { slug, title, day, description, tags, area };
+  const { slug, title, day, description, tags, area, image } = post;
+  return { slug, title, day, description, tags, area, image };
 }
 
 /** Zeitstrahl mit Jahresmarken; `items` müssen schon sortiert sein. */
@@ -135,7 +136,9 @@ export function PostItem({ post }: { post: PostSummary }) {
           <p title={post.description}>{post.description}</p>
         </div>
         <a class="thumb" href={href} tabindex={-1} aria-hidden="true">
-          <Thumb post={post} />
+          {post.image
+            ? <img src={post.image} alt="" loading="lazy" />
+            : <Thumb post={post} />}
         </a>
       </article>
     </li>
