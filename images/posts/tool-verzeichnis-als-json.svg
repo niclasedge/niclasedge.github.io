@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#2a2b30" stroke-width="1"/>
+    </pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#45c4b8"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="630" fill="#1e1f22"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#45c4b8"/>
+  <text x="60" y="70" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="22" fill="#a0a2aa">niclasedge.github.io · Automation</text>
+
+  <!-- JSON-Dateien -->
+  <g font-family="Menlo, monospace" font-size="18">
+    <g transform="translate(170 120)">
+      <path d="M0 0H170L210 40V170H0Z" fill="#26272b" stroke="#45c4b8" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M170 0V40H210" fill="none" stroke="#45c4b8" stroke-width="3"/>
+      <text x="22" y="72" fill="#45c4b8">{</text>
+      <text x="40" y="100" fill="#b79cff">"group"</text>
+      <text x="40" y="126" fill="#b79cff">"status"</text>
+      <text x="22" y="152" fill="#45c4b8">}</text>
+      <text x="105" y="205" text-anchor="middle" fill="#ececee" font-weight="700">tools.json</text>
+    </g>
+    <g transform="translate(170 355)" opacity=".85">
+      <path d="M0 0H130L160 30V100H0Z" fill="#26272b" stroke="#45464d" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M130 0V30H160" fill="none" stroke="#45464d" stroke-width="3"/>
+      <text x="20" y="62" fill="#e0b07a">"feed"</text>
+      <text x="200" y="62" fill="#a0a2aa">feeds.json</text>
+    </g>
+  </g>
+
+  <path d="M420 205H560" stroke="#45c4b8" stroke-width="5" marker-end="url(#arr)"/>
+
+  <!-- Drei Zeitstrahl-Spalten -->
+  <g transform="translate(590 115)">
+    <rect width="520" height="300" rx="18" fill="#26272b" stroke="#45464d" stroke-width="2"/>
+    <g stroke="#45464d" stroke-width="3">
+      <path d="M50 40V270M220 40V270M390 40V270"/>
+    </g>
+    <g>
+      <circle cx="50" cy="60" r="9" fill="#62a5ff"/><rect x="72" y="52" width="100" height="14" rx="7" fill="#45464d"/>
+      <circle cx="50" cy="120" r="9" fill="#62a5ff"/><rect x="72" y="112" width="80" height="14" rx="7" fill="#45464d"/>
+      <circle cx="50" cy="180" r="9" fill="#62a5ff"/><rect x="72" y="172" width="110" height="14" rx="7" fill="#45464d"/>
+      <circle cx="220" cy="60" r="9" fill="#45c4b8"/><rect x="242" y="52" width="110" height="14" rx="7" fill="#45464d"/>
+      <circle cx="220" cy="120" r="9" fill="#b79cff"/><rect x="242" y="112" width="90" height="14" rx="7" fill="#45464d"/>
+      <circle cx="220" cy="180" r="9" fill="#52cc88"/><rect x="242" y="172" width="100" height="14" rx="7" fill="#45464d"/>
+      <circle cx="220" cy="240" r="9" fill="#e0b07a"/><rect x="242" y="232" width="70" height="14" rx="7" fill="#45464d"/>
+      <circle cx="390" cy="60" r="9" fill="#b79cff"/><rect x="412" y="52" width="80" height="14" rx="7" fill="#45464d"/>
+      <circle cx="390" cy="120" r="9" fill="#45c4b8"/><rect x="412" y="112" width="90" height="14" rx="7" fill="#45464d"/>
+      <circle cx="390" cy="180" r="9" fill="#62a5ff"/><rect x="412" y="172" width="70" height="14" rx="7" fill="#45464d"/>
+    </g>
+  </g>
+
+  <text x="60" y="540" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="44" font-weight="700" fill="#ececee">Tool-Verzeichnis und Quellen als JSON</text>
+  <text x="60" y="588" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="28" fill="#45c4b8">Zwei Dateien statt CMS, täglicher Rebuild für frische Quellen</text>
+</svg>
