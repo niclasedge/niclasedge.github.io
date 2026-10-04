@@ -1,5 +1,5 @@
-import { assertEquals } from "@std/assert";
-import { relatedPosts, relatedTools } from "./posts.ts";
+import { assert, assertEquals } from "@std/assert";
+import { getPosts, relatedPosts, relatedTools } from "./posts.ts";
 import type { Tool } from "./directory.ts";
 
 const p = (slug: string, tags: string[]) => ({ slug, tags });
@@ -42,4 +42,19 @@ Deno.test("relatedTools: Bereich, aktuell vor vergangen, eigen vor extern", () =
     "ext-cur",
     "own-past",
   ]);
+});
+
+/** Breite und Höhe aus dem IHDR-Chunk einer PNG-Datei. */
+function pngSize(file: string): [number, number] {
+  const view = new DataView(Deno.readFileSync(file).buffer);
+  return [view.getUint32(16), view.getUint32(20)];
+}
+
+Deno.test("Jeder Artikel hat SVG und PNG mit 1200×630", () => {
+  for (const post of getPosts()) {
+    assertEquals(post.image, `/images/posts/${post.slug}.png`, post.slug);
+    const base = `static/images/posts/${post.slug}`;
+    assert(Deno.statSync(`${base}.svg`).isFile, `${post.slug}: SVG fehlt`);
+    assertEquals(pngSize(`${base}.png`), [1200, 630], post.slug);
+  }
 });

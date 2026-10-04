@@ -46,6 +46,7 @@ export default define.page<typeof handler>(function PostPage({ data }) {
           description={post.description}
           path={`/posts/${post.slug}`}
           type="article"
+          image={post.image}
         />
         <header class="page-title">
           <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
@@ -60,6 +61,15 @@ export default define.page<typeof handler>(function PostPage({ data }) {
             <TagChips tags={post.tags} />
           </p>
           <h1 class="mt-2">{post.title}</h1>
+          {post.image && (
+            <img
+              class="post-hero"
+              src={post.image}
+              alt=""
+              width={1200}
+              height={630}
+            />
+          )}
         </header>
 
         {post.showToc && (

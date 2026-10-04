@@ -12,6 +12,8 @@ import type { Tool } from "./directory.ts";
  * (import.meta.glob mit ?raw funktioniert im SSR-Build nicht.)
  */
 export const POSTS_DIR = "content/posts";
+/** Bild je Artikel: <slug>.svg als Quelle, <slug>.png (deno task images). */
+export const POST_IMAGES_DIR = "static/images/posts";
 
 export interface Post {
   slug: string;
@@ -23,6 +25,8 @@ export interface Post {
   /** Bereich für Filter und Zeitstrahl, siehe lib/areas.ts (Standard: dev). */
   area: AreaKey;
   description: string;
+  /** Pfad des PNG (1200×630), falls vorhanden. */
+  image?: string;
   html: string;
   toc: TocEntry[];
   showToc: boolean;
@@ -94,19 +98,30 @@ function readPost(fileName: string): Post | null {
     );
   }
 
+  const slug = jekyllSlug(attrs.slug ?? rawSlug);
   return {
-    slug: jekyllSlug(attrs.slug ?? rawSlug),
+    slug,
     title: attrs.title ?? rawSlug,
     date,
     day: `${y}-${mo}-${d}`,
     tags,
     area,
     description: attrs.description ?? excerpt(rendered.html),
+    image: postImage(slug),
     html: rendered.html,
     toc: rendered.toc.filter((e) => e.depth <= 3),
     showToc: attrs.toc !== false && rendered.toc.length > 2,
     hasMermaid: attrs.mermaid === true || rendered.hasMermaid,
   };
+}
+
+function postImage(slug: string): string | undefined {
+  try {
+    Deno.statSync(join(POST_IMAGES_DIR, `${slug}.png`));
+    return `/images/posts/${slug}.png`;
+  } catch {
+    return undefined;
+  }
 }
 
 /** Alle veröffentlichten Posts, neueste zuerst. */

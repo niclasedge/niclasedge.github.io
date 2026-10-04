@@ -489,6 +489,11 @@
     overflow: hidden;
     opacity: 0.9;
   }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
   .thumb svg {
     display: block;
     width: 100%;
@@ -833,6 +838,15 @@
     margin: 0.35rem 0 0;
     color: var(--muted);
     max-width: 62ch;
+  }
+
+  .post-hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--line);
   }
 
   /* Artikel: schmal TOC über, Sidebar unter dem Text; breit drei Spalten */

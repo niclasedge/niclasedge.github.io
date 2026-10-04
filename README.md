@@ -30,7 +30,8 @@ deno task check       # fmt --check, lint, Typprüfung (wie in CI)
 | `site`    | `build` + `export`                                              |
 | `preview` | Statischen Export lokal ansehen                                 |
 | `check`   | `deno fmt --check`, `deno lint`, `deno check`                   |
-| `test`    | `deno test` (u. a. Tools, Detailtexte, Apps)                    |
+| `test`    | `deno test` (u. a. Tools, Detailtexte, Apps, Artikelbilder)     |
+| `images`  | Artikelbilder SVG → PNG (1200×630) mit `rsvg-convert`           |
 
 ## Aufbau
 
@@ -56,6 +57,8 @@ components/           Gemeinsame Komponenten (Zeitstrahl, Icons, Seitentitel …
 lib/                  Posts, Tools und Feeds lesen, Markdown, Bereiche, Konfiguration
 assets/styles.css     Design-Tokens und Komponenten-CSS (Tailwind 4)
 static/               Wird 1:1 kopiert (iOS-App-Seiten, sw.js, robots.txt, Favicon)
+static/images/posts/  Artikelbild je Post: <slug>.svg (Quelle) + <slug>.png
+scripts/render-images.ts  Rendert die Artikelbilder (deno task images)
 scripts/export.ts     Statischer Export
 scripts/legacy-urls.txt  Alle URLs der alten Jekyll-Seite
 ```
@@ -94,7 +97,11 @@ Seitentitel, Beschreibung und Links stehen in `lib/site.ts`.
 3. Codeblöcke mit Sprache (`` ```python ``) werden per highlight.js eingefärbt.
    `` ```mermaid ``-Blöcke werden im Browser zu Diagrammen – Mermaid wird dafür
    nur auf solchen Seiten vom jsDelivr-CDN nachgeladen.
-4. `deno task dev` zum Ansehen, `deno task site` zum Prüfen des Exports.
+4. Artikelbild: `static/images/posts/<slug>.svg` (1200×630) anlegen und mit
+   `deno task images` nach PNG rendern (`brew install librsvg`). Beide Dateien
+   committen – die CI rendert nichts, `deno task test` schlägt ohne Bild fehl.
+   Das PNG erscheint als Titelbild, im Zeitstrahl und als `og:image`.
+5. `deno task dev` zum Ansehen, `deno task site` zum Prüfen des Exports.
 
 Tags bekommen automatisch eine Seite unter `/tags/<tag>/` und erscheinen in
 Sitemap und Feed.

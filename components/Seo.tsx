@@ -8,6 +8,8 @@ interface SeoProps {
   path?: string;
   type?: "website" | "article";
   noindex?: boolean;
+  /** Pfad eines Vorschaubilds (1200×630), z. B. "/images/posts/foo.png". */
+  image?: string;
 }
 
 export function Seo(props: SeoProps) {
@@ -25,6 +27,15 @@ export function Seo(props: SeoProps) {
       {url && <meta property="og:url" content={url} />}
       {url && <link rel="canonical" href={url} />}
       {props.noindex && <meta name="robots" content="noindex" />}
+      {props.image && (
+        <meta property="og:image" content={absoluteUrl(props.image)} />
+      )}
+      {props.image && (
+        <meta
+          name="twitter:card"
+          content="summary_large_image"
+        />
+      )}
     </Head>
   );
 }
