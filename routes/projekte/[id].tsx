@@ -1,16 +1,22 @@
 import { HttpError, page } from "fresh";
 import { define } from "../../utils.ts";
 import { getTools, type Tool } from "../../lib/directory.ts";
-import { getProject } from "../../lib/projects.ts";
+import { getProject, RENAMED_PROJECTS } from "../../lib/projects.ts";
 import { AREAS } from "../../lib/areas.ts";
 import { Seo } from "../../components/Seo.tsx";
 import { AreaIcon } from "../../components/Icons.tsx";
 import { Page } from "../../components/PageTitle.tsx";
+import { Redirect } from "../../components/Redirect.tsx";
 import Mermaid from "../../islands/Mermaid.tsx";
 
-/** Detailseite eines eigenen Tools; Text aus content/projekte/<id>.md. */
+/**
+ * Detailseite eines eigenen Tools; Text aus content/projekte/<id>.md.
+ * Alte ids umbenannter Projekte leiten weiter (RENAMED_PROJECTS).
+ */
 export const handler = define.handlers({
   GET(ctx) {
+    const renamed = RENAMED_PROJECTS[ctx.params.id];
+    if (renamed) return page({ to: `/projekte/${renamed}` });
     const tools = getTools();
     const tool = tools.find((t) => t.id === ctx.params.id && t.group === "own");
     const project = tool && getProject(tool.id);
@@ -26,6 +32,8 @@ function nextHref(next: Tool): string | undefined {
 }
 
 export default define.page<typeof handler>(function ProjectPage({ data }) {
+  // Alt-URL eines umbenannten Projekts → neue Detailseite.
+  if ("to" in data) return <Redirect to={data.to} />;
   const { tool, project, next } = data;
   const past = tool.status === "past";
   const links = [

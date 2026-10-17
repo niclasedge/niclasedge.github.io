@@ -8,6 +8,12 @@ import { type RenderedMarkdown, renderMarkdown } from "./markdown.ts";
  */
 export const PROJECTS_DIR = "content/projekte";
 
+/** Umbenannte oder aufgegangene Projekte: alte id → neue id. */
+export const RENAMED_PROJECTS: Record<string, string> = {
+  "hook-redactor": "rust-redactor",
+  "go-knowledge-planner": "git-planner-go",
+};
+
 /** Ids aller Detailtexte (Dateiname ohne .md). */
 export function projectIds(): string[] {
   return [...Deno.readDirSync(PROJECTS_DIR)]

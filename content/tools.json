@@ -48,11 +48,22 @@
     "group": "own",
     "area": "dev",
     "status": "current",
-    "name": "Git Planner (Go)",
-    "desc": "GitHub-Dashboard als Go-Binary mit ETag-Cache.",
+    "name": "git-planner-go",
+    "desc": "Arbeitsansicht für Issues, Changes, PRs, CI und Belege.",
     "cat": "Web-App",
     "since": "2026",
     "repo": "https://github.com/niclasedge/git-planner-go"
+  },
+  {
+    "id": "iac-stack-template",
+    "group": "own",
+    "area": "infra",
+    "status": "current",
+    "name": "iac-stack-template",
+    "desc": "Vorlage für kleine Multi-Host-Plattform mit Ansible.",
+    "cat": "Vorlage",
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/iac-stack-template"
   },
   {
     "id": "rss-reader",
@@ -72,7 +83,19 @@
     "name": "Process Atlas",
     "desc": "BPMN-Diagramme im Browser mit Drill-down in Teilprozesse.",
     "cat": "Web-App",
-    "since": "2026"
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/process-atlas"
+  },
+  {
+    "id": "archgraph",
+    "group": "own",
+    "area": "dev",
+    "status": "current",
+    "name": "archgraph",
+    "desc": "Architekturdiagramme aus YAML, mehrere Perspektiven.",
+    "cat": "CLI",
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/archgraph"
   },
   {
     "id": "graphviz-preview",
@@ -104,27 +127,85 @@
     "name": "ops-lab",
     "desc": "Gates, Lagebild und Token-Messung für OpenSpec-Changes.",
     "cat": "CLI",
-    "since": "2026"
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/ops-lab"
   },
   {
-    "id": "go-knowledge-planner",
+    "id": "agent-planner",
     "group": "own",
-    "area": "dev",
+    "area": "automation",
     "status": "current",
-    "name": "go-knowledge-planner",
-    "desc": "Arbeitsansicht für Issues, Changes, PRs und CI.",
+    "name": "agent-planner",
+    "desc": "Geplante Claude-Agenten: systemd-Timer, Logs, Web-UI.",
     "cat": "Web-App",
-    "since": "2026"
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/agent-planner"
   },
   {
-    "id": "hook-redactor",
+    "id": "live-plan",
     "group": "own",
     "area": "ai",
     "status": "current",
-    "name": "hook-redactor",
+    "name": "live-plan",
+    "desc": "Lebendes Sitzungsdokument mit Fragen, Schritten, Belegen.",
+    "cat": "Skill",
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/live-plan"
+  },
+  {
+    "id": "llm-evals",
+    "group": "own",
+    "area": "ai",
+    "status": "current",
+    "name": "llm-evals",
+    "desc": "LLMs auf gleichen Aufgaben vergleichen, mit LLM-Judge.",
+    "cat": "Web-App",
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/llm-evals"
+  },
+  {
+    "id": "rust-redactor",
+    "group": "own",
+    "area": "ai",
+    "status": "current",
+    "name": "rust-redactor",
     "desc": "Rust-Hook, der Secrets vor dem Agenten-Kontext schwärzt.",
     "cat": "CLI",
-    "since": "2026"
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/rust-redactor"
+  },
+  {
+    "id": "tollgate",
+    "group": "own",
+    "area": "ai",
+    "status": "current",
+    "name": "tollgate",
+    "desc": "Auditierbares Gateway vor der Claude-API: Redaction, Metering.",
+    "cat": "Gateway",
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/tollgate"
+  },
+  {
+    "id": "claude-code-dsgvo-hooks",
+    "group": "own",
+    "area": "ai",
+    "status": "current",
+    "name": "claude-code-dsgvo-hooks",
+    "desc": "Python-Hooks blocken PII, Secrets und riskante Tool-Calls.",
+    "cat": "Hooks",
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/claude-code-dsgvo-hooks"
+  },
+  {
+    "id": "sopsy",
+    "group": "own",
+    "area": "infra",
+    "status": "current",
+    "name": "sopsy",
+    "desc": "SOPS und age in einem Binary, mit lokaler Web-Oberfläche.",
+    "cat": "CLI",
+    "since": "2026",
+    "repo": "https://github.com/niclasedge/sopsy"
   },
   {
     "id": "folienschmiede",
@@ -244,6 +325,17 @@
     "since": "2026",
     "web": "https://fresh.deno.dev/",
     "repo": "https://github.com/denoland/fresh"
+  },
+  {
+    "id": "hono-htmx",
+    "group": "ext",
+    "area": "dev",
+    "status": "current",
+    "name": "Hono + htmx",
+    "desc": "Server-HTML mit minimalem Ressourcenbedarf, kaum Client-JS.",
+    "cat": "Framework",
+    "since": "2026",
+    "repo": "https://github.com/honojs/hono"
   },
   {
     "id": "tauri",
