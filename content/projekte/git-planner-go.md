@@ -1,42 +1,57 @@
 ## Was es macht
 
-Ein GitHub-Dashboard aus einer einzigen Go-Binary: Issues über alle Repos, ein
-Planner mit Agenda, ein Actions-Tracker und weitere Seiten aus `config.yaml`.
-Der Kern ist, GitHub so selten wie möglich zu fragen. Ein Poll, der nichts Neues
-findet, kostet kein Rate-Limit. Git Planner gibt es auch als iOS-Client.
+git-planner-go ist eine Arbeitsansicht über viele Repos: offene GitHub-Issues,
+laufende OpenSpec-Changes, Pull Requests und CI-Läufe in einer Oberfläche. Sie
+zeigt, was als Nächstes dran ist, was blockiert ist und welche Belege
+(Screenshots, Testausgaben) ein Agent zu einer Aufgabe eingereicht hat. Dazu
+kommen Epic-Maps, die den Fortschritt eines größeren Vorhabens samt Belegen
+zeigen. Gedacht ist sie für einen Ablauf, in dem Coding-Agenten Changes
+abarbeiten und ein Mensch den Stand prüft.
 
 ## Wie es funktioniert
 
-Die Regel hinter dem Design: Beim Seitenaufruf wird nie gefetcht. Ein Request
-liest den letzten Stand aus dem Speicher, Refreshes laufen im Hintergrund.
+- Ein Go-Dienst ohne externe Go-Abhängigkeiten. Die Svelte-Oberfläche liegt als
+  fertiges Bundle per `go:embed` im Binary. Betrieb als Docker-Container über
+  `just deploy`; `go run . --demo` startet mit erfundenen Daten.
+- Die Oberfläche ist an die To-do-App Things angelehnt: links die Repos nach
+  Bereichen, in der Mitte die offenen Issues in Abarbeitungsfolge über
+  `blocked_by`, darunter der zugehörige Change mit den Aufgaben aus `tasks.md`.
+  Dazu kommen die Ansichten *Heute* und *Logbuch* über alle Repos.
+- Die Daten kommen direkt über die REST- und GraphQL-API von GitHub. Jeder
+  Abruf ist bedingt (ETag), die Antwort kommt aus dem Speicher, die Erneuerung
+  läuft im Hintergrund – ein Seitenaufruf fragt GitHub nie selbst.
+- Aus der Oberfläche heraus lassen sich Issues anlegen und schließen, Blocker
+  setzen, Reviews beantworten, PRs mergen und fehlgeschlagene Checks neu starten.
+- Ein MCP-Endpunkt nimmt Fortschritts-Reports von Agenten an und legt sie
+  append-only als Belege ab.
 
-- Jeder Request an GitHub ist bedingt (`If-None-Match`). Die ETags liegen in
-  SQLite und überleben den Neustart; ein `304 Not Modified` zählt nicht gegen
-  das Rate-Limit.
-- Alle 5 Minuten fragt ein einziger inkrementeller Request nach Änderungen,
-  einmal pro Stunde läuft ein voller Abgleich über alle Repos.
-- Die Issue-Summen je Repo kommen über GraphQL, 20 Repos pro Anfrage.
-- Die Oberfläche besteht aus Go-Templates und HTMX. Assets und Schriften liegen
-  per `embed` in der Binary, ohne Build-Step fürs Frontend.
-- Widgets für weitere Seiten: `monitor`, `semaphore`, `ollama`, `beads`,
-  `bookmarks`, `iframe`, `html`.
-
-```bash
-go build -o git-planner .
-./git-planner   # http://127.0.0.1:8092
+```mermaid
+flowchart LR
+  A[GitHub-API] --> B[Go-Dienst]
+  C[Agent] -->|MCP-Report| B
+  B --> D[Svelte-Oberfläche]
+  D -->|Issues, PRs, Checks| B
 ```
 
-Gemessen über 224 Repos verbrauchten zwei warme Runden mit 1176 bedingten
-Requests exakt 0 vom Rate-Limit. Die Actions-Seite mit 48 Repo-Karten rendert in
-9 ms.
-
-Login gibt es keinen. Der Server hört nur auf Loopback und optional auf der
-Tailscale-Adresse – das Tailnet ist die Authentifizierung.
+Es gibt keinen Login: Der Server hört standardmäßig nur auf Loopback. Über
+eine weitere Adresse sind Schreibzugriffe gesperrt, bis die Clients freigegeben
+sind; für mehr braucht es einen Reverse-Proxy mit Anmeldung.
 
 ## Stand
 
-Der erste Commit stammt vom 26. Juli 2026, der letzte vom 1. September 2026 –
-47 Commits. Die Testsuite umfasst 330 Testfunktionen, `go test ./...` läuft
-grün. Zuletzt kamen eine Ansicht für beads-Tasks und eine Zyklus-Planung aus
-`cycles.yml` dazu. Die Idee für `config.yaml` und Widgets stammt von
-[glance](https://github.com/glanceapp/glance); der Code ist eigenständig.
+Ein persönliches Werkzeug ohne Stabilitätsversprechen für Flags und Routen; die
+Oberfläche und die meiste Dokumentation sind deutsch. Die Auswahl und
+Reihenfolge der Aufgaben berechnet Go und ist ohne Browser getestet, die
+Oberfläche zeichnet nur.
+
+## Herkunft
+
+Zwei frühere Projekte laufen hier zusammen. Der erste Git Planner (Juli bis
+September 2026) war ein GitHub-Dashboard aus Go-Templates und HTMX: Issues über
+alle Repos, Agenda, Actions-Tracker, Seiten aus `config.yaml`, mit ETag-Cache in
+SQLite, damit ein Poll ohne Neues kein Rate-Limit kostet. Das zweite
+Projekt (ab Juni 2026) war ein Go-Port einer früheren Deno-App und eine Ansicht
+für Epic-Maps mit Belegen. Seit Ende September läuft das Repo selbst im
+OpenSpec-Ablauf: jede Änderung ein Change mit eigenem Issue, Branch und PR,
+gehalten von maschinellen Gates. Der Code für beads-Daten bleibt als eine von
+mehreren Aufgabenquellen erhalten.

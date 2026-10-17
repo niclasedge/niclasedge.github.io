@@ -15,8 +15,7 @@ der About-Seite stehen. Issue: niclasedge/niclasedge.github.io#3.
 - Die iOS-Apps ziehen aus `content/tools.json` nach `content/apps.json`. Die
   About-Seite und die Sitemap lesen sie dort. Ihre Support- und
   Datenschutzseiten in `static/` bleiben unverändert.
-- Neue eigene Tools: Folienschmiede, hook-redactor, ops-lab,
-  go-knowledge-planner.
+- Neue eigene Tools: Folienschmiede, rust-redactor, ops-lab, git-planner-go.
 - OpenSpec wird im Repo eingerichtet (`openspec/`).
 
 ## Capabilities

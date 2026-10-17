@@ -2,8 +2,8 @@
 
 - [x] 1.1 iOS-Apps aus `content/tools.json` nach `content/apps.json`
       verschieben; About-Seite und Sitemap lesen `apps.json`
-- [x] 1.2 Neue eigene Tools eintragen: folienschmiede, hook-redactor, ops-lab,
-      go-knowledge-planner
+- [x] 1.2 Neue eigene Tools eintragen: folienschmiede, rust-redactor, ops-lab,
+      git-planner-go
 - [x] 1.3 Detailtexte `content/projekte/<id>.md` für alle eigenen Tools,
       abgeleitet aus den Repos
 

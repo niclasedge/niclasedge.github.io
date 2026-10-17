@@ -42,3 +42,7 @@
 /inspire-ios/privacy.html
 /roundrobin-ios/
 /roundrobin-ios/privacy.html
+
+# Umbenannte Projekt-Detailseiten (Weiterleitung, siehe RENAMED_PROJECTS)
+/projekte/hook-redactor
+/projekte/go-knowledge-planner
