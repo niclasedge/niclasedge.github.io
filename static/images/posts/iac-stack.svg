@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#2a2b30" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#1e1f22"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#e0b07a"/>
+  <text x="60" y="70" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="22" fill="#a0a2aa">niclasedge.github.io · Infra</text>
+
+  <!-- Tailnet -->
+  <g stroke="#e0b07a" stroke-width="3">
+    <path d="M230 310V370M590 310V354M950 310V370"/>
+    <path d="M230 370H950" stroke-dasharray="10 8"/>
+  </g>
+  <rect x="520" y="354" width="140" height="32" rx="16" fill="#1e1f22" stroke="#e0b07a" stroke-width="2"/>
+  <text x="590" y="376" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" fill="#e0b07a">Tailscale</text>
+
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+    <!-- MacBook -->
+    <g transform="translate(90 100)">
+      <rect width="280" height="210" rx="16" fill="#26272b" stroke="#45464d" stroke-width="2"/>
+      <g fill="none" stroke="#a0a2aa" stroke-width="2.5"><rect x="214" y="22" width="36" height="22" rx="3"/><path d="M206 50H258"/></g>
+      <text x="24" y="50" font-size="26" font-weight="700" fill="#ececee">MacBook</text>
+      <text x="24" y="78" font-size="18" fill="#a0a2aa">Controller</text>
+    </g>
+    <!-- Mac Mini -->
+    <g transform="translate(450 100)">
+      <rect width="280" height="210" rx="16" fill="#26272b" stroke="#45464d" stroke-width="2"/>
+      <g fill="none" stroke="#a0a2aa" stroke-width="2.5"><rect x="218" y="20" width="34" height="30" rx="7"/><path d="M228 40H242"/></g>
+      <text x="24" y="50" font-size="26" font-weight="700" fill="#ececee">Mac Mini</text>
+      <text x="24" y="78" font-size="18" fill="#a0a2aa">Beobachtung</text>
+    </g>
+    <!-- VPS -->
+    <g transform="translate(810 100)">
+      <rect width="280" height="210" rx="16" fill="#26272b" stroke="#e0b07a" stroke-width="3"/>
+      <g fill="none" stroke="#e0b07a" stroke-width="2.5"><rect x="214" y="18" width="38" height="15" rx="3"/><rect x="214" y="37" width="38" height="15" rx="3"/></g>
+      <g fill="#e0b07a"><circle cx="222" cy="25.5" r="2.5"/><circle cx="222" cy="44.5" r="2.5"/></g>
+      <text x="24" y="50" font-size="26" font-weight="700" fill="#ececee">VPS</text>
+      <text x="24" y="78" font-size="18" fill="#a0a2aa">Web</text>
+    </g>
+  </g>
+
+  <!-- Chips -->
+  <g font-family="Menlo, monospace" font-size="17">
+    <g transform="translate(114 204)">
+      <rect width="66" height="36" rx="8" fill="#2a2b30"/><text x="33" y="24" text-anchor="middle" fill="#ececee">just</text>
+      <rect x="74" width="96" height="36" rx="8" fill="#2a2b30"/><text x="122" y="24" text-anchor="middle" fill="#ececee">Ansible</text>
+      <rect y="46" width="126" height="36" rx="8" fill="#2a2b30"/><text x="63" y="70" text-anchor="middle" fill="#b79cff">SOPS+age</text>
+    </g>
+    <g transform="translate(474 204)">
+      <rect width="96" height="36" rx="8" fill="#2a2b30"/><text x="48" y="24" text-anchor="middle" fill="#ececee">Elastic</text>
+      <rect x="104" width="86" height="36" rx="8" fill="#2a2b30"/><text x="147" y="24" text-anchor="middle" fill="#ff7b72">Alarme</text>
+      <rect y="46" width="96" height="36" rx="8" fill="#2a2b30"/><text x="48" y="70" text-anchor="middle" fill="#ececee">CoreDNS</text>
+    </g>
+    <g transform="translate(834 204)">
+      <rect width="96" height="36" rx="8" fill="#2a2b30"/><text x="48" y="24" text-anchor="middle" fill="#ececee">Traefik</text>
+      <rect x="104" width="116" height="36" rx="8" fill="#2a2b30"/><text x="162" y="24" text-anchor="middle" fill="#52cc88">Semaphore</text>
+      <rect y="46" width="126" height="36" rx="8" fill="#2a2b30"/><text x="63" y="70" text-anchor="middle" fill="#e0b07a">~48 Stacks</text>
+      <rect x="134" y="46" width="76" height="36" rx="8" fill="#2a2b30"/><text x="172" y="70" text-anchor="middle" fill="#ececee">Gitea</text>
+    </g>
+  </g>
+
+  <text x="60" y="540" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="44" font-weight="700" fill="#ececee">IaC-Stack: Homelab als Code</text>
+  <text x="60" y="588" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="28" fill="#e0b07a">Ansible, Semaphore, Elastic und SOPS – wer was macht</text>
+</svg>
