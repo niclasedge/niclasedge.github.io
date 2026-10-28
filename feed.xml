@@ -3,10 +3,464 @@
   <id>https://niclasedge.github.io/</id>
   <title>Niclas Edge Docs</title>
   <subtitle>Was ich schreibe, baue und benutze: Notizen rund um Automatisierung, eigene Tools und Apps und die Quellen, denen ich folge.</subtitle>
-  <updated>2026-10-03T00:00:00.000Z</updated>
+  <updated>2026-10-04T00:00:00.000Z</updated>
   <author><name>Niclas Edge</name><uri>https://niclasedge.github.io/</uri></author>
   <link rel="self" type="application/atom+xml" href="https://niclasedge.github.io/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://niclasedge.github.io/"/>
+  <entry>
+    <title>ops-lab: SOP, Plugins und Beispielablauf</title>
+    <link href="https://niclasedge.github.io/posts/ops-lab-sop-plugins/" rel="alternate" type="text/html"/>
+    <id>https://niclasedge.github.io/posts/ops-lab-sop-plugins/</id>
+    <published>2026-10-04T00:00:00.000Z</published>
+    <updated>2026-10-04T00:00:00.000Z</updated>
+    <author><name>Niclas Edge</name></author>
+    <category term="claude-code"/>
+    <category term="plugins"/>
+    <category term="openspec"/>
+    <category term="workflow"/>
+    <summary>Welche Plugins und Skills das ops-lab-Paket mitbringt, die gemeinsame SOP im Wortlaut und ein vollständiger Beispielablauf vom Issue über die Gates bis zum Merge.</summary>
+    <content type="html">&lt;p&gt;Stand: 4. Oktober 2026. Dieser Artikel ist die Lesefassung des Plugin-Pakets von &lt;a href=&quot;/projekte/ops-lab&quot;&gt;ops-lab&lt;/a&gt;, keine zweite Quelle für Laufzeitregeln. Die gepflegte SOP liegt in &lt;code&gt;plugins/ops-lab/skills/session-start/SKILL.md&lt;/code&gt;; die Schreibregeln liegen daneben in &lt;code&gt;skills/unslop-de/SKILL.md&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;orientierung&quot;&gt;Orientierung&lt;/h2&gt;
+&lt;p&gt;Ein aktives Plugin liefert beim Sitzungsstart die gemeinsame SOP und unslop-de. Die lokale CLAUDE.md enthält die projektspezifischen Regeln. Ein Issue wird durch einen eigenen Change, Branch und Worktree umgesetzt. Der Leitstand koordiniert Arbeiter und frischen Reviewer; Gate-Werkzeuge prüfen Plan, roten Test und Abschluss. Erforderliche Zusatz-Skills werden passend zur Aufgabe geladen.&lt;/p&gt;
+&lt;pre class=&quot;mermaid not-prose&quot;&gt;flowchart TD
+  S[&amp;quot;Sitzungsstart&amp;lt;br/&amp;gt;SOP + Projektregeln&amp;quot;] --&amp;gt; L[&amp;quot;Issue + Leitstand&amp;lt;br/&amp;gt;just lage · Auftrag&amp;quot;]
+  L --&amp;gt; P[&amp;quot;Change + Plan&amp;lt;br/&amp;gt;just neu · just gate1&amp;quot;]
+  P --&amp;gt; T[&amp;quot;Rot → Grün&amp;lt;br/&amp;gt;just gate2 · Umsetzung&amp;quot;]
+  T --&amp;gt; R[&amp;quot;Beleg + Review&amp;lt;br/&amp;gt;just fertig · pr-reviewer&amp;quot;]
+  R --&amp;gt; A[&amp;quot;Abschluss&amp;lt;br/&amp;gt;PR · CI · Merge · Archiv&amp;quot;]
+  S -.- W([&amp;quot;Klar schreiben: unslop-de, immer&amp;quot;])
+  L -.- Q([&amp;quot;Plan schärfen: grilling, domain-modeling&amp;quot;])
+  P -.- D([&amp;quot;Module entwerfen: codebase-design&amp;quot;])
+  T -.- B([&amp;quot;Fehler eingrenzen: diagnosing-bugs&amp;quot;])
+  R -.- K([&amp;quot;Diff + Folgen prüfen: diff-reviewer, blast-radius&amp;quot;])
+  A -.- M([&amp;quot;Mensch liest Diff: bei einer Ein-Weg-Tür&amp;quot;])&lt;/pre&gt;
+&lt;h2 id=&quot;aktuelle-plugin-auswahl&quot;&gt;Aktuelle Plugin-Auswahl&lt;/h2&gt;
+&lt;p&gt;Der Marketplace heißt &lt;code&gt;ops-lab-plugin&lt;/code&gt;, das Hauptplugin &lt;code&gt;ops-lab&lt;/code&gt;. Eine Installation des Hauptplugins bringt die vier Abhängigkeiten pocock, opensrc, pstack und ponytail-review mit. Insgesamt sind 22 Skills und zwei Agenten enthalten. Skills-Sync aus dem älteren Katalog ist kein Skill dieses Plugin-Pakets.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Plugin&lt;/th&gt;
+&lt;th&gt;Enthaltene Skills&lt;/th&gt;
+&lt;th&gt;Quelle&lt;/th&gt;
+&lt;th&gt;Stand&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;ops-lab&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;diff-reviewer&lt;/code&gt;, &lt;code&gt;leitstand&lt;/code&gt;, &lt;code&gt;prozessschmiede&lt;/code&gt;, &lt;code&gt;session-start&lt;/code&gt;, &lt;code&gt;unslop-de&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;privates Org-Repo&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Marketplace-Hauptbranch&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pocock&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tdd&lt;/code&gt;, &lt;code&gt;domain-modeling&lt;/code&gt;, &lt;code&gt;grilling&lt;/code&gt;, &lt;code&gt;grill-me&lt;/code&gt;, &lt;code&gt;diagnosing-bugs&lt;/code&gt;, &lt;code&gt;wizard&lt;/code&gt;, &lt;code&gt;codebase-design&lt;/code&gt;, &lt;code&gt;grill-with-docs&lt;/code&gt;, &lt;code&gt;handoff&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;mattpocock/skills&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;d81f3a183412&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;opensrc&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;opensrc&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;vercel-labs/opensrc&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;b51de60867e8&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pstack&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;unslop&lt;/code&gt;, &lt;code&gt;blast-radius&lt;/code&gt;, &lt;code&gt;benchmark-checklist&lt;/code&gt;, &lt;code&gt;technical-writing&lt;/code&gt;, &lt;code&gt;principle-explain-the-number&lt;/code&gt;, &lt;code&gt;principle-prove-it-works&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;cursor/plugins&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;23e4138daa01&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ponytail-review&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;ponytail-review&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;DietrichGebert/ponytail&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;c982cd411abb&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&quot;konfiguration-und-aktivierung&quot;&gt;Konfiguration und Aktivierung&lt;/h3&gt;
+&lt;p&gt;Eine frische Installation in einem getrennten Claude-Konfigurationsverzeichnis hat alle vier Abhängigkeiten automatisch installiert. Die Komponentenliste bestätigt die Skills und den SessionStart-Hook; pstack und ponytail-review haben keine Hooks. Diese Prüfung verändert keine bestehende persönliche Plugin-Konfiguration.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;claude plugin marketplace add &amp;lt;org&amp;gt;/ops-lab-plugin
+claude plugin install ops-lab@ops-lab-plugin
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Diese Befehle beziehen den Hauptbranch des (privaten) Org-Marketplace. Für denselben Standard in anderen Repos muss das Plugin dort aktiv sein; andere Maschinen und Cloud-Sitzungen benötigen denselben Installations- bzw. Verwaltungsweg. Für Codex gibt es bislang keinen entsprechenden SOP-Ladeweg.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;i-have-adhd&lt;/code&gt; bleibt ein separat aktiviertes persönliches Plugin. unslop-de ersetzt es allein nicht: ADHD formt Orientierung und nächste Schritte; unslop-de verbessert die Formulierungen. Die SOP enthält bereits die passenden Kommunikationsregeln. Die bestehende ADHD-Konfiguration wurde nicht deaktiviert.&lt;/p&gt;
+&lt;h3 id=&quot;agenten-und-hooks&quot;&gt;Agenten und Hooks&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Bestandteil&lt;/th&gt;
+&lt;th&gt;Aufgabe und Anlass&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;ops-lab:change-arbeiter&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Vom Leitstand beauftragt: genau ein Change bis zum committeten Abschluss im eigenen Worktree, ohne Push oder PR.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;ops-lab:pr-reviewer&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Vom Leitstand danach in frischem Kontext beauftragt: Spec und Standards getrennt prüfen, belegte Befunde nachbessern.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;SessionStart&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Lädt gemeinsame SOP und unslop-de bei Start und Wiederaufnahme, einschließlich Clear/Compact; unabhängig vom Gate-Repo.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;PreToolUse&lt;/code&gt; für Bash&lt;/td&gt;
+&lt;td&gt;Prüft die Ablaufgrenze vor relevanten Push-/PR-Befehlen, wenn das Repo den Ablauf führt.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Stop&lt;/code&gt; / &lt;code&gt;SubagentStop&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Erinnert im eingerichteten Ablauf an den nächsten offenen Schritt.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;Der Plugin-Ablauf-Hook schweigt bei Repos ohne &lt;code&gt;tools/gate.projekt.json&lt;/code&gt; und bei Repos mit eigenem &lt;code&gt;tools/hook.mjs&lt;/code&gt;; dort läuft die lokale Fassung. Von ponytail kommen keine Hooks. Der Start-Hook führt keine Installation aus und verändert keine Projektdateien.&lt;/p&gt;
+&lt;h2 id=&quot;vollständige-aktuelle-sop&quot;&gt;Vollständige aktuelle SOP&lt;/h2&gt;
+&lt;p&gt;Die folgende Fassung wird unverändert aus der gepflegten SKILL.md übernommen, ohne deren Frontmatter.&lt;/p&gt;
+&lt;h3 id=&quot;gemeinsame-sop&quot;&gt;Gemeinsame SOP&lt;/h3&gt;
+&lt;p&gt;Diese SOP gilt in jedem Repo mit aktivem ops-lab-Plugin und wird bei SessionStart geladen, auch nach Resume, Clear und Compact. Lesen Sie vor der ersten Arbeit die projektspezifische CLAUDE.md und zutreffende lokale Rules. Nutzerauftrag und uebergeordnete Anweisungen haben Vorrang; diese SOP erteilt keine zusaetzlichen Schreib-, Push- oder Merge-Rechte.&lt;/p&gt;
+&lt;h4 id=&quot;kommunikation-und-arbeit&quot;&gt;Kommunikation und Arbeit&lt;/h4&gt;
+&lt;p&gt;Fuehren Sie den autorisierten Auftrag bis zum pruefbaren Ergebnis durch. Fragen Sie nur nach Informationen oder Freigaben, die wirklich fehlen; nutzen Sie vorhandene Antworten weiter. Beginnen Sie mit Ergebnis oder naechstem Handgriff, nummerieren Sie auszufuehrende Schritte und berichten Sie bei laengerer Arbeit knapp den aktuellen Stand. Halten Sie Nebenfragen aus dem laufenden Auftrag heraus. Nennen Sie bei offener Arbeit einen konkreten naechsten Schritt, bei erledigter Arbeit das Ergebnis und seine Pruefung. Erfinden Sie keine Zeitangaben oder Testergebnisse. Sprache und Anrede bestimmt das Projekt oder der Nutzer.&lt;/p&gt;
+&lt;p&gt;Die beigefuegten Regeln von unslop-de gelten fuer Prosa waehrend der ganzen Sitzung. i-have-adhd allein wird dadurch nicht vorausgesetzt: seine nuetzlichen Regeln zur Orientierung stehen hier, die Schreibregeln stehen in unslop-de.&lt;/p&gt;
+&lt;h4 id=&quot;skill-auswahl&quot;&gt;Skill-Auswahl&lt;/h4&gt;
+&lt;p&gt;Alle folgenden Skills gehoeren zum installierten Standard; lesen Sie die ausfuehrliche SKILL.md erst, wenn der genannte Anlass vorliegt. Nutzen Sie den qualifizierten Namen aus der Skill-Liste; bei Namenskonflikten bevorzugen Sie die hier genannte Quelle. Ein manueller Skill wird bei passendem Anlass ausdruecklich aufgerufen oder seine SKILL.md gelesen. Fehlt ein Skill, melden Sie das und behaupten Sie nicht, ihn angewendet zu haben.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Skill&lt;/th&gt;
+&lt;th&gt;Wann einsetzen&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;ops-lab:session-start&lt;/td&gt;
+&lt;td&gt;Laden Sie die gemeinsame SOP beim Start oder wenn der Startkontext fehlt.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ops-lab:unslop-de&lt;/td&gt;
+&lt;td&gt;Wenden Sie die geladenen Schreibregeln auf Antworten, Dokumentation, Nachweise und PR-Texte an.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ops-lab:leitstand&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn zur Koordination offener Changes in Repos mit dem OpenSpec-/just-Ablauf.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ops-lab:diff-reviewer&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn fuer die im Ablauf geforderte Pruefung des Change-Diffs.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ops-lab:prozessschmiede&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn fuer Prozessbilder und Bildbelege des Ablaufs.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pocock:tdd&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn fuer testgetriebene Features und Bugfixes im vorgesehenen Projektablauf.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pocock:diagnosing-bugs&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn fuer schwierige Fehler oder Regressionen mit reproduzierbarer Fehlerschleife.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pocock:codebase-design&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn beim Entwurf von Modulschnittstellen und testbaren Grenzen.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pocock:domain-modeling&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn fuer Fachbegriffe, Glossar und begruendete Architekturentscheidungen.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pocock:grilling&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn, wenn der Nutzer eine Idee oder einen Plan durch gezielte Fragen pruefen lassen will.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pocock:grill-me&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn als ausdruecklichen Einstieg in das intensive Plan-Interview.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pocock:grill-with-docs&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn fuer ein Plan-Interview, das zugleich Glossar und Entscheidungen festhaelt.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pocock:wizard&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn fuer angeleitete Schritte, die der Nutzer selbst ausfuehren muss.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pocock:handoff&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn bei Uebergabe oder Sitzungswechsel mit unerledigter Arbeit.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pstack:blast-radius&lt;/td&gt;
+&lt;td&gt;Pruefen Sie damit vor der Abgabe bei Aenderungen an gemeinsam genutzten Schnittstellen, Gates oder Ausrollung die Folgen ausserhalb des Diffs.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pstack:benchmark-checklist&lt;/td&gt;
+&lt;td&gt;Pruefen Sie damit Messbedingungen und Aussagekraft vor Vergleichen zu Tokenverbrauch oder Laufzeit.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pstack:technical-writing&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn fuer strukturierte technische Dokumentation und zusaetzlich unslop-de fuer deutsche Prosa.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ponytail-review:ponytail-review&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn bei Review oder Vereinfachung zur Suche nach unnoetiger Komplexitaet.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;opensrc:opensrc&lt;/td&gt;
+&lt;td&gt;Nutzen Sie ihn, wenn eine Frage den echten Quellcode einer Abhaengigkeit braucht.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;pstack:unslop sowie principle-explain-the-number und principle-prove-it-works sind mitinstallierte Begleittexte der pstack-Skills; deutsche Schreibregeln stehen in unslop-de. Laden Sie nicht alle Skills auf Vorrat. Ein Review-Skill ersetzt weder Projekt-Gates noch die dort geregelte Merge-Freigabe.&lt;/p&gt;
+&lt;h4 id=&quot;projektspezifische-angaben&quot;&gt;Projektspezifische Angaben&lt;/h4&gt;
+&lt;p&gt;CLAUDE.md nennt Zweck, Architektur, Fachbegriffe, Hauptbranch, Test- und Buildbefehle, Tracker sowie zusaetzliche Freigabegrenzen des Repos. Gemeinsame Skill-Ausloeser und Schreibregeln werden dort nicht kopiert. Ohne eingerichteten OpenSpec-/just-Ablauf wird dieser nicht allein durch die Plugin-Installation vorgeschrieben.&lt;/p&gt;
+&lt;h2 id=&quot;vollständige-schreibregeln-von-unslop-de&quot;&gt;Vollständige Schreibregeln von unslop-de&lt;/h2&gt;
+&lt;h3 id=&quot;klar-schreiben&quot;&gt;Klar schreiben&lt;/h3&gt;
+&lt;p&gt;Diese deutsche Abwandlung von pstack/unslop gilt fuer Prosa in der ganzen Sitzung. Bewahren Sie Bedeutung, Quellen, Fachbegriffe und die gewuenschte Anrede. Bei englischen Texten gelten dieselben Grundsaetze mit passenden englischen Formulierungen.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Nennen Sie Ergebnis, Handlung oder Befund zuerst. Schreiben Sie vollstaendige Saetze mit einer klaren Aussage und teilen Sie dichte Saetze.&lt;/li&gt;
+&lt;li&gt;Verwenden Sie konkrete Verben und vertraute Woerter: nutzen statt Hebelwirkung entfalten, verbessern statt optimieren ohne benanntes Ziel.&lt;/li&gt;
+&lt;li&gt;Streichen Sie Floskeln wie „es ist wichtig zu beachten“, „in der heutigen Welt“, „entscheidend“, „nahtlos“ und „umfassend“, wenn sie keine belegte Aussage tragen.&lt;/li&gt;
+&lt;li&gt;Nennen Sie Quelle und Befund statt „Experten sagen“. Kennzeichnen Sie Annahmen und ungepruefte Aussagen; erfinden Sie weder Belege noch Zahlen.&lt;/li&gt;
+&lt;li&gt;Nennen Sie bei Verbesserungen Mechanismus oder Messwert statt „deutlich besser“, „robust“ oder „effizient“ ohne Begruendung.&lt;/li&gt;
+&lt;li&gt;Schreiben Sie direkt statt „nicht nur X, sondern auch Y“. Vermeiden Sie rhetorische Fragen, kuenstliche Dreiergruppen und wechselnde Synonyme fuer denselben Fachbegriff.&lt;/li&gt;
+&lt;li&gt;Verwenden Sie Aktiv, wenn der Handelnde bekannt ist. Lassen Sie Artikel und Verben stehen; kurze Prosa soll ohne Entschluesseln lesbar sein.&lt;/li&gt;
+&lt;li&gt;Nutzen Sie Abschnitte, Tabellen und Listen, wenn sie das Lesen erleichtern. Nummerieren Sie Handlungsfolgen; verwenden Sie Fettung sparsam und keine dekorativen Emojis.&lt;/li&gt;
+&lt;li&gt;Vermeiden Sie Gedankenstriche als staendigen Satzverbinder. Deutsche Anfuehrungszeichen „…“, Bindestriche, Klammern und Doppelpunkte bleiben erlaubt, wenn sie sprachlich passen.&lt;/li&gt;
+&lt;li&gt;Streichen Sie Lob des Nutzers, Vorankuendigungen, Schlussfloskeln und Zusammenfassungen ohne neue Information. Nennen Sie bei offener Arbeit den konkreten naechsten Schritt.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Pruefen Sie vor dem Absenden: Ist jede Aussage verstaendlich, sachlich begruendet und fuer den Auftrag nuetzlich? Aendern Sie keine woertlichen Zitate, Codebezeichner oder vorgeschriebenen Formate, um diese Stilregeln zu erfuellen.&lt;/p&gt;
+&lt;p&gt;Herkunft: deutsche Abwandlung von cursor/plugins, pstack/skills/unslop, Commit 23e4138daa01c42d4969f7a5465f82704e64f798, Copyright 2026 Lauren Tan; MIT-Lizenz in LICENSE.&lt;/p&gt;
+&lt;h2 id=&quot;vollständiger-beispielablauf&quot;&gt;Vollständiger Beispielablauf&lt;/h2&gt;
+&lt;p&gt;Das folgende Beispiel ist eine Anleitung für ein fiktives, bereits eingerichtetes Zielrepo &lt;code&gt;owner/beispiel-repo&lt;/code&gt;. Es wurde hier nicht ausgeführt: Es wurden keine echten Issues, PRs oder Changes angelegt. Das Repo hat den Hauptbranch &lt;code&gt;main&lt;/code&gt;, Node-Tests, die just-Rezepte und Gate-Werkzeuge aus ops-lab, OpenSpec und die Prozessschmiede. Seine &lt;code&gt;tools/gate.projekt.json&lt;/code&gt; nennt den tatsächlich auszuführenden Testbefehl.&lt;/p&gt;
+&lt;p&gt;Die Beispielaufgabe: Eine Funktion &lt;code&gt;summe()&lt;/code&gt; soll eine Zahlenliste addieren und für eine leere Liste null liefern. Kennung: &lt;code&gt;summe-berechnen&lt;/code&gt;. Capability: &lt;code&gt;zahlen&lt;/code&gt;. Issue: die von GitHub tatsächlich zurückgegebene Nummer N. Andere Eingaben sind in diesem kleinen Beispiel nicht spezifiziert.&lt;/p&gt;
+&lt;h3 id=&quot;0-sitzung-und-projektregeln&quot;&gt;0. Sitzung und Projektregeln&lt;/h3&gt;
+&lt;p&gt;SessionStart liefert die gemeinsame SOP und unslop-de. Der Agent liest die lokale &lt;code&gt;CLAUDE.md&lt;/code&gt; und passende Rules: Zweck, Tests, Hauptbranch und Freigabegrenzen. Bei einem bereits bestehenden Auftrag braucht er keine erneute Zustimmung für dieselbe Arbeit. Das Plugin installiert keine Projekt-Gates oder just-Rezepte von selbst.&lt;/p&gt;
+&lt;h3 id=&quot;1-ein-eigenes-offenes-issue&quot;&gt;1. Ein eigenes offenes Issue&lt;/h3&gt;
+&lt;p&gt;Im Hauptordner legt der Leitstand das Issue an oder verwendet ein passendes bestehendes Issue. In der Cloud wird REST verwendet. Existiert &lt;code&gt;ready-for-agent&lt;/code&gt; noch nicht, wird das Label vorher angelegt.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;GITHUB_REPO=&lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;owner/beispiel-repo&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;hljs-comment&quot;&gt;# Nur falls das Label fehlt:&lt;/span&gt;
+gh api -X POST &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;repos/&lt;span class=&quot;hljs-variable&quot;&gt;$GITHUB_REPO&lt;/span&gt;/labels&amp;quot;&lt;/span&gt; \
+  -f name=ready-for-agent -f color=0E8A16
+
+ISSUE_NR=&lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;&lt;span class=&quot;hljs-subst&quot;&gt;$(gh api -X POST &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;repos/&lt;span class=&quot;hljs-variable&quot;&gt;$GITHUB_REPO&lt;/span&gt;/issues&amp;quot;&lt;/span&gt; \
+  -f title=&lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;summe-berechnen: Zahlenlisten addieren&amp;quot;&lt;/span&gt; \
+  -f body=&lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;Ziel: summe([2, 3, 5]) liefert 10; summe([]) liefert 0. Ein eigener Change mit Tests und Nachweisen.&amp;quot;&lt;/span&gt; \
+  -f &amp;#x27;labels[]=ready-for-agent&amp;#x27; --jq .number)&lt;/span&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;hljs-built_in&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;Issue #%s\n&amp;#x27;&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;&lt;span class=&quot;hljs-variable&quot;&gt;$ISSUE_NR&lt;/span&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;GITHUB_REPO&lt;/code&gt; wird durch das echte Repo ersetzt. N ist die Ausgabe, keine vorher erfundene Nummer. &lt;code&gt;gh issue create&lt;/code&gt; und &lt;code&gt;gh pr create&lt;/code&gt; werden in der getesteten Cloud vom GraphQL-Proxy abgelehnt. Das Issue ist die Bestellung; der Change enthält den umsetzbaren Plan. Abhängigkeiten werden bei Bedarf am Issue hinterlegt.&lt;/p&gt;
+&lt;h3 id=&quot;2-leitstand-erhebt-die-lage-und-beauftragt&quot;&gt;2. Leitstand erhebt die Lage und beauftragt&lt;/h3&gt;
+&lt;p&gt;Der Nutzer startet &lt;code&gt;/ops-lab:leitstand&lt;/code&gt; mit dem Auftrag, dieses Issue zu bearbeiten. Im Hauptordner:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;just lage
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der Leitstand meldet aktive, freie und blockierte Changes, Überschneidungen, verwaiste Arbeitsräume und offene Issues. Eine stumme Quelle gilt als unbekannt. Er schlägt den Zuschnitt vor und beauftragt nach Annahme oder bereits erteilter passender Autorisierung einen &lt;code&gt;ops-lab:change-arbeiter&lt;/code&gt; mit genau diesen Angaben:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-text&quot;&gt;Change: summe-berechnen
+Capability: zahlen
+Issue: #N
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;N wird vor dem Auftrag durch die echte Issue-Nummer ersetzt. Ein Arbeiter bearbeitet genau einen Change. Mehrere Arbeiter laufen nur bei disjunkten zugesagten Dateimengen parallel. Zwei Arbeiter erhalten nie denselben Arbeitsraum. Wenn mehrere Menschenentscheidungen offen sind, hilft &lt;code&gt;grilling&lt;/code&gt;; Fachbegriffe und Entscheidungen hält &lt;code&gt;domain-modeling&lt;/code&gt; fest. Ein Interview ist keine Pflicht für einen bereits klaren Auftrag.&lt;/p&gt;
+&lt;h3 id=&quot;3-arbeiter-legt-branch-worktree-und-artefakte-an&quot;&gt;3. Arbeiter legt Branch, Worktree und Artefakte an&lt;/h3&gt;
+&lt;p&gt;Im Hauptordner, mit der echten Nummer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;just neu summe-berechnen zahlen &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;&lt;span class=&quot;hljs-variable&quot;&gt;$ISSUE_NR&lt;/span&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;hljs-built_in&quot;&gt;cd&lt;/span&gt; .claude/worktrees/summe-berechnen
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der Hauptordner wechselt dabei nicht auf den Change-Branch. Der Arbeiter arbeitet ab jetzt ausschließlich hier:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-text&quot;&gt;.claude/worktrees/summe-berechnen/
+  Branch: change/summe-berechnen
+  openspec/changes/summe-berechnen/
+    proposal.md
+    tasks.md
+    specs/zahlen/spec.md
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der Issue-Verweis wird von &lt;code&gt;just neu&lt;/code&gt; in &lt;code&gt;proposal.md&lt;/code&gt; geschrieben und bleibt stehen. Die Variable &lt;code&gt;ISSUE_NR&lt;/code&gt; muss in diesem Aufruf verfügbar sein; bei einem neuen Shell-Aufruf wird die Nummer ausdrücklich eingesetzt. Ebenso wird das Arbeitsverzeichnis bei jedem Werkzeugaufruf erneut gesetzt.&lt;/p&gt;
+&lt;h3 id=&quot;4-plan-ausfüllen-und-gate-1-bestehen&quot;&gt;4. Plan ausfüllen und Gate 1 bestehen&lt;/h3&gt;
+&lt;p&gt;Beispiel für &lt;code&gt;proposal.md&lt;/code&gt;, mit der echten Nummer statt N:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-markdown&quot;&gt;&lt;span class=&quot;hljs-section&quot;&gt;# summe-berechnen&lt;/span&gt;
+
+&lt;span class=&quot;hljs-section&quot;&gt;## Warum&lt;/span&gt;
+Geht zurueck auf GitHub-Issue #N.
+Das Zielrepo braucht eine kleine Funktion zum Addieren einer Zahlenliste.
+Bisher gibt es dafür keinen exportierten Einstiegspunkt.
+Die leere Liste soll ein definiertes Ergebnis haben.
+Ein wiederholbarer Test soll beide vereinbarten Fälle nachweisen.
+
+&lt;span class=&quot;hljs-section&quot;&gt;## Was ändert sich&lt;/span&gt;
+src/summe.mjs exportiert summe(werte).
+Die Funktion addiert die Werte und startet bei null.
+
+&lt;span class=&quot;hljs-section&quot;&gt;## Was ausdrücklich nicht&lt;/span&gt;
+Keine Eingabevalidierung, keine Oberfläche und keine neue Abhängigkeit.
+
+&lt;span class=&quot;hljs-section&quot;&gt;## Berührte Dateien&lt;/span&gt;
+&lt;span class=&quot;hljs-bullet&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;hljs-code&quot;&gt;`src/summe.mjs`&lt;/span&gt;
+&lt;span class=&quot;hljs-bullet&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;hljs-code&quot;&gt;`tests/summe.test.mjs`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Beispiel für &lt;code&gt;specs/zahlen/spec.md&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-markdown&quot;&gt;&lt;span class=&quot;hljs-section&quot;&gt;## ADDED Requirements&lt;/span&gt;
+
+&lt;span class=&quot;hljs-section&quot;&gt;### Requirement: Zahlenlisten addieren&lt;/span&gt;
+Das System SHALL eine Zahlenliste addieren.
+
+&lt;span class=&quot;hljs-section&quot;&gt;#### Scenario: Mehrere Zahlen&lt;/span&gt;
+&lt;span class=&quot;hljs-bullet&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;hljs-strong&quot;&gt;**WHEN**&lt;/span&gt; summe mit [2, 3, 5] aufgerufen wird
+&lt;span class=&quot;hljs-bullet&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;hljs-strong&quot;&gt;**THEN**&lt;/span&gt; ist das Ergebnis 10
+
+&lt;span class=&quot;hljs-section&quot;&gt;#### Scenario: Leere Liste&lt;/span&gt;
+&lt;span class=&quot;hljs-bullet&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;hljs-strong&quot;&gt;**WHEN**&lt;/span&gt; summe mit [] aufgerufen wird
+&lt;span class=&quot;hljs-bullet&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;hljs-strong&quot;&gt;**THEN**&lt;/span&gt; ist das Ergebnis 0
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Beispiel für &lt;code&gt;tasks.md&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-markdown&quot;&gt;&lt;span class=&quot;hljs-section&quot;&gt;## Aufgaben&lt;/span&gt;
+&lt;span class=&quot;hljs-bullet&quot;&gt;-&lt;/span&gt; [ ] 1. Beide Szenarien in &lt;span class=&quot;hljs-code&quot;&gt;`tests/summe.test.mjs`&lt;/span&gt; prüfen und den roten Lauf mit Gate 2 festhalten.
+&lt;span class=&quot;hljs-bullet&quot;&gt;-&lt;/span&gt; [ ] 2. &lt;span class=&quot;hljs-code&quot;&gt;`src/summe.mjs`&lt;/span&gt; implementieren und den grünen Testlauf erreichen.
+&lt;span class=&quot;hljs-bullet&quot;&gt;-&lt;/span&gt; [ ] 3. Vorher/Nachher messen sowie Change-Seite und Bildbeleg erstellen.
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;just gate1 summe-berechnen
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Gate 1 prüft den vollständigen Plan, Requirements mit Szenarien, zugesagte Tests, striktes OpenSpec-Validate und die Regeln zum justfile. Vorlagenkommentare und Platzhalter müssen verschwinden. Falls dieses Repo das justfile verändert, darf es nur zulässig am Ende anhängen. &lt;code&gt;codebase-design&lt;/code&gt; wird bei einer echten Schnittstellenentscheidung eingesetzt, nicht für jede triviale Funktion.&lt;/p&gt;
+&lt;h3 id=&quot;5-nur-tests-schreiben-und-gate-2-rot-nachweisen&quot;&gt;5. Nur Tests schreiben und Gate 2 rot nachweisen&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;tests/summe.test.mjs&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-javascript&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; { test } &lt;span class=&quot;hljs-keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;node:test&amp;#x27;&lt;/span&gt;;
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; assert &lt;span class=&quot;hljs-keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;node:assert/strict&amp;#x27;&lt;/span&gt;;
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; { summe } &lt;span class=&quot;hljs-keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;../src/summe.mjs&amp;#x27;&lt;/span&gt;;
+
+&lt;span class=&quot;hljs-title function_&quot;&gt;test&lt;/span&gt;(&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;addiert mehrere Zahlen&amp;#x27;&lt;/span&gt;, &lt;span class=&quot;hljs-function&quot;&gt;() =&amp;gt;&lt;/span&gt; {
+  assert.&lt;span class=&quot;hljs-title function_&quot;&gt;equal&lt;/span&gt;(&lt;span class=&quot;hljs-title function_&quot;&gt;summe&lt;/span&gt;([&lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;]), &lt;span class=&quot;hljs-number&quot;&gt;10&lt;/span&gt;);
+});
+
+&lt;span class=&quot;hljs-title function_&quot;&gt;test&lt;/span&gt;(&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;liefert null für eine leere Liste&amp;#x27;&lt;/span&gt;, &lt;span class=&quot;hljs-function&quot;&gt;() =&amp;gt;&lt;/span&gt; {
+  assert.&lt;span class=&quot;hljs-title function_&quot;&gt;equal&lt;/span&gt;(&lt;span class=&quot;hljs-title function_&quot;&gt;summe&lt;/span&gt;([]), &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;);
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Es gibt zu diesem Zeitpunkt keine Implementierung. Im Beispiel schlägt der erste Lauf wegen des fehlenden Moduls fehl. Nach der Implementierung müssen die beiden Verhaltenstests bestehen. Bei einem Bugfix soll der Regressionstest dagegen das falsche Verhalten der bestehenden Umsetzung reproduzieren.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;just gate2 summe-berechnen
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das Gate besteht gerade dann, wenn der zugesagte Testlauf rot ist. Das ist nicht dasselbe wie ein fehlgeschlagener Gate-Aufruf. Gate 2 schreibt den Nachweis und den Teststand für den späteren Vergleich. Ist der Lauf unerwartet grün, wird die Ursache geprüft; die Erwartung wird nicht abgeschwächt. &lt;code&gt;tdd&lt;/code&gt; führt diesen Schritt. Bei schwierigen Fehlern ergänzt &lt;code&gt;diagnosing-bugs&lt;/code&gt; eine enge reproduzierbare Fehlerschleife; &lt;code&gt;opensrc&lt;/code&gt; hilft, wenn der Fehler von einer Abhängigkeit abhängt.&lt;/p&gt;
+&lt;h3 id=&quot;6-umsetzen-bis-die-tests-grün-sind&quot;&gt;6. Umsetzen, bis die Tests grün sind&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;src/summe.mjs&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-javascript&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;hljs-title function_&quot;&gt;summe&lt;/span&gt;(&lt;span class=&quot;hljs-params&quot;&gt;werte&lt;/span&gt;) {
+  &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; werte.&lt;span class=&quot;hljs-title function_&quot;&gt;reduce&lt;/span&gt;(&lt;span class=&quot;hljs-function&quot;&gt;(&lt;span class=&quot;hljs-params&quot;&gt;gesamt, wert&lt;/span&gt;) =&amp;gt;&lt;/span&gt; gesamt + wert, &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;node --&lt;span class=&quot;hljs-built_in&quot;&gt;test&lt;/span&gt; tests/summe.test.mjs
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Erwartetes Beispielergebnis: beide Tests bestehen. Danach muss der komplette konfigurierte Projekt-Testlauf grün sein. Ein lokaler Einzeltest ersetzt ihn nicht. Tests werden weder abgeschwächt noch übersprungen oder entfernt. Die Datei wird im vereinbarten Scope gehalten. Vor dem ersten Seitenbau braucht es einen Commit, der den Change-Plan und die Umsetzung trägt. Im Worktree, als lokale Versionskontrollschritte des Beispiels:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;git add src/summe.mjs tests/summe.test.mjs openspec/changes/summe-berechnen
+git commit -m &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;summe-berechnen: Umsetzung und roter Teststand&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Ein Commit ist hier noch kein Abschlussnachweis und kein Push. Die Aufgabe zum Bildbeleg bleibt bis zu ihrer Erledigung offen.&lt;/p&gt;
+&lt;h3 id=&quot;7-messen-seite-beleg-und-abschluss&quot;&gt;7. Messen, Seite, Beleg und Abschluss&lt;/h3&gt;
+&lt;p&gt;Die beiden Messungen führen denselben Fall aus; &lt;code&gt;vorher&lt;/code&gt; läuft im temporären Worktree der Basis, &lt;code&gt;nachher&lt;/code&gt; im Change-Arbeitsraum:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;just messen summe-berechnen vorher &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;node --input-type=module -e &amp;#x27;import { summe } from \&amp;quot;./src/summe.mjs\&amp;quot;; console.log(summe([2, 3, 5]));&amp;#x27;&amp;quot;&lt;/span&gt;
+just messen summe-berechnen nachher &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;node --input-type=module -e &amp;#x27;import { summe } from \&amp;quot;./src/summe.mjs\&amp;quot;; console.log(summe([2, 3, 5]));&amp;#x27;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Vorher wird in diesem Beispiel der fehlende Import dokumentiert, nachher die Ausgabe &lt;code&gt;10&lt;/code&gt;. &lt;code&gt;just messen&lt;/code&gt; speichert Ausgabe, Exit-Code, Laufzeit und Stand unverändert; auch ein roter Beispielbefehl ist eine gültige Messung. Das ist ein Verhaltensbeleg, noch kein belastbarer Geschwindigkeitsvergleich. Für Aussagen über Geschwindigkeit oder Tokenersparnis wird &lt;code&gt;benchmark-checklist&lt;/code&gt; eingesetzt.&lt;/p&gt;
+&lt;p&gt;Die Prozessschmiede erzeugt die Change-Seite aus proposal und git; ihre Messungsdaten zeigen das echte Beispiel:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;uv run --script .claude/skills/prozessschmiede/scripts/prozess.py seite summe-berechnen
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Bei einer reinen Plugin-Installation verwendet der Skill stattdessen den Pfad unter &lt;code&gt;${CLAUDE_PLUGIN_ROOT}/skills/prozessschmiede/scripts/prozess.py&lt;/code&gt;. Die Anweisung des geladenen Skills ist maßgeblich. Der Arbeiter ergänzt in &lt;code&gt;seite/seite.prozess.yaml&lt;/code&gt; den fachlichen Ablauf vorher und nachher und baut die Seite neu:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;uv run --script .claude/skills/prozessschmiede/scripts/prozess.py seite summe-berechnen
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Für technische Dokumentation nutzt er &lt;code&gt;technical-writing&lt;/code&gt;; für Prosa gilt unslop-de.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;just beleg summe-berechnen nachher openspec/changes/summe-berechnen/seite/seite.prozess.png
+&lt;span class=&quot;hljs-comment&quot;&gt;# Aufgaben in tasks.md erst nach Erledigung abhaken.&lt;/span&gt;
+just fertig summe-berechnen
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;just fertig&lt;/code&gt; prüft unter anderem Gate-Nachweise, Aufgaben, grüne Tests, Bildbeleg, Belegjournal und den unveränderten Anspruch der Tests gegenüber dem roten Teststand. Danach committet der Arbeiter Messungen und abgehakte Aufgaben im Arbeitsraum. Auf diesem aktuellen Commit baut er die Seite als letzten Schritt neu, liefert den aktuellen Beleg ein, prüft den Abschluss erneut und committet Seite, Belege und Abschlussnachweis separat. Die Abschlussprüfung ist selbst kein offenes Aufgaben-Kästchen, das vor dem Lauf abgehakt werden müsste. Jeder folgende fachliche Commit verlangt erneut eine passende Seite und einen aktuellen Abschluss. Er meldet Branch und letzten Commit, pusht aber nicht und stellt keinen PR.&lt;/p&gt;
+&lt;h3 id=&quot;8-leitstand-startet-frischen-pr-reviewer&quot;&gt;8. Leitstand startet frischen PR-Reviewer&lt;/h3&gt;
+&lt;p&gt;Der Leitstand startet einen neuen &lt;code&gt;ops-lab:pr-reviewer&lt;/code&gt;, außerhalb der Sitzung des Arbeiters. Sein Auftrag nennt nur die Zeiger:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-text&quot;&gt;Change: summe-berechnen
+Arbeitsraum: .claude/worktrees/summe-berechnen
+Basis: main
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der Reviewer liest proposal, Delta-Spec, Aufgaben, Diff, Abgleich und &lt;code&gt;docs/standards.md&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;just abgleich summe-berechnen main
+git diff main...HEAD
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Er berichtet &lt;strong&gt;Spec&lt;/strong&gt; und &lt;strong&gt;Standards&lt;/strong&gt; getrennt. &lt;code&gt;diff-reviewer&lt;/code&gt; prüft die zugesagte Dateimenge, &lt;code&gt;ponytail-review&lt;/code&gt; unnötige Komplexität und &lt;code&gt;blast-radius&lt;/code&gt; bei Änderungen an gemeinsam genutzten Schnittstellen oder Werkzeugen die Folgen außerhalb des Diffs. Diese Skills sind zusätzliche Prüfungen, keine zusätzlichen Agenten und keine Ersatz-Gates. Reviewer und Arbeiter starten keine eigenen Agenten.&lt;/p&gt;
+&lt;p&gt;Klare Befunde darf der Reviewer im zugesagten Scope nachbessern und in eigenen Commits festhalten. Danach braucht er erneut &lt;code&gt;just fertig&lt;/code&gt;, eine aktuelle Seite und einen Beleg. Offene Urteilsfragen werden gemeldet. Der Leitstand gibt beide Berichtsteile weiter und startet den Abschluss erst auf dem geprüften Stand.&lt;/p&gt;
+&lt;h3 id=&quot;9-leitstand-führt-genau-einen-abschlussaufruf-aus&quot;&gt;9. Leitstand führt genau einen Abschlussaufruf aus&lt;/h3&gt;
+&lt;p&gt;Im Hauptordner, mit passender Autorisierung für Abgabe und Abschluss:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;just abschluss summe-berechnen
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die bestehende Kette übernimmt in dieser Reihenfolge:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Schritt&lt;/th&gt;
+&lt;th&gt;Was geprüft oder ausgeführt wird&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;0. Stand&lt;/td&gt;
+&lt;td&gt;Worktree committet, Remote erreichbar, erforderlicher Hauptbranch-Stand enthalten; andernfalls Halt mit Hinweis auf &lt;code&gt;just einmischen&lt;/code&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1. Abgabe&lt;/td&gt;
+&lt;td&gt;Wenn nötig &lt;code&gt;just abgabe&lt;/code&gt;: Push und PR über GitHub-REST, mit Bildbeleg, rotem/grünem Nachweis und &lt;code&gt;Closes #N&lt;/code&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2. Prüfzustand&lt;/td&gt;
+&lt;td&gt;PR-Workflow muss grün sein; ohne Workflow gilt der vorgesehene grüne Lauf von &lt;code&gt;just alles&lt;/code&gt;; unbekannt oder laufend gilt nicht als grün.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3. Urteil&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;mergeErlaubt&lt;/code&gt; bewertet Nachweise, Bild, Prüfzustand und Ein-Weg-Tür.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4. Merge&lt;/td&gt;
+&lt;td&gt;Nur nach bestandenem Urteil; bei Ein-Weg-Tür liest ein Mensch den Diff und gibt die nötige Freigabe.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5. Archiv&lt;/td&gt;
+&lt;td&gt;Der Change wird archiviert, der Archivstand committet und der Hauptbranch gepusht.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6. Lage&lt;/td&gt;
+&lt;td&gt;Der Leitstand meldet die neue Lage und verbleibende offene Punkte.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;Der Leitstand führt die internen Schritte nicht lose von Hand aus. Bei einem Halt nennt er Schritt und Grund. Nach dessen Behebung setzt ein erneuter Aufruf am offenen Schritt fort. Ein grünes CI-Ergebnis hebt die Ein-Weg-Tür nicht auf. Änderungen an Gate-/Merge-Werkzeugen, Ausrollung oder Workflows unterliegen den Projektregeln zur menschlichen Freigabe.&lt;/p&gt;
+&lt;p&gt;Nach dem Merge wird das zugehörige Issue durch &lt;code&gt;Closes #N&lt;/code&gt; geschlossen, soweit GitHubs Abschlussregeln für den Zielbranch greifen. Der Worktree bleibt bestehen; Aufräumen ist ein eigener bewusster Handgriff. Der Abschluss löscht ihn nicht automatisch.&lt;/p&gt;
+&lt;h3 id=&quot;10-ergebnis-und-zuordnung&quot;&gt;10. Ergebnis und Zuordnung&lt;/h3&gt;
+&lt;p&gt;Am Ende gehören diese Zeiger zu genau derselben Bestellung:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Zeiger&lt;/th&gt;
+&lt;th&gt;Beispiel&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;Issue&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;owner/beispiel-repo#N&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Change&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;summe-berechnen&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Capability&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;zahlen&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Branch während der Arbeit&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;change/summe-berechnen&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worktree&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;.claude/worktrees/summe-berechnen&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Vorschlag&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;openspec/changes/summe-berechnen/proposal.md&lt;/code&gt; mit Issue-Verweis&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PR&lt;/td&gt;
+&lt;td&gt;Verweist mit &lt;code&gt;Closes #N&lt;/code&gt; auf das Issue und enthält Nachweise und Bildbeleg&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nach dem Archivieren&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;openspec/changes/archive/DATUM-summe-berechnen/&lt;/code&gt; und die übernommene Spec unter &lt;code&gt;openspec/specs/zahlen/&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;&lt;code&gt;DATUM&lt;/code&gt; ist das tatsächliche Archivdatum. Die Belege &lt;code&gt;gate1.md&lt;/code&gt;, &lt;code&gt;gate2.md&lt;/code&gt;, &lt;code&gt;fertig.md&lt;/code&gt;, &lt;code&gt;teststand/&lt;/code&gt;, &lt;code&gt;messung/&lt;/code&gt; und &lt;code&gt;seite/&lt;/code&gt; gehören zum Change. Die GitHub-Nummer des PRs entsteht erst bei dessen Anlage.&lt;/p&gt;
+&lt;h3 id=&quot;11-parallelbetrieb-und-abhängigkeiten&quot;&gt;11. Parallelbetrieb und Abhängigkeiten&lt;/h3&gt;
+&lt;p&gt;Ein zweites unabhängiges Issue kann beispielsweise &lt;code&gt;texte-kuerzen&lt;/code&gt; mit Capability &lt;code&gt;texte&lt;/code&gt; bestellen. Seine zugesagten Dateien &lt;code&gt;src/texte.mjs&lt;/code&gt; und &lt;code&gt;tests/texte.test.mjs&lt;/code&gt; überschneiden sich nicht mit dem Zahlen-Change. Der Leitstand kann nach Annahme beide Arbeiter gleichzeitig beauftragen, jeder mit eigenem Issue und Worktree. Gemeinsame Dateien wie CLAUDE.md oder Gate-Konfiguration sind keine freien Parallelflächen; die besondere Anhangregel für das justfile wird durch die Gates geprüft.&lt;/p&gt;
+&lt;p&gt;Ein abhängiges Issue startet dagegen erst nach seinem Vorgänger. Die Verknüpfung entsteht mit GitHubs Datenbank-Id des Vorgänger-Issues, nicht dessen sichtbarer Nummer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs language-bash&quot;&gt;VORGAENGER_ID=&lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;&lt;span class=&quot;hljs-subst&quot;&gt;$(gh api &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;repos/&lt;span class=&quot;hljs-variable&quot;&gt;$GITHUB_REPO&lt;/span&gt;/issues/&lt;span class=&quot;hljs-variable&quot;&gt;$ISSUE_NR&lt;/span&gt;&amp;quot;&lt;/span&gt; --jq .id)&lt;/span&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;hljs-comment&quot;&gt;# FOLGE_ISSUE_NR ist die echte Nummer des separat angelegten Folge-Issues.&lt;/span&gt;
+gh api -X POST &lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;repos/&lt;span class=&quot;hljs-variable&quot;&gt;$GITHUB_REPO&lt;/span&gt;/issues/&lt;span class=&quot;hljs-variable&quot;&gt;$FOLGE_ISSUE_NR&lt;/span&gt;/dependencies/blocked_by&amp;quot;&lt;/span&gt; \
+  -F issue_id=&lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;&lt;span class=&quot;hljs-variable&quot;&gt;$VORGAENGER_ID&lt;/span&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Diese Befehle illustrieren die Verknüpfung; sie wurden hier nicht ausgeführt. Nach dem ersten Merge kann der nächste bereits laufende Worktree einen veralteten Basisstand haben. &lt;code&gt;just abschluss&lt;/code&gt; hält dann an; der gemeldete Schritt wie &lt;code&gt;just einmischen KENNUNG&lt;/code&gt; und erneut aktuelle Nachweise werden abgearbeitet, bevor der Abschluss fortgesetzt wird.&lt;/p&gt;
+&lt;h3 id=&quot;12-übergabe-und-messung-des-ablaufs&quot;&gt;12. Übergabe und Messung des Ablaufs&lt;/h3&gt;
+&lt;p&gt;Ist die Arbeit abgeschlossen, genügt der Stand mit Issue, PR, Commit, Tests und Archivpfad. Wird eine Sitzung mit offener Arbeit übergeben, erstellt &lt;code&gt;handoff&lt;/code&gt; eine Übergabe mit Zustand und nächstem Schritt. &lt;code&gt;wizard&lt;/code&gt; wird eingesetzt, wenn ein erforderlicher Schritt nur vom Nutzer ausgeführt werden kann. Für einen Vergleich zweier Abläufe liefert &lt;code&gt;just tokens&lt;/code&gt; die Daten; &lt;code&gt;benchmark-checklist&lt;/code&gt; prüft, was aus diesen Daten geschlossen werden darf.&lt;/p&gt;
+&lt;h2 id=&quot;was-im-aktuellen-bestand-noch-offen-oder-widersprüchlich-ist&quot;&gt;Was im aktuellen Bestand noch offen oder widersprüchlich ist&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;GitButler wurde in der Cloud erfolgreich getestet, aber die heutigen Gates lesen den Workspace-HEAD und vermischen dort parallele Changes. Der hier gezeigte Ablauf nutzt daher eigene Worktrees. Eine Umstellung auf explizite Branch-Refs wurde noch nicht implementiert.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;just pr&lt;/code&gt; ist ein älteres Rezept mit &lt;code&gt;gh pr create&lt;/code&gt; und scheitert in der getesteten Cloud an GraphQL. Der dokumentierte Leitstand-Ablauf nutzt &lt;code&gt;just abschluss&lt;/code&gt; und intern &lt;code&gt;just abgabe&lt;/code&gt; mit REST.&lt;/li&gt;
+&lt;li&gt;Der Text von &lt;code&gt;diff-reviewer&lt;/code&gt; verweist noch auf &lt;code&gt;just pr&lt;/code&gt;. Für die Abgabe ist die aktuelle Leitstand-Kette maßgeblich; dieser Text wurde für die Darstellung nicht still geändert.&lt;/li&gt;
+&lt;li&gt;Die Arbeiterbeschreibung beschreibt den ersten Commit erst nach dem Seitenbau. Das Seitenwerkzeug braucht jedoch einen Commit, der &lt;code&gt;proposal.md&lt;/code&gt; trägt. Das Beispiel nennt deshalb vor dem ersten Seitenbau den notwendigen lokalen Commit; die Skill-Anweisung selbst wurde hier nicht geändert.&lt;/li&gt;
+&lt;li&gt;Die Arbeiterbeschreibung behauptet für ops-lab noch, es gebe keinen eigenen Projekt-Testbefehl. Tatsächlich liegt &lt;code&gt;tools/gate.projekt.json&lt;/code&gt; vor und führt Node- und Python-Tests aus. Die Konfiguration ist maßgeblich.&lt;/li&gt;
+&lt;li&gt;Das Plugin ersetzt nicht die Installation der Projekt-Werkzeuge. Ausgerollte repo-eigene Ablauf-Hooks haben Vorrang vor der Plugin-Kopie, damit dieselbe Prüfung nicht doppelt läuft.&lt;/li&gt;
+&lt;li&gt;Die Abhängigkeiten sind gepinnt. Die frische lokale Marketplace-Installation und die Komponentenlisten wurden geprüft; die Cloud-Installation des privaten Marketplace bleibt ungeprüft.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
   <entry>
     <title>Von TickTick über beads zu GitHub-Issues mit OpenSpec</title>
     <link href="https://niclasedge.github.io/posts/ticktick-zu-openspec/" rel="alternate" type="text/html"/>
