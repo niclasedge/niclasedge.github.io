@@ -1,0 +1,1 @@
+{ "test": "deno install -q && deno task test" }
