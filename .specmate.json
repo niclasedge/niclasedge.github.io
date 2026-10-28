@@ -1,0 +1,4 @@
+{
+  "test": "deno install -q && deno task test",
+  "done": "for s in static/images/posts/*.svg; do p=${s%.svg}.png; [ -e \"$p\" ] || rsvg-convert -w 1200 -h 630 -o \"$p\" \"$s\" || exit 1; done"
+}
