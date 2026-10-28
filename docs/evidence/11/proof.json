@@ -1,0 +1,175 @@
+{
+  "repo": "niclasedge/niclasedge.github.io",
+  "n": 11,
+  "title": "Artikel: IaC-Stack – Technologien und Aufbau",
+  "pr": 16,
+  "branch": "specmate/11-artikel-iac-stack-technologien-und-aufba",
+  "sha": "b733ac8",
+  "main": "main",
+  "mainSha": "e5e46b3",
+  "stamp": "2026-10-28 11:01 UTC",
+  "test": "deno install -q && deno task test",
+  "decisions": [],
+  "img": {
+    "src": "docs/evidence/11/live.png",
+    "w": 1400,
+    "h": 412
+  },
+  "runs": {
+    "red": {
+      "label": "red",
+      "ref": "4c14509",
+      "code": 1,
+      "pass": 11,
+      "fail": 5,
+      "sha256": "1224e8df66745f9d2cc7e7eceb90f78e21013b2f676a6a215f9a107a4fbe1abe"
+    },
+    "green": {
+      "label": "green",
+      "ref": "b733ac8",
+      "code": 0,
+      "pass": 16,
+      "fail": 0,
+      "sha256": "81d1176dcccc8d72ddb213c4adef45e22ebff19f6e31994160c2d68cf97db17a"
+    },
+    "mutation": {
+      "label": "mutation",
+      "ref": "b733ac8",
+      "code": 1,
+      "pass": 15,
+      "fail": 1,
+      "sha256": "ef7d87ab463a7d035b3b2dee453c8cf2bbcb84f1407a2344485d99e52422762e"
+    }
+  },
+  "verdict": "go",
+  "why": [],
+  "items": [
+    {
+      "nr": 1,
+      "text": "getPosts() liefert den Artikel mit Slug `iac-stack`, Tag 2026-07-23 (Datei content/posts/2026-07-23-iac-stack.md), Bereich `infra`, Titel und Beschreibung im Front Matter.",
+      "state": "pass",
+      "kind": "live",
+      "img": "docs/evidence/11/live.png"
+    },
+    {
+      "nr": 2,
+      "text": "Der Artikel ist nach Aufgaben gegliedert und nennt je Aufgabe die Technologie: Hosts, Dienst-Deklaration (services.yml + Schema), Deploy mit Rückweg, Netz/Zugang (Traefik, Tailscale), Secrets (SOPS/age), Auslösen (Semaphore), Monitoring/Alarm und Backups – mindestens sechs `##`-Abschnitte.",
+      "state": "pass",
+      "kind": "live",
+      "img": "docs/evidence/11/live.png"
+    },
+    {
+      "nr": 3,
+      "text": "Der Artikel enthält mindestens zwei Mermaid-Schaubilder (gerendert als `<pre class=\"mermaid\">`): das Zusammenspiel der Hosts/Werkzeuge und die Alarmkette.",
+      "state": "pass",
+      "kind": "live",
+      "img": "docs/evidence/11/live.png"
+    },
+    {
+      "nr": 4,
+      "text": "Artikelbild: static/images/posts/iac-stack.svg als Quelle und iac-stack.png mit 1200×630; post.image zeigt auf /images/posts/iac-stack.png.",
+      "state": "pass",
+      "kind": "live",
+      "img": "docs/evidence/11/live.png"
+    },
+    {
+      "nr": 5,
+      "text": "Der öffentliche Text nennt keine Affiliate-Projekte (affiliate, astro-, deinelistings) und keine IPv4-Adressen, Tokens oder Secret-Schlüsselnamen.",
+      "state": "pass",
+      "kind": "unit"
+    }
+  ],
+  "callouts": [
+    {
+      "nr": 1,
+      "x": 712,
+      "y": 72,
+      "w": 330,
+      "h": 52
+    },
+    {
+      "nr": 2,
+      "x": 712,
+      "y": 176,
+      "w": 340,
+      "h": 222
+    },
+    {
+      "nr": 3,
+      "x": 712,
+      "y": 158,
+      "w": 210,
+      "h": 20
+    },
+    {
+      "nr": 4,
+      "x": 712,
+      "y": 141,
+      "w": 310,
+      "h": 20
+    }
+  ],
+  "chain": [
+    {
+      "at": "content/posts/2026-07-23-iac-stack.md:3",
+      "label": "Front Matter + Text",
+      "items": [
+        1,
+        2,
+        5
+      ]
+    },
+    {
+      "at": "lib/posts.ts:74",
+      "label": "readPost",
+      "items": [
+        1,
+        2
+      ]
+    },
+    {
+      "at": "lib/markdown.ts:51",
+      "label": "Mermaid-Block",
+      "items": [
+        3
+      ]
+    },
+    {
+      "at": "lib/posts.ts:118",
+      "label": "postImage",
+      "items": [
+        4
+      ]
+    }
+  ],
+  "bars": [
+    {
+      "file": ".specmate.json",
+      "add": 4,
+      "del": 0
+    },
+    {
+      "file": "content/posts/2026-07-23-iac-stack.md",
+      "add": 229,
+      "del": 0
+    },
+    {
+      "file": "lib/iac_stack_post.test.ts",
+      "add": 82,
+      "del": 0
+    },
+    {
+      "file": "static/images/posts/iac-stack.png",
+      "add": 0,
+      "del": 0
+    },
+    {
+      "file": "static/images/posts/iac-stack.svg",
+      "add": 84,
+      "del": 0
+    }
+  ],
+  "self": [
+    "items without own image: 5"
+  ]
+}

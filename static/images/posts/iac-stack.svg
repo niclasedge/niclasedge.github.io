@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#2a2b30" stroke-width="1"/>
+    </pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#e0b07a"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="630" fill="#1e1f22"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#e0b07a"/>
+  <text x="60" y="70" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="22" fill="#a0a2aa">niclasedge.github.io · Infra</text>
+
+  <!-- Host 1: MacBook, Controller -->
+  <g transform="translate(110 130)">
+    <rect width="260" height="290" rx="18" fill="#26272b" stroke="#e0b07a" stroke-width="3"/>
+    <g fill="none" stroke="#a0a2aa" stroke-width="3">
+      <rect x="80" y="36" width="100" height="64" rx="6"/>
+      <path d="M62 108h136l-10 10H72z"/>
+    </g>
+    <g fill="#45464d">
+      <rect x="94" y="52" width="40" height="8" rx="4"/>
+      <rect x="94" y="68" width="60" height="8" rx="4"/>
+    </g>
+    <text x="130" y="160" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#ececee">MacBook</text>
+    <g font-family="Menlo, monospace" font-size="17" fill="#ececee">
+      <rect x="30" y="182" width="200" height="34" rx="8" fill="#2a2b30"/>
+      <text x="130" y="205" text-anchor="middle">just · Ansible</text>
+      <rect x="30" y="226" width="200" height="34" rx="8" fill="#2a2b30"/>
+      <text x="130" y="249" text-anchor="middle">SOPS + age</text>
+    </g>
+  </g>
+
+  <path d="M385 275H455" stroke="#e0b07a" stroke-width="4" marker-end="url(#arr)"/>
+
+  <!-- Host 2: VPS -->
+  <g transform="translate(470 130)">
+    <rect width="260" height="290" rx="18" fill="#26272b" stroke="#45464d" stroke-width="2"/>
+    <g fill="#2a2b30" stroke="#a0a2aa" stroke-width="2.5">
+      <rect x="70" y="30" width="120" height="26" rx="5"/>
+      <rect x="70" y="62" width="120" height="26" rx="5"/>
+      <rect x="70" y="94" width="120" height="26" rx="5"/>
+    </g>
+    <g fill="#52cc88">
+      <circle cx="86" cy="43" r="5"/>
+      <circle cx="86" cy="75" r="5"/>
+      <circle cx="86" cy="107" r="5"/>
+    </g>
+    <g fill="#45464d">
+      <rect x="104" y="39" width="70" height="8" rx="4"/>
+      <rect x="104" y="71" width="56" height="8" rx="4"/>
+      <rect x="104" y="103" width="64" height="8" rx="4"/>
+    </g>
+    <text x="130" y="160" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#ececee">VPS</text>
+    <g font-family="Menlo, monospace" font-size="17" fill="#ececee">
+      <rect x="30" y="182" width="200" height="34" rx="8" fill="#2a2b30"/>
+      <text x="130" y="205" text-anchor="middle">Traefik · Compose</text>
+      <rect x="30" y="226" width="200" height="34" rx="8" fill="#2a2b30"/>
+      <text x="130" y="249" text-anchor="middle">Semaphore</text>
+    </g>
+  </g>
+
+  <path d="M745 275H815" stroke="#e0b07a" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+  <text x="780" y="255" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#a0a2aa">Tailnet</text>
+
+  <!-- Host 3: Mac mini -->
+  <g transform="translate(830 130)">
+    <rect width="260" height="290" rx="18" fill="#26272b" stroke="#45464d" stroke-width="2"/>
+    <rect x="60" y="62" width="140" height="44" rx="12" fill="#2a2b30" stroke="#a0a2aa" stroke-width="3"/>
+    <circle cx="180" cy="84" r="4" fill="#52cc88"/>
+    <path d="M80 106v6M180 106v6" stroke="#a0a2aa" stroke-width="3"/>
+    <text x="130" y="160" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#ececee">Mac mini</text>
+    <g font-family="Menlo, monospace" font-size="17" fill="#ececee">
+      <rect x="30" y="182" width="200" height="34" rx="8" fill="#2a2b30"/>
+      <text x="130" y="205" text-anchor="middle">Elasticsearch</text>
+      <rect x="30" y="226" width="200" height="34" rx="8" fill="#2a2b30"/>
+      <text x="130" y="249" text-anchor="middle">Alarm → Issue</text>
+    </g>
+  </g>
+
+  <text x="60" y="540" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="44" font-weight="700" fill="#ececee">Mein IaC-Stack: drei Rechner, ein Repo</text>
+  <text x="60" y="588" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="28" fill="#e0b07a">Welche Technologie wofür – und wie die Teile zusammenspielen</text>
+</svg>

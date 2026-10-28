@@ -1,0 +1,10 @@
+diff --git a/content/posts/2026-07-23-iac-stack.md b/content/posts/2026-07-23-iac-stack.md
+--- a/content/posts/2026-07-23-iac-stack.md
++++ b/content/posts/2026-07-23-iac-stack.md
+@@ -1,5 +1,5 @@
+ ---
+ title: Mein IaC-Stack – welche Technologie wofür
+-area: infra
++area: dev
+ tags: [ansible, iac, homelab, monitoring, sops]
+ description: Drei Rechner, ein Repo – wie Ansible, Docker Compose, Traefik, Tailscale, SOPS, Semaphore und eine Alarmkette mein Homelab zusammenhalten.
