@@ -757,6 +757,244 @@ Action baut deshalb zusätzlich einmal am Tag. Was seit dem letzten Klick auf
 </content>
   </entry>
   <entry>
+    <title>Mein IaC-Stack – welche Technologie wofür</title>
+    <link href="https://niclasedge.github.io/posts/iac-stack/" rel="alternate" type="text/html"/>
+    <id>https://niclasedge.github.io/posts/iac-stack/</id>
+    <published>2026-07-23T00:00:00.000Z</published>
+    <updated>2026-07-23T00:00:00.000Z</updated>
+    <author><name>Niclas Edge</name></author>
+    <category term="ansible"/>
+    <category term="iac"/>
+    <category term="homelab"/>
+    <category term="monitoring"/>
+    <category term="sops"/>
+    <summary>Drei Rechner, ein Repo – wie Ansible, Docker Compose, Traefik, Tailscale, SOPS, Semaphore und eine Alarmkette mein Homelab zusammenhalten.</summary>
+    <content type="html">&lt;p&gt;Am 23. Juli 2026 habe ich angefangen, meine selbst betriebenen Dienste in ein
+einziges Infrastruktur-Repo zu ziehen. Vorher lagen Compose-Dateien,
+Cronjobs und Passwörter verstreut auf drei Rechnern; was wo lief, wusste nur
+der jeweilige Rechner. Dieser Artikel zeigt nicht das Repo Datei für Datei,
+sondern welche Technologie welche Aufgabe übernimmt und wie die Teile
+zusammenspielen – Stand Oktober 2026.&lt;/p&gt;
+&lt;h2 id=&quot;hosts-drei-rechner-klare-rollen&quot;&gt;Hosts: drei Rechner, klare Rollen&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Host&lt;/th&gt;
+&lt;th&gt;Rolle&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;MacBook&lt;/td&gt;
+&lt;td&gt;Workstation und Ansible-Controller, hält die lokale CA&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Mac mini M4&lt;/td&gt;
+&lt;td&gt;Dauerläufer im Heimnetz: LAN-Proxy, DNS, Log-Speicher, Alarm&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;VPS (Debian 12)&lt;/td&gt;
+&lt;td&gt;Öffentliche Dienste, Scheduler, Monitoring-Hub&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;NAS&lt;/td&gt;
+&lt;td&gt;Ziel der nächtlichen Backups&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;Auf dem VPS und dem Mac mini laufen die Dienste als Docker-Compose-Stacks, auf
+dem Mini mit OrbStack als Container-Laufzeit. Adressen stehen nicht im Repo,
+sondern kommen zur Laufzeit aus der Umgebung.&lt;/p&gt;
+&lt;pre class=&quot;mermaid not-prose&quot;&gt;flowchart LR
+  subgraph WS[MacBook – Workstation]
+    R[Git-Repo: services.yml, Playbooks, Secrets]
+    J[just + Ansible]
+    R --&amp;gt; J
+  end
+  subgraph V[VPS]
+    SEM[Semaphore UI]
+    TP[Traefik öffentlich]
+    DV[Compose-Dienste]
+    HUB[data-hub]
+  end
+  subgraph M[Mac mini]
+    TL[Traefik LAN + CoreDNS]
+    FB[Filebeat]
+    ES[Elasticsearch]
+    MC[monitor-check]
+    FB --&amp;gt; ES
+    ES --&amp;gt; MC
+  end
+  NAS[(NAS)]
+  J --&amp;gt;|Deploy über Tailscale| DV
+  SEM --&amp;gt;|geplante Läufe| DV
+  TP --&amp;gt; DV
+  TL --&amp;gt;|tailscale serve| DV
+  MC --&amp;gt; GH[GitHub-Issues]
+  HUB --&amp;gt; GH
+  DV --&amp;gt;|restic| NAS&lt;/pre&gt;
+&lt;h2 id=&quot;ein-einstieg-just-und-ansible&quot;&gt;Ein Einstieg: just und Ansible&lt;/h2&gt;
+&lt;p&gt;Alles beginnt mit &lt;code&gt;just&lt;/code&gt;. Die Rezepte sind in Gruppen sortiert (Ausführen,
+Prüfen, Ausrollen, Einrichten), und &lt;code&gt;just --list&lt;/code&gt; ist zugleich die
+Werkzeugliste. Ein kleiner Wrapper startet &lt;code&gt;just&lt;/code&gt; unter &lt;code&gt;sops exec-env&lt;/code&gt;, damit
+jedes Rezept die entschlüsselten Werte in der Umgebung hat, ohne dass sie je
+auf der Platte liegen.&lt;/p&gt;
+&lt;p&gt;Darunter arbeitet Ansible: Playbooks für Checks, Jobs, Runbooks und Deploys,
+dazu eine einzige Rolle für das Ausrollen von Diensten. Zwei eigene Plugins
+ergänzen es – ein Callback, der jeden Lauf als strukturiertes Log schreibt,
+und ein Lookup, der Werte aus verschlüsselten dotenv-Dateien liest.&lt;/p&gt;
+&lt;h2 id=&quot;dienste-als-deklaration-servicesyml-und-schema&quot;&gt;Dienste als Deklaration: services.yml und Schema&lt;/h2&gt;
+&lt;p&gt;Jeder Dienst ist ein Git-Submodule unter &lt;code&gt;&amp;lt;host&amp;gt;-services/&amp;lt;zustand&amp;gt;/&amp;lt;name&amp;gt;&lt;/code&gt;.
+Der Pfad allein sagt, auf welchem Host ein Dienst läuft und ob er aktiv ist;
+ein Umzug ist ein &lt;code&gt;git mv&lt;/code&gt;, kein Suchen in Konfigurationsdateien.&lt;/p&gt;
+&lt;p&gt;Was der Pfad nicht sagt, steht in &lt;code&gt;services.yml&lt;/code&gt;: Deploy-Muster, Domain,
+Health-Pfad, Compose-Datei und welche Secrets in die &lt;code&gt;.env&lt;/code&gt; gehören. Die Datei
+hat Standardwerte und je Dienst nur die Abweichungen. Bevor ein Host berührt
+wird, prüft ein JSON-Schema die Struktur und ein Python-Skript die
+Vertragsregeln:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;git-pull&lt;/code&gt; braucht ein Repo, &lt;code&gt;compose-pull&lt;/code&gt; darf nichts bauen.&lt;/li&gt;
+&lt;li&gt;Jeder &lt;code&gt;./&lt;/code&gt;-Mount muss mitgeliefert werden – sonst legt Docker auf einem
+frischen Host ein leeres Verzeichnis an.&lt;/li&gt;
+&lt;li&gt;Ein Dienst mit Domain veröffentlicht keinen Port, weil er sonst an der
+Firewall vorbeiginge.&lt;/li&gt;
+&lt;li&gt;Keine Domain doppelt, und ein Health-Pfad nur mit Domain.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;deploy-mit-rückweg&quot;&gt;Deploy mit Rückweg&lt;/h2&gt;
+&lt;p&gt;Drei Muster decken alle Dienste ab:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Muster&lt;/th&gt;
+&lt;th&gt;Was passiert&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;compose-pull&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Compose-Datei und deklarierte Dateien kopieren, Images ziehen&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;git-pull&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Der Host klont das Dienst-Repo selbst&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;rsync-build&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Submodule per rsync auf den Host, dort wird gebaut&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;Nur das Holen des Codes unterscheidet sich, der Rest ist eine gemeinsame
+Strecke. Vor jedem Deploy laufen gitleaks und trivy.&lt;/p&gt;
+&lt;pre class=&quot;mermaid not-prose&quot;&gt;flowchart LR
+  P[Preflight] --&amp;gt; K[Kollisionscheck Traefik]
+  K --&amp;gt; S[Snapshot]
+  S --&amp;gt; A[Code holen: Muster]
+  A --&amp;gt; E[.env aus SOPS]
+  E --&amp;gt; U[compose up -d]
+  U --&amp;gt; H{Healthcheck}
+  H --&amp;gt;|ok| MK[Deploy-Marker]
+  H --&amp;gt;|Fehler| RB[Rollback: Snapshot zurück, up -d]&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Healthcheck:&lt;/strong&gt; HTTPS auf die Domain samt Health-Pfad, bis zu zwölf
+Versuche; ohne Domain zählt der Container-Zustand.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rollback:&lt;/strong&gt; Snapshot zurückspielen und erneut &lt;code&gt;up -d&lt;/code&gt; – bewusst nie
+&lt;code&gt;down&lt;/code&gt;. Ein Rollback, der den Dienst herunterfährt und nicht wieder
+hochbekommt, hat mir einmal zehn Minuten DNS gekostet.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;„Geändert“&lt;/strong&gt; leitet sich aus den Container-IDs vor und nach dem &lt;code&gt;up&lt;/code&gt; ab,
+nicht aus der Textausgabe von Compose.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;netz-und-zugang-traefik-und-tailscale&quot;&gt;Netz und Zugang: Traefik und Tailscale&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Öffentlich:&lt;/strong&gt; Traefik auf dem VPS leitet HTTP auf HTTPS um, holt
+Zertifikate bei Let&amp;#39;s Encrypt und setzt Sicherheits-Header.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Privat:&lt;/strong&gt; Alles unter der &lt;code&gt;.lan&lt;/code&gt;-Zone erreicht nur, wer im Tailnet ist.
+Tailscale Split-DNS zeigt auf CoreDNS auf dem Mac mini, dort terminiert ein
+zweiter Traefik TLS mit einem mkcert-Wildcard-Zertifikat. Dienste auf dem
+VPS lauschen dafür nur auf Loopback und werden per &lt;code&gt;tailscale serve&lt;/code&gt; ins
+Tailnet gereicht.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Verwaltung:&lt;/strong&gt; Ansible und Semaphore erreichen die Hosts über Tailscale.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;DNS und Firewall:&lt;/strong&gt; Pi-hole mit unbound läuft als eigener Stack; die
+UFW-Regeln stehen in den Gruppen-Variablen, und ein Runbook gleicht sie ab –
+erst hinzufügen, dann löschen, und ohne SSH-Regel verweigert es den Lauf.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Private Werkzeuge ohne eigenes Login liegen grundsätzlich nur im Tailnet. Das
+Tailnet ist dort die Zugangskontrolle.&lt;/p&gt;
+&lt;h2 id=&quot;secrets-sops-und-age&quot;&gt;Secrets: SOPS und age&lt;/h2&gt;
+&lt;p&gt;Secrets liegen verschlüsselt im Repo, mit SOPS und age. Jeder Empfänger hat
+einen eigenen Schlüssel: MacBook, Mac mini und ein Deploy-Schlüssel für
+Semaphore. Eine Datei hält die Werte des Controllers, eine zweite die Werte,
+die vorher als &lt;code&gt;.env&lt;/code&gt; auf dem VPS lagen.&lt;/p&gt;
+&lt;p&gt;Welche Werte ein Dienst bekommt, steht in &lt;code&gt;services.yml&lt;/code&gt; als Zuordnung von
+Variablenname zu Schlüssel. Ansible rendert daraus die &lt;code&gt;.env&lt;/code&gt; und ersetzt
+damit Templates, die eigene Passwörter erzeugten – ein Risiko bei jeder
+Datenbank, deren Passwort schon im Volume steckt. Ein
+gitleaks-Hook verhindert, dass ein Klartext-Secret überhaupt committet wird.&lt;/p&gt;
+&lt;h2 id=&quot;auslösen-semaphore-ui&quot;&gt;Auslösen: Semaphore UI&lt;/h2&gt;
+&lt;p&gt;Geplant und von Hand gestartet wird über
+&lt;a href=&quot;https://github.com/semaphoreui/semaphore&quot;&gt;Semaphore UI&lt;/a&gt; auf dem VPS. Projekt,
+Templates, Zeitpläne und Umgebungen richtet ein Skript aus einer Job-Liste im
+Repo ein – Semaphore wird also selbst deklarativ gepflegt. Ein Template
+„Deploy Service“ führt dasselbe Deploy-Playbook aus wie &lt;code&gt;just&lt;/code&gt;, und andere
+Werkzeuge bekommen eigene Tokens mit der Rolle, die nur Läufe starten darf.&lt;/p&gt;
+&lt;p&gt;Daneben bleibt wenig: ein Cronjob für die Alarmprüfung, ein paar launchd-Agents
+auf dem Mac und ein systemd-Timer auf dem VPS.&lt;/p&gt;
+&lt;h2 id=&quot;monitoring-und-alarm&quot;&gt;Monitoring und Alarm&lt;/h2&gt;
+&lt;p&gt;Jeder Job schreibt ein strukturiertes JSON-Log, und jedes Job-Playbook endet
+mit einer Aufgabe, die bei einem Fehler laut scheitert. Daraus wird an zwei
+Stellen ein Alarm:&lt;/p&gt;
+&lt;pre class=&quot;mermaid not-prose&quot;&gt;flowchart LR
+  J[Jobs und Skripte] --&amp;gt;|JSON-Logs| F[Filebeat]
+  F --&amp;gt; E[Elasticsearch]
+  E --&amp;gt; M[monitor-check alle 5 min]
+  M --&amp;gt;|Fehler oder fehlender Herzschlag| I[GitHub-Issue]
+  R[hub-runner je Host] --&amp;gt;|Snapshot je Minute| H[data-hub]
+  H --&amp;gt; I
+  H --&amp;gt;|Lebenszeichen| HC[Healthchecks]
+  HC --&amp;gt;|Ping bleibt aus| AL[Alarm]&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Alarmkette:&lt;/strong&gt; Filebeat liefert die Logs an Elasticsearch, &lt;code&gt;monitor-check&lt;/code&gt;
+macht aus Fehlern und ausbleibenden Herzschlägen GitHub-Issues – mit
+Duplikatprüfung und automatischem Schließen nach 24 Stunden.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Host-Checks:&lt;/strong&gt; Ein kleiner Runner je Host schickt einmal pro Minute einen
+Snapshot an data-hub, einen eigenen Dienst auf dem VPS, der bei Problemen
+ebenfalls ein Issue öffnet.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Wer überwacht den Wächter:&lt;/strong&gt; data-hub meldet sich regelmäßig bei einer
+selbst gehosteten Healthchecks-Instanz. Bleibt das Lebenszeichen aus,
+schlägt Healthchecks an.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;backups&quot;&gt;Backups&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SQLite:&lt;/strong&gt; Täglich sichert ein Job die SQLite-Datenbanken der Dienste mit
+&lt;code&gt;sqlite3 .backup&lt;/code&gt;, prüft die Integrität und hält 30 Tage vor.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Alle Hosts:&lt;/strong&gt; Danach läuft eine Backup-Kette mit restic über rclone und SMB
+auf das NAS, für alle drei Rechner, mit 7 täglichen, 4 wöchentlichen und 12
+monatlichen Ständen.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Wiederherstellung:&lt;/strong&gt; Ein eigener Restore-Test liest regelmäßig aus dem
+Backup zurück – ein Backup, das nie zurückgelesen wurde, ist nur eine
+Annahme.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;tests&quot;&gt;Tests&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;just lint&lt;/code&gt; führt ansible-lint aus, &lt;code&gt;just test&lt;/code&gt; gut 300 pytest-Tests über die
+Skripte für Deploy, Monitoring und Dienstverwaltung. Auch die Vertragsregeln
+für &lt;code&gt;services.yml&lt;/code&gt; haben eigene Tests.&lt;/p&gt;
+&lt;h2 id=&quot;was-sich-unterwegs-geändert-hat&quot;&gt;Was sich unterwegs geändert hat&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Juli:&lt;/strong&gt; Semaphore übernimmt die Zeitpläne vom alten Cron-Wrapper;
+„geändert“ wird über Container-IDs erkannt.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;August:&lt;/strong&gt; Der Mac mini kommt als Dauerläufer dazu, Elasticsearch und die
+Alarmprüfung ziehen dorthin; alle Secrets vom VPS landen verschlüsselt im
+Repo; die NAS-Sicherung wird entworfen.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Oktober:&lt;/strong&gt; data-hub ersetzt Checkmk, Kibana fällt weg, und die meisten
+Dienste ziehen vom Mini auf den VPS – das Monitoring soll einen Ausfall des
+Mini überleben.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;fazit&quot;&gt;Fazit&lt;/h2&gt;
+&lt;p&gt;Kein Teil des Stacks ist exotisch. Den Unterschied macht, dass jede Aufgabe
+genau ein Werkzeug hat und jede Übergabe geprüft wird: Schema und
+Vertragsregeln vor dem Deploy, Healthcheck und Rollback danach, ein Issue,
+wenn etwas schiefgeht – und ein Lebenszeichen, falls das Melden selbst
+ausfällt. Wer die Muster ohne meine Dienste ausprobieren will, findet sie in
+der Vorlage &lt;a href=&quot;/projekte/iac-stack-template&quot;&gt;iac-stack-template&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
     <title>Linux Environments / Umgebungsvariablen verstehen</title>
     <link href="https://niclasedge.github.io/posts/docker-environments/" rel="alternate" type="text/html"/>
     <id>https://niclasedge.github.io/posts/docker-environments/</id>
